@@ -1,2 +1,5 @@
-package PACKAGE_NAME;public interface Player {
+/**
+ * Represents the interface for a Player of Reversi.
+ */
+public interface Player {
 }
