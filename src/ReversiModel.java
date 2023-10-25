@@ -24,12 +24,25 @@ public interface ReversiModel {
   public void startGame(List<Tile> board) throws IllegalStateException, IllegalArgumentException;
 
   /**
+   * Moves a game piece to the specified coordinates.
+   *
+   * @param q The q coordinate of the cell.
+   * @param r The r coordinate of the cell.
+   * @param s The s coordinate of the cell.
+   * @param currentPlayer The current player (e.g., ReversiPiece.BLACK or ReversiPiece.WHITE).
+   * @throws IllegalStateException    if the game has not started.
+   * @throws IllegalArgumentException if the coordinates are invalid or the move is not legal.
+   */
+  void movePiece(int q, int r, int s, ReversiPiece currentPlayer) throws IllegalStateException, IllegalArgumentException;
+
+
+  /**
    * Returns the piece at the tile of the given coordinates in the gameboard
    *
    * @param q the q coord of the tile.
    * @param r the r coord of the tile.
    * @param s the s coord of the tile.
-   * @return the ReversiPiece at the requestied position
+   * @return the ReversiPiece at the requested position
    * @throws IllegalStateException    if the game has already started.
    * @throws IllegalArgumentException if invalid coordinates.
    */
