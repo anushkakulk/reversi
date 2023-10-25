@@ -51,7 +51,26 @@ public interface ReversiModel {
    * Returns the side length of the hexagonal game board
    *
    * @return the side length of the board
-   * @throws IllegalStateException    if the game has already started.
+   * @throws IllegalStateException if the game has already started.
    */
   int getHexSideLength();
+
+
+  /**
+   * makes a move on behalf of the current player to the given coordinates if it is a valid move.
+   *
+   * @param r r coord of destination hexagon
+   * @param q q coord of destination hexagon
+   * @param s s coord of destination hexagon
+   * @throws IllegalStateException if the game has already started.
+   */
+  void move(int r, int q, int s);
+
+  /**
+   * switches to the next player's turn.
+   *
+   * @throws IllegalStateException if the game has already started.
+   */
+  void switchPlayer();
+
 }

@@ -3,4 +3,6 @@
  */
 public interface ReversiPlayer {
 
+  // decide some move
+
 }

@@ -9,12 +9,13 @@ public class ReversiGameModel implements ReversiModel {
   // true if the game has started, false if not
   private boolean gameStarted;
 
-
   // the side length size of the game board
   // ex: a board with hexSideLength 6 means there are
-  // TODO THE MATH FOR NUM TILES IN A BOARD WITH hexSideLength  = 3 * hexSideLength * (hexSideLength - 1) + 1
   private int hexSideLength;
+  // num tiles = hexSideLength  = 3 * hexSideLength * (hexSideLength - 1) + 1
   private int numTiles;
+
+  private ReversiPlayer currentTurn; // the piece of the player whose current turn is.
 
   // the actual game board is a map of every coordinated tile to a reversi piece.
   private final Map<Tile, ReversiPiece> gameBoard = new HashMap<>();
@@ -33,14 +34,13 @@ public class ReversiGameModel implements ReversiModel {
       throw new IllegalArgumentException("Cannot play with a board with " +
               "side length smaller than 2");
     }
-    List<Tile> board = new ArrayList<>(); // Create an ArrayList
+    List<Tile> board = new ArrayList<>();
     for (int q = -hexSideLength + 1; q < hexSideLength; q++) {
       int r1 = Math.max(-hexSideLength + 1, -hexSideLength - q + 1);
       int r2 = Math.min(hexSideLength - 1, hexSideLength - q - 1);
       for (int r = r1; r <= r2; r++) {
         int s = -q - r;
         //System.out.println("q: " + q + " r: " + r + " s: "+ s);
-        // TODO MAKE SURE YOU UNDERSTAND THE ORDER THIS MAKES TILES IN FOR TESTING
         board.add(new Tile(q, r, s));
       }
     }
@@ -58,10 +58,12 @@ public class ReversiGameModel implements ReversiModel {
     this.hexSideLength = (int) Math.round((Math.sqrt(4 * board.size() + 1) + 1) / 3);
     this.gameStarted = true;
     this.numTiles = board.size();
+    this.currentTurn = ReversiPiece.BLACK;
   }
 
   // TODO implement the whole moving functionality
   // TODO how to do the whole 'turn' functionality?
+
 
   // helper method that puts pieces in starting position: places 3 black and 3 white pieces in
   // alternating order in the inner most hexagon.
@@ -80,7 +82,8 @@ public class ReversiGameModel implements ReversiModel {
   // iterates through the tile lists and makes sure that only complete hexagons are given in
   // a complete hexagons is a hexagon contains all tiles with coords (q, r, s) for all q, r, s from
   // -hexSideLength + 1 to hexSideLength - 1
-  public void validateHexagon(List<Tile> tiles) {
+  // TODO test this method through
+  private void validateHexagon(List<Tile> tiles) {
     for (int r = -this.hexSideLength + 1; r <= this.hexSideLength - 1; r++) {
       for (int q = -this.hexSideLength + 1; q <= this.hexSideLength - 1; q++) {
         int s = -r - q;
@@ -96,7 +99,7 @@ public class ReversiGameModel implements ReversiModel {
     }
   }
 
-
+  // ensures that we have enough tiles to make a board
   private void validateConditionsToStartGame(List<Tile> board) {
     if (board == null || board.contains(null) || (board.size() % 6) != 1) {
       throw new IllegalArgumentException("Cannot play game with null inputted board");
@@ -138,5 +141,17 @@ public class ReversiGameModel implements ReversiModel {
   @Override
   public int getHexSideLength() {
     return this.hexSideLength;
+  }
+
+  @Override
+  public void move(int r, int q, int s) {
+
+    i
+
+  }
+
+  @Override
+  public void switchPlayer() {
+     this.currentTurn = this.currentTurn == ReversiPiece.BLACK? ReversiPiece.WHITE : ReversiPiece.BLACK;
   }
 }
