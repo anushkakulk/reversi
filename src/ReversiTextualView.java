@@ -33,7 +33,7 @@ public class ReversiTextualView {
    *
    * @return a string showing the current state of the ReversiModel.
    */
-  public String toString() {
+  public String render() {
     StringBuilder sb = new StringBuilder();
     int hexSideLength = model.getHexSideLength();
 
@@ -44,14 +44,10 @@ public class ReversiTextualView {
       sb.append(" ".repeat(Math.abs(r))); // take care of any of the indenting!
 
       for (int q = qStart; q <= qEnd; q++) {
-        Tile tile = new Tile(q, r, -q - r);
-        ReversiPiece piece = model.getPieceAt(tile);
-        if (piece == ReversiPiece.EMPTY) {
-          sb.append("_ ");
-        } else if (piece == ReversiPiece.BLACK) {
-          sb.append("X ");
-        } else if (piece == ReversiPiece.WHITE) {
-          sb.append("O ");
+        Tile t = new Tile(q, r, -q - r);
+        ReversiPiece piece = model.getPieceAt(t);
+        if (piece == ReversiPiece.WHITE || piece == ReversiPiece.EMPTY || piece == ReversiPiece.BLACK) {
+          sb.append(piece + " "); // this appends the string rep of the piece at that spot
         }
       }
 

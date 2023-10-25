@@ -33,6 +33,6 @@ public class TestReversiView {
                     "      _ _ _ _ _ _ _ \n" +
             "       \n";
 
-    Assert.assertEquals(initBoard, view.toString());
+    Assert.assertEquals(initBoard, view.render());
   }
 }

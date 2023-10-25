@@ -49,8 +49,8 @@ public class ReversiGameModel implements ReversiModel {
 
   @Override
   public void startGame(List<Tile> board) throws IllegalStateException, IllegalArgumentException {
-    validateConditionsToStartGame(board);
-    // TODO a validateBoard method (?) that checks that all the coordinates match up and stuff ?
+    validateConditionsToStartGame(board); // check board and contents aren't null & not started yet
+    validateHexagon(board); // make sure the tiles given actually form a complete hexagonic board
     for (Tile t : board) {
       this.gameBoard.put(t, ReversiPiece.EMPTY);
     }
@@ -76,6 +76,26 @@ public class ReversiGameModel implements ReversiModel {
       alternatingPieceIndex = 1 - alternatingPieceIndex; // this flips the init black and white
     }
   }
+
+  // iterates through the tile lists and makes sure that only complete hexagons are given in
+  // a complete hexagons is a hexagon contains all tiles with coords (q, r, s) for all q, r, s from
+  // -hexSideLength + 1 to hexSideLength - 1
+  public void validateHexagon(List<Tile> tiles) {
+    for (int r = -this.hexSideLength + 1; r <= this.hexSideLength - 1; r++) {
+      for (int q = -this.hexSideLength + 1; q <= this.hexSideLength - 1; q++) {
+        int s = -r - q;
+
+        if (r + q + s == 0) {
+          Tile tile = new Tile(q, r, s);
+          if (!tiles.contains(tile)) {
+            // the list of tiles doesn't contain a tile needed to form a valid board
+            throw new IllegalArgumentException("bad board given to play Reversi with");
+          }
+        }
+      }
+    }
+  }
+
 
   private void validateConditionsToStartGame(List<Tile> board) {
     if (board == null || board.contains(null) || (board.size() % 6) != 1) {
