@@ -16,6 +16,7 @@ public class Tile {
    * @param s the s coordinate.
    */
   public Tile(int q, int r, int s) {
+    // a tile uses cube coordinates
     this.q = q;
     this.r = r;
     this.s = s;

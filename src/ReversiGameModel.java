@@ -17,8 +17,6 @@ public class ReversiGameModel implements ReversiModel {
   private int numTiles;
 
   // the actual game board is a map of every coordinated tile to a reversi piece.
-  // TODO so the startGame method should put every Tile in the inputted board into the gameBoard with empty
-  // initially, then go back and change the inner 6 to have the black white starting position thing
   private final Map<Tile, ReversiPiece> gameBoard = new HashMap<>();
 
   /**
@@ -41,7 +39,8 @@ public class ReversiGameModel implements ReversiModel {
       int r2 = Math.min(hexSideLength - 1, hexSideLength - q - 1);
       for (int r = r1; r <= r2; r++) {
         int s = -q - r;
-        //System.out.println("q: " + q + " r: " + r + " s: "+ s); // TODO MAKE SURE YOU UNDERSTNAD THE ORDER THIS MAKES TILES IN
+        //System.out.println("q: " + q + " r: " + r + " s: "+ s);
+        // TODO MAKE SURE YOU UNDERSTAND THE ORDER THIS MAKES TILES IN FOR TESTING
         board.add(new Tile(q, r, s));
       }
     }
@@ -58,10 +57,14 @@ public class ReversiGameModel implements ReversiModel {
     initStartingPositions();
     this.hexSideLength = (int) Math.round((Math.sqrt(4 * board.size() + 1) + 1) / 3);
     this.gameStarted = true;
-
+    this.numTiles = board.size();
   }
 
-  // helper method that starts off with that black and white alternating pattern on the board
+  // TODO implement the whole moving functionality
+  // TODO how to do the whole 'turn' functionality?
+
+  // helper method that puts pieces in starting position: places 3 black and 3 white pieces in
+  // alternating order in the inner most hexagon.
   private void initStartingPositions() {
     Tile centerTile = new Tile(0, 0, 0);
     List<Tile> neighbors = centerTile.getNeighbors();
@@ -112,6 +115,7 @@ public class ReversiGameModel implements ReversiModel {
     }
   }
 
+  @Override
   public int getHexSideLength() {
     return this.hexSideLength;
   }
