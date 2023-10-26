@@ -218,4 +218,6 @@ public class TestReversiModel {
     assertSame(model.getPieceAt(1, 0, -1), ReversiPiece.WHITE); // black flips to white
     assertSame(model.getPieceAt(2, -1, -1), ReversiPiece.WHITE); // the empty tile is black
   }
+
+  // TODO WRITE TEST FOR PLAYING GAME TO COMPLETION
 }

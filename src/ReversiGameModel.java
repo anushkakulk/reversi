@@ -220,4 +220,16 @@ public class ReversiGameModel implements ReversiModel {
     this.currentPlayer = this.currentPlayer == ReversiPiece.BLACK ?
             ReversiPiece.WHITE : ReversiPiece.BLACK;
   }
+
+  @Override
+  public boolean isGameOver() {
+    // TODO IMPLEMENT THIS
+    return false;
+  }
+
+  @Override
+  public ReversiPiece getWinner() {
+    // TODO IMPLEMENT THIS
+    return ReversiPiece.EMPTY;
+  }
 }

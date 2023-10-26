@@ -54,7 +54,7 @@ public interface ReversiModel {
    * @return the side length of the board
    * @throws IllegalStateException if the game has already started.
    */
-  int getHexSideLength();
+  int getHexSideLength() throws IllegalStateException;
 
 
   /**
@@ -66,13 +66,29 @@ public interface ReversiModel {
    * @throws IllegalStateException if the game has already started, or if the move is invalid.
    * @throws IllegalArgumentException if the coordinates are invalid.
    */
-  void move(int q, int r, int s);
+  void move(int q, int r, int s) throws IllegalStateException,
+          IllegalArgumentException;;
 
   /**
    * switches to the next player's turn.
    *
    * @throws IllegalStateException if the game has already started.
    */
-  void switchPlayer();
+  void switchPlayer() throws IllegalStateException;
 
+  /**
+   * Return whether the game is over. The game is over when either the board is full, or
+   * one player has won.
+   *
+   * @return true if the game is over, false otherwise
+   */
+  boolean isGameOver();
+
+  /**
+   * Return the winner of the game, or {@code null} if there is no winner. If the game is not
+   * over, returns {@code null}.
+   *
+   * @return the winner, or null if there is no winner
+   */
+  ReversiPiece getWinner();
 }
