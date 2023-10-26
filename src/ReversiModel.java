@@ -33,7 +33,7 @@ public interface ReversiModel {
    * @throws IllegalStateException    if the game has not started.
    * @throws IllegalArgumentException if the coordinates are invalid or the move is not legal.
    */
-  void movePiece(int q, int r, int s, ReversiPiece currentPlayer) throws IllegalStateException, IllegalArgumentException;
+  void movePiece(int q, int r, int s) throws IllegalStateException, IllegalArgumentException;
 
 
   /**
