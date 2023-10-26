@@ -11,7 +11,7 @@ public interface ReversiModel {
    * @throws IllegalArgumentException if the size is invalid.
    * @returns a usable game board for playing a game of Reversi.
    */
-  public List<Tile> getBoard(int size) throws IllegalArgumentException;
+  List<Tile> getBoard(int size) throws IllegalArgumentException;
 
 
   /**
@@ -21,19 +21,7 @@ public interface ReversiModel {
    * @throws IllegalStateException    if the game has already started.
    * @throws IllegalArgumentException if the board is null or invalid.
    */
-  public void startGame(List<Tile> board) throws IllegalStateException, IllegalArgumentException;
-
-  /**
-   * Moves a game piece to the specified coordinates.
-   *
-   * @param q The q coordinate of the cell.
-   * @param r The r coordinate of the cell.
-   * @param s The s coordinate of the cell.
-   * @param currentPlayer The current player (e.g., ReversiPiece.BLACK or ReversiPiece.WHITE).
-   * @throws IllegalStateException    if the game has not started.
-   * @throws IllegalArgumentException if the coordinates are invalid or the move is not legal.
-   */
-  void movePiece(int q, int r, int s) throws IllegalStateException, IllegalArgumentException;
+  void startGame(List<Tile> board) throws IllegalStateException, IllegalArgumentException;
 
 
   /**
@@ -46,7 +34,7 @@ public interface ReversiModel {
    * @throws IllegalStateException    if the game has already started.
    * @throws IllegalArgumentException if invalid coordinates.
    */
-  public ReversiPiece getPieceAt(int q, int r, int s) throws IllegalStateException,
+  ReversiPiece getPieceAt(int q, int r, int s) throws IllegalStateException,
           IllegalArgumentException;
 
 
@@ -75,9 +63,10 @@ public interface ReversiModel {
    * @param r r coord of destination hexagon
    * @param q q coord of destination hexagon
    * @param s s coord of destination hexagon
-   * @throws IllegalStateException if the game has already started.
+   * @throws IllegalStateException if the game has already started, or if the move is invalid.
+   * @throws IllegalArgumentException if the coordinates are invalid.
    */
-  void move(int r, int q, int s);
+  void move(int q, int r, int s);
 
   /**
    * switches to the next player's turn.
