@@ -15,9 +15,10 @@ public class ReversiGameModel implements ReversiModel {
   // TODO THE MATH FOR NUM TILES IN A BOARD WITH hexSideLength  = 3 * hexSideLength * (hexSideLength - 1) + 1
   private int hexSideLength;
   private int numTiles;
-
   // the actual game board is a map of every coordinated tile to a reversi piece.
   private final Map<Tile, ReversiPiece> gameBoard = new HashMap<>();
+
+
 
   /**
    * Creates a Reversi Game Object, which has no attributes except for the fact that the game
@@ -58,6 +59,7 @@ public class ReversiGameModel implements ReversiModel {
     this.hexSideLength = (int) Math.round((Math.sqrt(4 * board.size() + 1) + 1) / 3);
     this.gameStarted = true;
     this.numTiles = board.size();
+    this.currentPlayer = ReversiPiece.BLACK;
   }
 
   // TODO implement the whole moving functionality
@@ -139,4 +141,6 @@ public class ReversiGameModel implements ReversiModel {
   public int getHexSideLength() {
     return this.hexSideLength;
   }
+
+
 }
