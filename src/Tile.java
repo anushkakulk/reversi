@@ -89,4 +89,10 @@ public class Tile {
     return neighbors;
   }
 
+    public Tile addDirection(int... direction) {
+    return new Tile(this.q + direction[0], this.r + direction[1],
+        this.s + direction[2]);
+  }
+
+
 }
