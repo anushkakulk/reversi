@@ -59,6 +59,8 @@ public class ReversiGameModel implements ReversiModel {
     this.numTiles = board.size();
 
     this.currentPlayer = ReversiPiece.BLACK;
+
+    System.out.println(board);
   }
 
   // TODO implement the whole moving functionality
@@ -153,7 +155,8 @@ public class ReversiGameModel implements ReversiModel {
   // helper method that throws the given coordinates are for a tile outside of the game board
   //!!changed this to return a boolean
   private boolean validateCoordinatesInBoard(int q, int r, int s) {
-    if (q >= this.hexSideLength || r >= this.hexSideLength || s >= this.hexSideLength) {
+    if (q >= this.hexSideLength || r >= this.hexSideLength || s >= this.hexSideLength
+    || q <= -this.hexSideLength || r <= -this.hexSideLength || s <= -this.hexSideLength) {
       throw new IllegalArgumentException("Accessing a tile out of bounds!");
     }
     return true;
@@ -253,6 +256,7 @@ public class ReversiGameModel implements ReversiModel {
         // the neighbor is occupied by the opposite player
         neighborsOccupiedByOtherPlayer.add(neighbor);
       }
+    }
 //********************* NEW
       for (Tile opp : neighborsOccupiedByOtherPlayer) {
         // iterate through neighbors occupied by the opponent
@@ -260,11 +264,12 @@ public class ReversiGameModel implements ReversiModel {
             opp.getS() - dest.getS()};
         // calculate the direction vector from the destination tile to the neighbor
 
+        ArrayList<Tile> toBeFlipped = new ArrayList<>();
+        toBeFlipped.add(opp);
+        // create a list to store tiles that need to be flipped
+
         Tile nextTile = opp.addDirection(direction);
         // calculate the next tile to check in the same direction
-
-        ArrayList<Tile> toBeFlipped = new ArrayList<>();
-        // create a list to store tiles that need to be flipped
 
         while (validateCoordinatesInBoard(nextTile.getQ(), nextTile.getR(), nextTile.getS())) {
           // continue while the next tile is within the game board
@@ -276,7 +281,7 @@ public class ReversiGameModel implements ReversiModel {
             throw new IllegalArgumentException("Cannot make this move");
           } else if (nextPiece != currentPlayer) {
             toBeFlipped.add(nextTile);
-            nextTile.addDirection(direction);
+            nextTile = nextTile.addDirection(direction);
             // if the next tile is occupied by the opponent
             // add the tile to the list of tiles to be flipped and move to the next tile in the same direction
           } else if (nextPiece == currentPlayer) {
@@ -288,11 +293,20 @@ public class ReversiGameModel implements ReversiModel {
               // flip the piece from opponent to current player (not usre if im doing this right)
               flip = (flip == ReversiPiece.BLACK)
                   ? ReversiPiece.WHITE : ReversiPiece.BLACK;
+              gameBoard.put(tile, flip);
+              //adding each flipped to game board
             }
+            gameBoard.put(dest, currentPlayer);
+            toBeFlipped.clear();
+            //putting the dest on the board and the clearing bc 
+            // the loop may keep going
+          }
+          if(toBeFlipped.isEmpty()) {
+            break;
+            //if mt that means it alr printed onto the gameboard
           }
         }
       }
-    }
 
     switchPlayer();
   }
