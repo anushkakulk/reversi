@@ -2,10 +2,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Arrays;
-import java.util.List;
-
-import static org.junit.Assert.assertSame;
 
 public class TestReversiView {
   private ReversiModel model;
@@ -43,8 +39,8 @@ public class TestReversiView {
   @Test
   public void testViewAfterMove() {
     model.startGame(model.getBoard(3));
-    assertSame(model.getPieceAt(1, -1, 0), ReversiPiece.WHITE);
-    assertSame(model.getPieceAt(1, -2, 1), ReversiPiece.EMPTY);
+    Assert.assertSame(model.getPieceAt(1, -1, 0), ReversiPiece.WHITE);
+    Assert.assertSame(model.getPieceAt(1, -2, 1), ReversiPiece.EMPTY);
 
     model.move(1, -2, 1);
 
@@ -61,10 +57,8 @@ public class TestReversiView {
   @Test
   public void testViewAfterMultipleMoves() {
     model.startGame(model.getBoard(7));
-    model.move(1, -2, 1);
-    // model.move(2, -1, -1);
-    // System.out.println(view.render());
-    model.move(-1, 2, -1);
+    model.move(1, -2, 1); // black moves and captures a white
+    model.move(-1, 2, -1); // white mirrors the move, captures a black
     Assert.assertEquals(view.render(),
             "      _ _ _ _ _ _ _ \n" +
                     "     _ _ _ _ _ _ _ _ \n" +
@@ -92,7 +86,7 @@ public class TestReversiView {
     // to the X's, so it should look at the other neighbor. That neighbor has an O adjacent to it
     // so it makes that valid legal move.
     Assert.assertEquals(view.render(),
-              "      _ _ _ _ _ _ _ \n" +
+            "      _ _ _ _ _ _ _ \n" +
                     "     _ _ _ _ _ _ _ _ \n" +
                     "    _ _ _ _ _ _ _ _ _ \n" +
                     "   _ _ _ _ _ _ _ _ _ _ \n" +

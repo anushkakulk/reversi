@@ -19,7 +19,6 @@ public class TestReversiModel {
     model = new ReversiGameModel();
   }
 
-
   @Test
   public void testGetSmallBoard() {
     List<Tile> expectedBoard = new ArrayList<>(Arrays.asList(
@@ -33,6 +32,20 @@ public class TestReversiModel {
     Assert.assertEquals(expectedBoard, model.getBoard(2));
   }
 
+
+  @Test
+  public void testTileGetNeighbors() {
+    Tile t = new Tile(0,0,0);
+    List<Tile> expectedNeighbors = new ArrayList<>(Arrays.asList(
+            new Tile(1, 0, -1),
+            new Tile(1, -1, 0),
+            new Tile(0, -1, 1),
+            new Tile(-1, 0, 1),
+            new Tile(-1, 1, 0),
+            new Tile(0, 1, -1)
+            ));
+    Assert.assertEquals(expectedNeighbors, t.getNeighbors());
+  }
 
   @Test
   public void testGetSide3HexagonBoard() {
