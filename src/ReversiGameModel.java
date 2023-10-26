@@ -16,6 +16,8 @@ public class ReversiGameModel implements ReversiModel {
   // TODO THE MATH FOR NUM TILES IN A BOARD WITH hexSideLength  = 3 * hexSideLength * (hexSideLength - 1) + 1
   private int numTiles;
 
+  private ReversiPiece currentPlayer;
+
   /**
    * Creates a Reversi Game Object, which has no attributes except for the fact that the game
    * hasn't started.
@@ -55,13 +57,15 @@ public class ReversiGameModel implements ReversiModel {
     this.hexSideLength = (int) Math.round((Math.sqrt(4 * board.size() + 1) + 1) / 3);
     this.gameStarted = true;
     this.numTiles = board.size();
+
+    this.currentPlayer = ReversiPiece.BLACK;
   }
 
   // TODO implement the whole moving functionality
   // TODO how to do the whole 'turn' functionality?
 
   @Override
-  public void movePiece(int q, int r, int s, ReversiPiece currentPlayer) throws IllegalStateException, IllegalArgumentException {
+  public void movePiece(int q, int r, int s) throws IllegalStateException, IllegalArgumentException {
     checkHasGameStarted();
     validateCoordinatesInBoard(q, r, s);
 
@@ -82,7 +86,7 @@ public class ReversiGameModel implements ReversiModel {
     if (legalMove) {
       // update the game board to flip captured discs
       // TODO need to implement the logic to flip the discs in all directions between two discs of the current player
-      updateBoard(q, r, s, currentPlayer);
+      //updateBoard(q, r, s, currentPlayer);
       //gameBoard.put(new Tile(currentQ, currentR, currentS), currentPlayer);
     }
   }
@@ -220,5 +224,82 @@ public class ReversiGameModel implements ReversiModel {
   public void updateBoard() {
 
   }
-}
 
+  @Override
+  public void move(int q, int r, int s) {
+    validateCoordinatesInBoard(q, r, s);
+    // get valid neighbors
+
+    Tile dest = new Tile(q, r, s);
+    List<Tile> allValidNeighbors = new ArrayList<>();
+    for (Tile t : dest.getNeighbors()) {
+      try {
+        if (validateCoordinatesInBoard(t.getQ(), t.getR(), t.getS())) {
+          allValidNeighbors.add(t);
+        }
+      } catch (IllegalArgumentException e) {
+        // dont do anything
+      }
+    }
+
+    List<Tile> neighborsOccupiedByOtherPlayer = new ArrayList<>();
+    // TODO iterate through allValidNeighbors and check if its the opposite player, if it is, add it
+    // to the list
+
+    for (Tile neighbor : allValidNeighbors) {
+      ReversiPiece neighborPiece = getPieceAt(neighbor);
+
+      if (neighborPiece != ReversiPiece.EMPTY && neighborPiece != currentPlayer) {
+        // the neighbor is occupied by the opposite player
+        neighborsOccupiedByOtherPlayer.add(neighbor);
+      }
+//********************* NEW
+      for (Tile opp : neighborsOccupiedByOtherPlayer) {
+        // iterate through neighbors occupied by the opponent
+        int[] direction = {opp.getQ() - dest.getQ(), opp.getR() - dest.getR(),
+            opp.getS() - dest.getS()};
+        // calculate the direction vector from the destination tile to the neighbor
+
+        Tile nextTile = opp.addDirection(direction);
+        // calculate the next tile to check in the same direction
+
+        ArrayList<Tile> toBeFlipped = new ArrayList<>();
+        // create a list to store tiles that need to be flipped
+
+        while (validateCoordinatesInBoard(nextTile.getQ(), nextTile.getR(), nextTile.getS())) {
+          // continue while the next tile is within the game board
+          ReversiPiece nextPiece = getPieceAt(nextTile);
+          // get the piece at the next tile
+
+          if (nextPiece == ReversiPiece.EMPTY) {
+            // ff the next tile is empty, it's an invalid move
+            throw new IllegalArgumentException("Cannot make this move");
+          } else if (nextPiece != currentPlayer) {
+            toBeFlipped.add(nextTile);
+            nextTile.addDirection(direction);
+            // if the next tile is occupied by the opponent
+            // add the tile to the list of tiles to be flipped and move to the next tile in the same direction
+          } else if (nextPiece == currentPlayer) {
+            for (Tile tile : toBeFlipped) {
+              // if the next tile is occupied by the current player
+              // Iterate through the tiles to be flipped
+              ReversiPiece flip = getPieceAt(tile);
+              // Get the piece at the tile to be flipped
+              // flip the piece from opponent to current player (not usre if im doing this right)
+              flip = (flip == ReversiPiece.BLACK)
+                  ? ReversiPiece.WHITE : ReversiPiece.BLACK;
+            }
+          }
+        }
+      }
+    }
+
+    switchPlayer();
+  }
+
+
+  @Override
+  public void switchPlayer() {
+    this.currentPlayer = this.currentPlayer == ReversiPiece.BLACK ? ReversiPiece.WHITE : ReversiPiece.BLACK;
+  }
+}
