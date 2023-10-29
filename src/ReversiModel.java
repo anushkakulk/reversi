@@ -84,11 +84,12 @@ public interface ReversiModel {
    */
   boolean isGameOver();
 
-  /**
-   * Return the winner of the game, or {@code null} if there is no winner. If the game is not
-   * over, returns {@code null}.
-   *
-   * @return the winner, or null if there is no winner
-   */
+    /**
+     * Gets the winner of the game.
+     *
+     * @return the winner of the game, or null if the game is not over.
+     * @throws IllegalStateException if the game has not started.
+     */
   ReversiPiece getWinner();
+
 }
