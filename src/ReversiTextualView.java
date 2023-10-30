@@ -3,7 +3,7 @@ import java.util.List;
 /**
  * Represents the Textual representation of a Game of Reversi.
  */
-public class ReversiTextualView implements ReversiView{
+public class ReversiTextualView implements ReversiView {
   private final ReversiModel model;
   private final Appendable output;
 
@@ -49,8 +49,8 @@ public class ReversiTextualView implements ReversiView{
         Tile t = new Tile(q, r, -q - r);
         ReversiPiece piece = model.getPieceAt(t);
         if (piece == ReversiPiece.WHITE
-                || piece == ReversiPiece.EMPTY
-                || piece == ReversiPiece.BLACK) {
+            || piece == ReversiPiece.EMPTY
+            || piece == ReversiPiece.BLACK) {
           sb.append(piece).append(" "); // this appends the string rep of the piece at that spot
         }
       }

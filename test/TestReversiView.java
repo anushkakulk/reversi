@@ -21,19 +21,19 @@ public class TestReversiView {
   @Test
   public void testViewAtStart() {
     String initBoard =
-                    "      _ _ _ _ _ _ _ \n" +
-                    "     _ _ _ _ _ _ _ _ \n" +
-                    "    _ _ _ _ _ _ _ _ _ \n" +
-                    "   _ _ _ _ _ _ _ _ _ _ \n" +
-                    "  _ _ _ _ _ _ _ _ _ _ _ \n" +
-                    " _ _ _ _ _ X O _ _ _ _ _ \n" +
-                    "_ _ _ _ _ O _ X _ _ _ _ _ \n" +
-                    " _ _ _ _ _ X O _ _ _ _ _ \n" +
-                    "  _ _ _ _ _ _ _ _ _ _ _ \n" +
-                    "   _ _ _ _ _ _ _ _ _ _ \n" +
-                    "    _ _ _ _ _ _ _ _ _ \n" +
-                    "     _ _ _ _ _ _ _ _ \n" +
-                    "      _ _ _ _ _ _ _ \n";
+        "      _ _ _ _ _ _ _ \n" +
+            "     _ _ _ _ _ _ _ _ \n" +
+            "    _ _ _ _ _ _ _ _ _ \n" +
+            "   _ _ _ _ _ _ _ _ _ _ \n" +
+            "  _ _ _ _ _ _ _ _ _ _ _ \n" +
+            " _ _ _ _ _ X O _ _ _ _ _ \n" +
+            "_ _ _ _ _ O _ X _ _ _ _ _ \n" +
+            " _ _ _ _ _ X O _ _ _ _ _ \n" +
+            "  _ _ _ _ _ _ _ _ _ _ _ \n" +
+            "   _ _ _ _ _ _ _ _ _ _ \n" +
+            "    _ _ _ _ _ _ _ _ _ \n" +
+            "     _ _ _ _ _ _ _ _ \n" +
+            "      _ _ _ _ _ _ _ \n";
 
     Assert.assertEquals(initBoard, viewSize7.render());
   }
@@ -46,11 +46,11 @@ public class TestReversiView {
     modelSize3.move(1, -2, 1);
 
     Assert.assertEquals(viewSize3.render(),
-            "  _ X _ \n" +
-                    " _ X X _ \n" +
-                    "_ O _ X _ \n" +
-                    " _ X O _ \n" +
-                    "  _ _ _ \n");
+        "  _ X _ \n" +
+            " _ X X _ \n" +
+            "_ O _ X _ \n" +
+            " _ X O _ \n" +
+            "  _ _ _ \n");
 
   }
 
@@ -60,19 +60,19 @@ public class TestReversiView {
     modelSize7.move(1, -2, 1); // black moves and captures a white
     modelSize7.move(-1, 2, -1); // white mirrors the move, captures a black
     Assert.assertEquals(viewSize7.render(),
-            "      _ _ _ _ _ _ _ \n" +
-                    "     _ _ _ _ _ _ _ _ \n" +
-                    "    _ _ _ _ _ _ _ _ _ \n" +
-                    "   _ _ _ _ _ _ _ _ _ _ \n" +
-                    "  _ _ _ _ _ X _ _ _ _ _ \n" +
-                    " _ _ _ _ _ X X _ _ _ _ _ \n" +
-                    "_ _ _ _ _ O _ X _ _ _ _ _ \n" +
-                    " _ _ _ _ _ O O _ _ _ _ _ \n" +
-                    "  _ _ _ _ _ O _ _ _ _ _ \n" +
-                    "   _ _ _ _ _ _ _ _ _ _ \n" +
-                    "    _ _ _ _ _ _ _ _ _ \n" +
-                    "     _ _ _ _ _ _ _ _ \n" +
-                    "      _ _ _ _ _ _ _ \n");
+        "      _ _ _ _ _ _ _ \n" +
+            "     _ _ _ _ _ _ _ _ \n" +
+            "    _ _ _ _ _ _ _ _ _ \n" +
+            "   _ _ _ _ _ _ _ _ _ _ \n" +
+            "  _ _ _ _ _ X _ _ _ _ _ \n" +
+            " _ _ _ _ _ X X _ _ _ _ _ \n" +
+            "_ _ _ _ _ O _ X _ _ _ _ _ \n" +
+            " _ _ _ _ _ O O _ _ _ _ _ \n" +
+            "  _ _ _ _ _ O _ _ _ _ _ \n" +
+            "   _ _ _ _ _ _ _ _ _ _ \n" +
+            "    _ _ _ _ _ _ _ _ _ \n" +
+            "     _ _ _ _ _ _ _ _ \n" +
+            "      _ _ _ _ _ _ _ \n");
   }
 
   @Test
@@ -85,21 +85,20 @@ public class TestReversiView {
     // to the X's, so it should look at the other neighbor. That neighbor has an O adjacent to it
     // so it makes that valid legal move.
     Assert.assertEquals(viewSize7.render(),
-            "      _ _ _ _ _ _ _ \n" +
-                    "     _ _ _ _ _ _ _ _ \n" +
-                    "    _ _ _ _ _ _ _ _ _ \n" +
-                    "   _ _ _ _ _ _ _ _ _ _ \n" +
-                    "  _ _ _ _ _ X _ _ _ _ _ \n" +
-                    " _ _ _ _ _ X X O _ _ _ _ \n" +
-                    "_ _ _ _ _ O _ O _ _ _ _ _ \n" +
-                    " _ _ _ _ _ X O _ _ _ _ _ \n" +
-                    "  _ _ _ _ _ _ _ _ _ _ _ \n" +
-                    "   _ _ _ _ _ _ _ _ _ _ \n" +
-                    "    _ _ _ _ _ _ _ _ _ \n" +
-                    "     _ _ _ _ _ _ _ _ \n" +
-                    "      _ _ _ _ _ _ _ \n");
+        "      _ _ _ _ _ _ _ \n" +
+            "     _ _ _ _ _ _ _ _ \n" +
+            "    _ _ _ _ _ _ _ _ _ \n" +
+            "   _ _ _ _ _ _ _ _ _ _ \n" +
+            "  _ _ _ _ _ X _ _ _ _ _ \n" +
+            " _ _ _ _ _ X X O _ _ _ _ \n" +
+            "_ _ _ _ _ O _ O _ _ _ _ _ \n" +
+            " _ _ _ _ _ X O _ _ _ _ _ \n" +
+            "  _ _ _ _ _ _ _ _ _ _ _ \n" +
+            "   _ _ _ _ _ _ _ _ _ _ \n" +
+            "    _ _ _ _ _ _ _ _ _ \n" +
+            "     _ _ _ _ _ _ _ _ \n" +
+            "      _ _ _ _ _ _ _ \n");
   }
-
 
 
 }

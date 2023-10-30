@@ -297,7 +297,7 @@ public class ReversiGameModel implements ReversiModel {
 
   @Override
   public ReversiPiece getWinner() {
-    if(isGameOver()) {
+    if (isGameOver()) {
       int whiteCount = (int) gameBoard.values().stream()
           .filter(piece -> piece == ReversiPiece.WHITE)
           .count();

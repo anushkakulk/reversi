@@ -21,19 +21,18 @@ public class TestReversiModel {
   }
 
 
-
   @Test
   public void testMove() {
     model.move(1, -2, 1);
 
-    assertTrue(model.getPieceAt(1,-1, 0) == ReversiPiece.BLACK);
-    assertTrue(model.getPieceAt(1,-2, 1) == ReversiPiece.BLACK);
+    assertTrue(model.getPieceAt(1, -1, 0) == ReversiPiece.BLACK);
+    assertTrue(model.getPieceAt(1, -2, 1) == ReversiPiece.BLACK);
   }
 
 
   @Test
   public void testTileGetNeighbors() {
-    Tile t = new Tile(0,0,0);
+    Tile t = new Tile(0, 0, 0);
     List<Tile> expectedNeighbors = new ArrayList<>(Arrays.asList(
         new Tile(1, 0, -1),
         new Tile(1, -1, 0),
@@ -153,7 +152,7 @@ public class TestReversiModel {
     model.move(2, -1, -1); // white's move - valid move
 
     Assert.assertThrows(IllegalStateException.class, () ->
-        model.move(-1, -1,2));
+        model.move(-1, -1, 2));
 
   }
 
@@ -204,7 +203,7 @@ public class TestReversiModel {
     model.move(1, -2, 1); // black valid move
     model.move(-2, 1, 1); // white valid move
 
-    ReversiPiece piece1 =  ReversiPiece.WHITE;
+    ReversiPiece piece1 = ReversiPiece.WHITE;
   }
 
   @Test
