@@ -18,56 +18,17 @@ public class TestReversiModel {
 
   @Before
   public void setUp() {
-    model = new ReversiGameModel();
+    model = new ReversiGameModel(3);
   }
 
-  @Test
-  public void testGetSmallBoard() {
-    List<Tile> expectedBoard = new ArrayList<>(Arrays.asList(
-            new Tile(-1, 0, 1),
-            new Tile(-1, 1, 0),
-            new Tile(0, -1, 1),
-            new Tile(0, 0, 0),
-            new Tile(0, 1, -1),
-            new Tile(1, -1, 0),
-            new Tile(1, 0, -1)));
-    Assert.assertEquals(expectedBoard, model.getBoard(2));
-  }
+
 
   @Test
   public void testMove() {
-    List<Tile> board = Arrays.asList(
-        new Tile(-2, 0, 2),
-        new Tile(-2, 1, 1),
-        new Tile(-2, 2, 0),
-        new Tile(-1, -1, 2),
-        new Tile(-1, 0, 1),
-        new Tile(-1, 1, 0),
-        new Tile(-1, 2, -1),
-        new Tile(0, -2, 2),
-        new Tile(0, -1, 1),
-        new Tile(0, 0, 0),
-        new Tile(0, 1, -1),
-        new Tile(0, 2, -2),
-        new Tile(1, -2, 1),
-        new Tile(1, -1, 0),
-        new Tile(1, 0, -1),
-        new Tile(1, 1, -2),
-        new Tile(2, -2, 0),
-        new Tile(2, -1, -1),
-        new Tile(2, 0, -2)
-    );
-
-    model.startGame(board);
-
     model.move(1, -2, 1);
 
     assertTrue(model.getPieceAt(1,-1, 0) == ReversiPiece.BLACK);
     assertTrue(model.getPieceAt(1,-2, 1) == ReversiPiece.BLACK);
-
-
-
-
   }
 
 
@@ -87,78 +48,12 @@ public class TestReversiModel {
 
   @Test
   public void testGetSide3HexagonBoard() {
-    List<Tile> expectedBoard = Arrays.asList(
-            new Tile(-2, 0, 2),
-            new Tile(-2, 1, 1),
-            new Tile(-2, 2, 0),
-            new Tile(-1, -1, 2),
-            new Tile(-1, 0, 1),
-            new Tile(-1, 1, 0),
-            new Tile(-1, 2, -1),
-            new Tile(0, -2, 2),
-            new Tile(0, -1, 1),
-            new Tile(0, 0, 0),
-            new Tile(0, 1, -1),
-            new Tile(0, 2, -2),
-            new Tile(1, -2, 1),
-            new Tile(1, -1, 0),
-            new Tile(1, 0, -1),
-            new Tile(1, 1, -2),
-            new Tile(2, -2, 0),
-            new Tile(2, -1, -1),
-            new Tile(2, 0, -2)
-    );
-    Assert.assertEquals(expectedBoard, model.getBoard(3));
-    model.startGame(model.getBoard(3));
     Assert.assertEquals(model.getHexSideLength(), 3);
   }
 
-  @Test
-  public void testStartGameWithNullBoardAndContents() {
-    Assert.assertThrows(IllegalArgumentException.class, () -> model.startGame(null));
-    Assert.assertThrows(IllegalArgumentException.class,
-            () -> model.startGame(new ArrayList<>(Arrays.asList(new Tile(0, 0, 0), null))));
-  }
-
-  @Test
-  public void testStartGameWithInvalidNumTilesForHexagonShape() {
-    List<Tile> badBoard = new ArrayList<>(Arrays.asList(
-            new Tile(-1, 0, 1),
-            new Tile(-1, 1, 0),
-            new Tile(0, -1, 1),
-            new Tile(0, 0, 0),
-            new Tile(0, 1, -1),
-            new Tile(1, -1, 0),
-            new Tile(1, 0, -1),
-            new Tile(2, -2, 0)));
-    Assert.assertThrows(IllegalArgumentException.class,
-            () -> model.startGame(badBoard)); // 8 tiles for hexagonic shape -> bad
-
-    Assert.assertThrows(IllegalArgumentException.class,
-            () -> model.startGame(new ArrayList<>(Arrays.asList(new Tile(0, 0, 0),
-                    new Tile(-1, 0, 1))))); // only 2 tiles for hexagonic shape -> bad
-  }
-
-  @Test
-  public void testValidateHexagon() {
-    List<Tile> badBoard = new ArrayList<>(Arrays.asList(
-            new Tile(-1, 0, 1),
-            new Tile(-1, 1, 0),
-            new Tile(0, -1, 1),
-            new Tile(0, 0, 0),
-            new Tile(3, -2, -1), // this is the bad tile
-            new Tile(1, -1, 0),
-            new Tile(1, 0, -1)));
-
-    Assert.assertThrows(IllegalArgumentException.class, () -> model.startGame(badBoard));
-    // bad board because even though we have 7 tiles,
-    // we aren't given tiles with coordinates that form a complete valid hexagon board
-  }
 
   @Test
   public void testGetPieceAt() {
-    model.startGame(model.getBoard(3));
-
     Assert.assertEquals(model.getPieceAt(0, 0, 0), ReversiPiece.EMPTY);
     Assert.assertEquals(model.getPieceAt(1, -1, 0), ReversiPiece.WHITE);
     Assert.assertEquals(model.getPieceAt(0, 1, -1), ReversiPiece.WHITE);
@@ -170,8 +65,6 @@ public class TestReversiModel {
 
   @Test
   public void testValidMove() {
-    model.startGame(model.getBoard(3));
-
     assertSame(model.getPieceAt(1, -1, 0), ReversiPiece.WHITE);
     assertSame(model.getPieceAt(1, -2, 1), ReversiPiece.EMPTY);
 
@@ -183,8 +76,6 @@ public class TestReversiModel {
 
   @Test
   public void testPassingSwitchesTurns() {
-    model.startGame(model.getBoard(3));
-
     assertSame(model.getPieceAt(1, -1, 0), ReversiPiece.WHITE);
     assertSame(model.getPieceAt(1, -2, 1), ReversiPiece.EMPTY);
 
@@ -202,7 +93,7 @@ public class TestReversiModel {
 
   @Test
   public void testMakingAMoveThatFlipsMultipleOpponentTiles() {
-    model.startGame(model.getBoard(5));
+    model = new ReversiGameModel(5);
 
     assertSame(model.getPieceAt(1, -1, 0), ReversiPiece.WHITE);
     assertSame(model.getPieceAt(1, -2, 1), ReversiPiece.EMPTY);
@@ -220,14 +111,14 @@ public class TestReversiModel {
 
   @Test
   public void testInvalidDestinationForMove() {
-    model.startGame(model.getBoard(4));
+    model = new ReversiGameModel(4);
     // not a legal move, not adjacent to a line of opponent tiles followed by a same player tile
     Assert.assertThrows(IllegalStateException.class, () -> model.move(-3, 0, 3));
   }
 
   @Test
   public void testMakingAMoveToNonEmptyTile() {
-    model.startGame(model.getBoard(5));
+    model = new ReversiGameModel(5);
     assertSame(model.getPieceAt(1, -1, 0), ReversiPiece.WHITE);
     assertSame(model.getPieceAt(1, -2, 1), ReversiPiece.EMPTY);
     model.move(1, -2, 1); // black validly moved to this position
@@ -237,7 +128,7 @@ public class TestReversiModel {
 
   @Test
   public void testValidMoveWhereTheresTwoDirectionsToCheckFor() {
-    model.startGame(model.getBoard(7));
+    model = new ReversiGameModel(5);
     assertSame(model.getPieceAt(1, -1, 0), ReversiPiece.WHITE);
     assertSame(model.getPieceAt(1, -2, 1), ReversiPiece.EMPTY);
 

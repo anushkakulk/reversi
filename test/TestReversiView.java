@@ -4,18 +4,22 @@ import org.junit.Test;
 
 
 public class TestReversiView {
-  private ReversiModel model;
-  private ReversiTextualView view;
+  private ReversiModel modelSize7;
+  private ReversiTextualView viewSize7;
+  private ReversiModel modelSize3;
+  private ReversiTextualView viewSize3;
 
   @Before
   public void setUp() {
-    model = new ReversiGameModel();
-    view = new ReversiTextualView(model);
+    modelSize7 = new ReversiGameModel(7);
+    viewSize7 = new ReversiTextualView(modelSize7);
+
+    modelSize3 = new ReversiGameModel(3);
+    viewSize3 = new ReversiTextualView(modelSize3);
   }
 
   @Test
   public void testViewAtStart() {
-    model.startGame(model.getBoard(7));
     String initBoard =
                     "      _ _ _ _ _ _ _ \n" +
                     "     _ _ _ _ _ _ _ _ \n" +
@@ -31,18 +35,17 @@ public class TestReversiView {
                     "     _ _ _ _ _ _ _ _ \n" +
                     "      _ _ _ _ _ _ _ \n";
 
-    Assert.assertEquals(initBoard, view.render());
+    Assert.assertEquals(initBoard, viewSize7.render());
   }
 
   @Test
   public void testViewAfterMove() {
-    model.startGame(model.getBoard(3));
-    Assert.assertSame(model.getPieceAt(1, -1, 0), ReversiPiece.WHITE);
-    Assert.assertSame(model.getPieceAt(1, -2, 1), ReversiPiece.EMPTY);
+    Assert.assertSame(modelSize3.getPieceAt(1, -1, 0), ReversiPiece.WHITE);
+    Assert.assertSame(modelSize3.getPieceAt(1, -2, 1), ReversiPiece.EMPTY);
 
-    model.move(1, -2, 1);
+    modelSize3.move(1, -2, 1);
 
-    Assert.assertEquals(view.render(),
+    Assert.assertEquals(viewSize3.render(),
             "  _ X _ \n" +
                     " _ X X _ \n" +
                     "_ O _ X _ \n" +
@@ -54,10 +57,9 @@ public class TestReversiView {
 
   @Test
   public void testViewAfterMultipleMoves() {
-    model.startGame(model.getBoard(7));
-    model.move(1, -2, 1); // black moves and captures a white
-    model.move(-1, 2, -1); // white mirrors the move, captures a black
-    Assert.assertEquals(view.render(),
+    modelSize7.move(1, -2, 1); // black moves and captures a white
+    modelSize7.move(-1, 2, -1); // white mirrors the move, captures a black
+    Assert.assertEquals(viewSize7.render(),
             "      _ _ _ _ _ _ _ \n" +
                     "     _ _ _ _ _ _ _ _ \n" +
                     "    _ _ _ _ _ _ _ _ _ \n" +
@@ -75,15 +77,14 @@ public class TestReversiView {
 
   @Test
   public void testViewAfterMoveWhereTheresTwoDirectionsToFollow() {
-    model.startGame(model.getBoard(7));
-    model.move(1, -2, 1);
-    model.move(2, -1, -1);
+    modelSize7.move(1, -2, 1);
+    modelSize7.move(2, -1, -1);
     // there are opponents in two neighbors of the destination tile. this tests whether the move
     // method correctly finds out where the move is coming from to be valid (as in, it should know
     // that even though there are two X's to the left of the dest tile, there is no O adjacent
     // to the X's, so it should look at the other neighbor. That neighbor has an O adjacent to it
     // so it makes that valid legal move.
-    Assert.assertEquals(view.render(),
+    Assert.assertEquals(viewSize7.render(),
             "      _ _ _ _ _ _ _ \n" +
                     "     _ _ _ _ _ _ _ _ \n" +
                     "    _ _ _ _ _ _ _ _ _ \n" +

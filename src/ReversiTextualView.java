@@ -3,7 +3,7 @@ import java.util.List;
 /**
  * Represents the Textual representation of a Game of Reversi.
  */
-public class ReversiTextualView {
+public class ReversiTextualView implements ReversiView{
   private final ReversiModel model;
   private final Appendable output;
 
@@ -23,7 +23,9 @@ public class ReversiTextualView {
    *
    * @param model the Reversi game model that we are viewing.
    */
-  public ReversiTextualView(ReversiModel model) {
+  public ReversiTextualView(ReversiModel model) { // GRADERS: USE THIS TO TEST!
+    // CREATE A MODEL OBJECT, THEN CREATE A VIEW OBJECT AND PASS IN THAT MODEL.
+    // CALLING render() on THAT VIEW OBJECT WILL OUTPUT THE TEXTUAL VIEW OF THE MODEL.
     this.model = model;
     this.output = new StringBuilder();
   }
@@ -41,13 +43,15 @@ public class ReversiTextualView {
       int qStart = Math.max(-hexSideLength + 1, -hexSideLength - r + 1);
       int qEnd = Math.min(hexSideLength - 1, hexSideLength - r - 1);
 
-      sb.append(" ".repeat(Math.abs(r))); // take care of any of the indenting!
+      sb.append(" ".repeat(Math.abs(r))); // take care of any of the indenting, baseed on r coord!
 
       for (int q = qStart; q <= qEnd; q++) {
         Tile t = new Tile(q, r, -q - r);
         ReversiPiece piece = model.getPieceAt(t);
-        if (piece == ReversiPiece.WHITE || piece == ReversiPiece.EMPTY || piece == ReversiPiece.BLACK) {
-          sb.append(piece + " "); // this appends the string rep of the piece at that spot
+        if (piece == ReversiPiece.WHITE
+                || piece == ReversiPiece.EMPTY
+                || piece == ReversiPiece.BLACK) {
+          sb.append(piece).append(" "); // this appends the string rep of the piece at that spot
         }
       }
 

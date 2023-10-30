@@ -6,5 +6,5 @@ public interface ReversiView {
   /**
    * Renders the current state of the ReversiModel.
    */
-  void render();
+  String render();
 }
