@@ -48,7 +48,7 @@ public interface ReversiModel {
    * @throws IllegalArgumentException if the coordinates are invalid (not in the board).
    */
   void move(int q, int r, int s) throws IllegalStateException,
-          IllegalArgumentException;
+      IllegalArgumentException;
 
 
   /**

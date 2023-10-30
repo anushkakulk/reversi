@@ -2,7 +2,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.nio.channels.AsynchronousServerSocketChannel;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -36,13 +35,13 @@ public class TestReversiModel {
   public void testTileGetNeighbors() {
     Tile t = new Tile(0,0,0);
     List<Tile> expectedNeighbors = new ArrayList<>(Arrays.asList(
-            new Tile(1, 0, -1),
-            new Tile(1, -1, 0),
-            new Tile(0, -1, 1),
-            new Tile(-1, 0, 1),
-            new Tile(-1, 1, 0),
-            new Tile(0, 1, -1)
-            ));
+        new Tile(1, 0, -1),
+        new Tile(1, -1, 0),
+        new Tile(0, -1, 1),
+        new Tile(-1, 0, 1),
+        new Tile(-1, 1, 0),
+        new Tile(0, 1, -1)
+    ));
     Assert.assertEquals(expectedNeighbors, t.getNeighbors());
   }
 
@@ -147,6 +146,17 @@ public class TestReversiModel {
     assertSame(model.getPieceAt(2, -1, -1), ReversiPiece.WHITE); // the empty tile is black
   }
 
+  @Test
+  public void testMovetoOccupiedSpot() {
+    Assert.assertFalse(model.isGameOver());
+    model.move(-1, -1, 2); // black's turn - valid move
+    model.move(2, -1, -1); // white's move - valid move
+
+    Assert.assertThrows(IllegalStateException.class, () ->
+        model.move(-1, -1,2));
+
+  }
+
   // TODO WRITE TEST FOR PLAYING GAME TO COMPLETION
   // TODO TEST ALL CASES FOR GAME OVER
   @Test
@@ -160,4 +170,85 @@ public class TestReversiModel {
     model.pass();
     Assert.assertTrue(model.isGameOver()); // 2 consecutive passes, so game over!
   }
+
+  @Test
+  public void testGameOverNoMoreMoves() {
+    Assert.assertFalse(model.isGameOver());
+
+    model.move(-1, -1, 2); // black's turn - valid move
+    model.move(2, -1, -1); // white's move - valid move
+    Assert.assertFalse(model.isGameOver()); // game still isnt over
+
+    model.move(1, 1, -2); // black valid move
+    model.move(-1, 2, -1); // while valid move
+    Assert.assertFalse(model.isGameOver()); // game still isnt over
+
+    model.move(1, -2, 1); // black valid move
+    model.move(-2, 1, 1); // white valid move
+    Assert.assertTrue(model.isGameOver()); // game still isnt over
+  }
+
+  //TODO figure spacesfull out
+  @Test
+  public void testGameOverSpacesFull() {
+    Assert.assertFalse(model.isGameOver());
+
+    model.move(-1, -1, 2); // black's turn - valid move
+    model.move(2, -1, -1); // white's move - valid move
+    Assert.assertFalse(model.isGameOver()); // game still isnt over
+
+    model.move(1, 1, -2); // black valid move
+    model.move(-1, 2, -1); // while valid move
+    Assert.assertFalse(model.isGameOver()); // game still isnt over
+
+    model.move(1, -2, 1); // black valid move
+    model.move(-2, 1, 1); // white valid move
+
+    ReversiPiece piece1 =  ReversiPiece.WHITE;
+  }
+
+  @Test
+  public void testGetWinnerIfBothArentEqual() {
+    Assert.assertFalse(model.isGameOver());
+
+    model.move(-1, -1, 2); // black's turn - valid move
+    model.move(2, -1, -1); // white's move - valid move
+    Assert.assertFalse(model.isGameOver()); // game still isnt over
+
+    model.move(1, 1, -2); // black valid move
+    model.move(-1, 2, -1); // while valid move
+    Assert.assertFalse(model.isGameOver()); // game still isnt over
+
+    model.move(1, -2, 1); // black valid move
+    model.move(-2, 1, 1); // white valid move
+
+    Assert.assertTrue(model.isGameOver());
+    Assert.assertTrue(model.getWinner() == ReversiPiece.BLACK);
+    //check to see if winner is correct
+
+  }
+
+  @Test
+  public void testGetWinnerIfBothAreEqual() {
+    model = new ReversiGameModel(2);
+    Assert.assertTrue(model.getWinner() == ReversiPiece.EMPTY);
+    //checks to see if both black and white chips are equal so there is no winner
+  }
+
+  @Test
+  public void testGetWinnerIfGameIsntOver() {
+    Assert.assertFalse(model.isGameOver());
+
+    model.move(-1, -1, 2); // black's turn - valid move
+    model.move(2, -1, -1); // white's move - valid move
+    Assert.assertFalse(model.isGameOver()); // game still isnt over
+
+    model.move(1, 1, -2); // black valid move
+    model.move(-1, 2, -1); // while valid move
+    Assert.assertFalse(model.isGameOver()); // game still isnt over
+    Assert.assertEquals(null, model.getWinner());
+    //check to see if you can't get winner when game isnt over
+  }
+
+
 }
