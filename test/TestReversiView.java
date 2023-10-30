@@ -99,4 +99,7 @@ public class TestReversiView {
                     "     _ _ _ _ _ _ _ _ \n" +
                     "      _ _ _ _ _ _ _ \n");
   }
+
+
+
 }

@@ -1,3 +1,12 @@
+### CHOICES MADE FOR MODEL DESIGN ###
+The model implementation is created such that it could easily be extended by other model types. We did so
+by putting demarcated functionalities into private helper methods. Therefore, should we need to make an
+extension to the current rules/format of the reversi game, we can easily do by turning these helper methods
+into protected ones, and overriding those protected methods in the subclasses. We did not "bake in" a majority 
+of the functionality into the methods outlined in the model interface,
+but rather put the concrete functionality from the helpers and in the model implementation of methods outlined in the
+interface, we call the helpers.
+
 ### INSTANTIATING A PLAYER ###
 We created a Player interface, where the only method (as of now!) is makeGamePlayDecision().
 To instantiate a Player, we would need to create a class ReversiGamePlayer which has the ReversiPiece

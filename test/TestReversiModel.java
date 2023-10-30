@@ -149,4 +149,15 @@ public class TestReversiModel {
 
   // TODO WRITE TEST FOR PLAYING GAME TO COMPLETION
   // TODO TEST ALL CASES FOR GAME OVER
+  @Test
+  public void testGameOverAfterTwoConsecutivePasses() {
+    Assert.assertFalse(model.isGameOver());
+    model.move(-1, -1, 2); // black's turn - valid move
+    model.move(2, -1, -1); // white's move - valid move
+    Assert.assertFalse(model.isGameOver()); // still moves left, no passes
+    model.pass();
+    Assert.assertFalse(model.isGameOver()); // still moves left, only one pass
+    model.pass();
+    Assert.assertTrue(model.isGameOver()); // 2 consecutive passes, so game over!
+  }
 }

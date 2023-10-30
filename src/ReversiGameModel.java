@@ -213,7 +213,7 @@ public class ReversiGameModel implements ReversiModel {
       // piece is to the dest tile.
       Tile nextTile = opp.addDirection(direction);
 
-      while (validateCoordinatesInBoard(nextTile.getQ(), nextTile.getR(), nextTile.getS())) {
+      while (handleCoordinate(nextTile)) {
         ReversiPiece nextPiece = getPieceAt(nextTile);
 
         if (nextPiece == ReversiPiece.EMPTY) {
