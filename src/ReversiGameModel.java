@@ -67,7 +67,8 @@ public class ReversiGameModel implements ReversiModel {
 
 
   @Override
-  public ReversiPiece getPieceAt(int q, int r, int s) throws IllegalStateException, IllegalArgumentException {
+  public ReversiPiece getPieceAt(int q, int r, int s) throws IllegalStateException,
+      IllegalArgumentException {
     validateCoordinatesInBoard(q, r, s);
     return this.gameBoard.get(new Tile(q, r, s));
   }

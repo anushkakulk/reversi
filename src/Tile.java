@@ -3,8 +3,8 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Represents a Tile with cubic coordinates, where multiple tiles come together to form a game board
- * for Reversi.
+ * Represents a Tile with cubic coordinates, where multiple tiles come
+ * together to form a game board for Reversi.
  */
 public class Tile {
   private final int q, r, s;
@@ -72,8 +72,8 @@ public class Tile {
   /**
    * Returns all neighboring tiles of this tile.
    *
-   * @return A list of tiles that have the coordinates of one of each of the 6 neighbors to this
-   * tile.
+   * @return A list of tiles that have the coordinates of one of each of the 6
+   * neighbors to this tile.
    */
   List<Tile> getNeighbors() {
     int[][] cubeDirectionVectors = {
