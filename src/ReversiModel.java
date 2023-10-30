@@ -31,7 +31,7 @@ public interface ReversiModel {
    * @param r the r coord of the tile.
    * @param s the s coord of the tile.
    * @return the ReversiPiece at the requested position
-   * @throws IllegalStateException    if the game has already started.
+   * @throws IllegalStateException    if the game has not yet started
    * @throws IllegalArgumentException if invalid coordinates.
    */
   ReversiPiece getPieceAt(int q, int r, int s) throws IllegalStateException,
@@ -43,7 +43,7 @@ public interface ReversiModel {
    *
    * @param t the given tile for which we wish to see the piece on top of it
    * @return the ReversiPiece at the requested position
-   * @throws IllegalStateException    if the game has already started.
+   * @throws IllegalStateException    if the game has not yet started
    * @throws IllegalArgumentException if invalid Tile
    */
   ReversiPiece getPieceAt(Tile t) throws IllegalStateException, IllegalArgumentException;
@@ -52,7 +52,7 @@ public interface ReversiModel {
    * Returns the side length of the hexagonal game board
    *
    * @return the side length of the board
-   * @throws IllegalStateException if the game has already started.
+   * @throws IllegalStateException if the game has not yet started
    */
   int getHexSideLength() throws IllegalStateException;
 
@@ -63,18 +63,21 @@ public interface ReversiModel {
    * @param r r coord of destination hexagon
    * @param q q coord of destination hexagon
    * @param s s coord of destination hexagon
-   * @throws IllegalStateException if the game has already started, or if the move is invalid.
+   * @throws IllegalStateException if the game has not yet started, or if the move is invalid.
    * @throws IllegalArgumentException if the coordinates are invalid.
    */
   void move(int q, int r, int s) throws IllegalStateException,
           IllegalArgumentException;;
 
+
+
   /**
    * switches to the next player's turn.
    *
-   * @throws IllegalStateException if the game has already started.
+   * @throws IllegalStateException if the game has not yet started.
    */
-  void switchPlayer() throws IllegalStateException;
+  void pass() throws IllegalStateException;
+
 
   /**
    * Return whether the game is over. The game is over when either the board is full, or
@@ -85,7 +88,7 @@ public interface ReversiModel {
   boolean isGameOver();
 
     /**
-     * Gets the winner of the game.
+     * Gets the winner of the game, which is the player with the most pieces on the board.
      *
      * @return the winner of the game, or null if the game is not over.
      * @throws IllegalStateException if the game has not started.

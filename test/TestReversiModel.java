@@ -192,13 +192,12 @@ public class TestReversiModel {
     assertSame(model.getPieceAt(1, -1, 0), ReversiPiece.BLACK); // white flips to black
     assertSame(model.getPieceAt(1, -2, 1), ReversiPiece.BLACK); // the empty tile is black
 
-    model.switchPlayer();// this means white passed, now its black's turn
-    model.switchPlayer(); // black can't make any moves, so black passes, now white's turn
+    model.pass();// this means white passed, now its black's turn
+    model.pass(); // black can't make any moves, so black passes, now white's turn
     model.move(-1, 2, -1); // white's move
 
     Assert.assertSame(model.getPieceAt(-1, 1, 0), ReversiPiece.WHITE); // black flipped
     Assert.assertSame(model.getPieceAt(-1, 2, -1), ReversiPiece.WHITE); // empty is white
-
   }
 
   @Test
@@ -223,7 +222,7 @@ public class TestReversiModel {
   public void testInvalidDestinationForMove() {
     model.startGame(model.getBoard(4));
     // not a legal move, not adjacent to a line of opponent tiles followed by a same player tile
-    Assert.assertThrows(IllegalArgumentException.class, () -> model.move(-3, 0, 3));
+    Assert.assertThrows(IllegalStateException.class, () -> model.move(-3, 0, 3));
   }
 
   @Test
@@ -258,4 +257,5 @@ public class TestReversiModel {
   }
 
   // TODO WRITE TEST FOR PLAYING GAME TO COMPLETION
+  // TODO TEST ALL CASES FOR GAME OVER
 }

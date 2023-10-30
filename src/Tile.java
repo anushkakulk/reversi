@@ -11,6 +11,7 @@ public class Tile {
 
   /**
    * Constructs a Tile object with the given coordinates.
+   *
    * @param q the q coordinate.
    * @param r the r coordinate.
    * @param s the s coordinate.
@@ -27,6 +28,7 @@ public class Tile {
 
   /**
    * Gets the q coord.
+   *
    * @return the integer q coordinate.
    */
   public int getQ() {
@@ -35,6 +37,7 @@ public class Tile {
 
   /**
    * Gets the r coord.
+   *
    * @return the integer r coordinate.
    */
   public int getR() {
@@ -43,6 +46,7 @@ public class Tile {
 
   /**
    * Gets the s coord.
+   *
    * @return the integer s coordinate.
    */
   public int getS() {
@@ -67,10 +71,11 @@ public class Tile {
 
   /**
    * Returns all neighboring tiles of this tile.
+   *
    * @return A list of tiles that have the coordinates of one of each of the 6 neighbors to this
    * tile.
    */
-  public List<Tile> getNeighbors() {
+  List<Tile> getNeighbors() {
     int[][] cubeDirectionVectors = {
             {+1, 0, -1}, {+1, -1, 0}, {0, -1, +1},
             {-1, 0, +1}, {-1, +1, 0}, {0, +1, -1}
@@ -89,9 +94,9 @@ public class Tile {
     return neighbors;
   }
 
-  public Tile addDirection(int... direction) {
+  Tile addDirection(int... direction) {
     return new Tile(this.q + direction[0], this.r + direction[1],
-        this.s + direction[2]);
+            this.s + direction[2]);
   }
 
 }

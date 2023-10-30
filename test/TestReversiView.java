@@ -17,7 +17,6 @@ public class TestReversiView {
   public void testViewAtStart() {
     model.startGame(model.getBoard(7));
     String initBoard =
-            "       \n" +
                     "      _ _ _ _ _ _ _ \n" +
                     "     _ _ _ _ _ _ _ _ \n" +
                     "    _ _ _ _ _ _ _ _ _ \n" +
@@ -30,8 +29,7 @@ public class TestReversiView {
                     "   _ _ _ _ _ _ _ _ _ _ \n" +
                     "    _ _ _ _ _ _ _ _ _ \n" +
                     "     _ _ _ _ _ _ _ _ \n" +
-                    "      _ _ _ _ _ _ _ \n" +
-                    "       \n";
+                    "      _ _ _ _ _ _ _ \n";
 
     Assert.assertEquals(initBoard, view.render());
   }
