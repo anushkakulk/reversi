@@ -1,12 +1,21 @@
-import model.*;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import model.GameStatus;
+import model.ReversiGameModel;
+import model.ReversiModel;
+import model.ReversiPiece;
+import model.Tile;
 import view.ReversiTextualView;
 import view.ReversiView;
 
 import static org.junit.Assert.assertSame;
 
+/**
+ * Represents a small Example test suite for quick familiarity about how our Reversi model/view is
+ * instantiated and used.
+ */
 public class ExamplesReversi {
   private ReversiModel model;
   private ReversiView view;
@@ -20,11 +29,11 @@ public class ExamplesReversi {
 
   @Test
   public void examplesGetPieceAt() {
-    Tile tile = new Tile(0, -1,1);
+    Tile tile = new Tile(0, -1, 1);
     // Get piece via tile
     ReversiPiece p1 = model.getPieceAt(tile);
     // Get piece via coordinate
-    ReversiPiece p2 = model.getPieceAt(0,-1,1);
+    ReversiPiece p2 = model.getPieceAt(0, -1, 1);
 
     Assert.assertSame(p1, p2);
   }
@@ -32,14 +41,15 @@ public class ExamplesReversi {
   @Test
   public void examplesHexSideLength() {
     // Has to be 2 or more
-    Assert.assertThrows(IllegalArgumentException.class, ()->
-        model = new ReversiGameModel(1));
+    Assert.assertThrows(IllegalArgumentException.class, () ->
+            model = new ReversiGameModel(1));
     // Can check side length, -size < q & r & s < size
     model.getHexSideLength(); // 3
 
     model.move(-1, -1, 2); //valid move bc q r and s are in the boundaries
-    Assert.assertSame(ReversiPiece.BLACK, model.getPieceAt(-1,-1,2));
+    Assert.assertSame(ReversiPiece.BLACK, model.getPieceAt(-1, -1, 2));
   }
+
   @Test
   public void examplesInvalidMove() {
 
@@ -60,35 +70,35 @@ public class ExamplesReversi {
     view.toString();
 
     // 1. Flipping one piece over
-    model.move(-2,1,1); //flipping white piece at (-1,0,1) to black
+    model.move(-2, 1, 1); //flipping white piece at (-1,0,1) to black
     view.toString();
-    Assert.assertSame(ReversiPiece.BLACK, model.getPieceAt(-1,0,1));
+    Assert.assertSame(ReversiPiece.BLACK, model.getPieceAt(-1, 0, 1));
 
     // 2. Flipping one piece in 2 different directions over
-    model.move(-1,-1,2); // flipping black piece at (0,-1,1) to white
+    model.move(-1, -1, 2); // flipping black piece at (0,-1,1) to white
     view.toString();
-    model.move(1,-2,1); // flipping both white pieces at (0,-1,1) & (1,-1,0) to black
+    model.move(1, -2, 1); // flipping both white pieces at (0,-1,1) & (1,-1,0) to black
     view.toString();
 
-    Assert.assertSame(ReversiPiece.BLACK, model.getPieceAt(0,-1,1));
-    Assert.assertSame(ReversiPiece.BLACK, model.getPieceAt(1,-1,0));
+    Assert.assertSame(ReversiPiece.BLACK, model.getPieceAt(0, -1, 1));
+    Assert.assertSame(ReversiPiece.BLACK, model.getPieceAt(1, -1, 0));
 
-   // 3. Flipping multiple pieces the same direction (and one in a different direction)
-    model.move(2,-1,-1); // flipping 2 black pieces at (0,-1,1) & (1,-1,0) -same direction-
+    // 3. Flipping multiple pieces the same direction (and one in a different direction)
+    model.move(2, -1, -1); // flipping 2 black pieces at (0,-1,1) & (1,-1,0) -same direction-
     // to white and black piece at (1,0,-1) to white
     view.toString();
 
-    Assert.assertSame(ReversiPiece.WHITE, model.getPieceAt(0,-1,1));
-    Assert.assertSame(ReversiPiece.WHITE, model.getPieceAt(1,-1,0));
+    Assert.assertSame(ReversiPiece.WHITE, model.getPieceAt(0, -1, 1));
+    Assert.assertSame(ReversiPiece.WHITE, model.getPieceAt(1, -1, 0));
 
-    Assert.assertSame(ReversiPiece.WHITE, model.getPieceAt(1,0,-1));
+    Assert.assertSame(ReversiPiece.WHITE, model.getPieceAt(1, 0, -1));
   }
 
   @Test
   public void examplesCurrPlayer() {
     // You can check whos turn it is by calling this
     Assert.assertSame(ReversiPiece.BLACK, model.getCurrentPlayer() /*black*/);
-    model.move(-2,1,1);
+    model.move(-2, 1, 1);
     Assert.assertSame(ReversiPiece.WHITE, model.getCurrentPlayer() /*white*/);
   }
 
@@ -132,7 +142,7 @@ public class ExamplesReversi {
 
     //or when you do not have a valid move
     model = new ReversiGameModel(2);
-    Assert.assertThrows(IllegalStateException.class, ()-> model.move(0,0,0));
+    Assert.assertThrows(IllegalStateException.class, () -> model.move(0, 0, 0));
     model.pass();
     Assert.assertSame(ReversiPiece.WHITE, model.getCurrentPlayer());
   }

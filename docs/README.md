@@ -54,7 +54,7 @@ or passing a turn.
 
 The `ReversiGameModel` class implements the ReversiModel interface and provides the actual game
 logic. Create instances of the ReversiGameModel (giving it a sideLength of the board to play on)
-to actually play/test the game.
+to actually play/test the game. 
 
 ## Key Subcomponents
 
@@ -62,12 +62,15 @@ to actually play/test the game.
 
 The ` Tile` class represents a tile with cubic coordinates, which are used to construct the game
 board for Reversi. It includes methods for accessing the coordinates, finding neighboring tiles, and
-adding direction vectors.
+adding direction vectors. We chose tiles with cubic coordinates for the hexagonal board due to their simplicity and
+efficiency in representing tile positions. they provide a consistent and symmetrical system
+where each tile's position is defined by three integers (q, r, s) with q + r + s = 0,
+ which simplifies operations like finding neighboring tiles (which is a key part of Reversi).
 
 #### ReversiPiece Enum
 
 The `ReversiPiece` enum represents the game pieces used in Reversi. It includes three
-values: `EMPTY`, `BLACK`, and `WHITE`
+values: `EMPTY`, `BLACK`, and `WHITE`. These pieces are mapped to a tile to form the gameboard. 
 
 #### GameStatus Enum
 

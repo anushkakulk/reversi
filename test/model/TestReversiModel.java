@@ -304,7 +304,7 @@ public class TestReversiModel {
   @Test
   public void testFlippingInBothDirectionsAfterValidMove() {
     model = new ReversiGameModel(7);
-    // continously make valid moves that capture one or two of the opponents piece
+    // continuously make valid moves that capture one or two of the opponents piece
     model.move(1, -2, 1); // black
     model.move(2, -1, -1); // white
     model.move(-2, 1, 1); // black

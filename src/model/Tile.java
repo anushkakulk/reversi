@@ -9,6 +9,10 @@ import java.util.Objects;
  * together to form a game board for Reversi.
  */
 public class Tile {
+  // chose tiles with cubic coordinates for the hexagonal board due to their simplicity and
+  // efficiency in representing tile positions. they provide a consistent and symmetrical system
+  // where each tile's position is defined by three integers (q, r, s) with q + r + s = 0,
+  // which simplifies operations like finding neighboring tiles (which is a key part of Reversi).
   private final int q;
   private final int r;
   private final int s;
