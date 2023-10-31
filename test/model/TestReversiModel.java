@@ -23,6 +23,15 @@ public class TestReversiModel {
     model = new ReversiGameModel(3);
   }
 
+  @Test
+  public void throwExceptionIfConstructorGivenSizeLessThan2() {
+    Assert.assertThrows(IllegalArgumentException.class, () ->
+            new ReversiGameModel(-21));
+    Assert.assertThrows(IllegalArgumentException.class, () ->
+            new ReversiGameModel(-2));
+    Assert.assertThrows(IllegalArgumentException.class, () ->
+            new ReversiGameModel(1));
+  }
 
   @Test
   public void testMove() {
@@ -48,13 +57,23 @@ public class TestReversiModel {
   }
 
   @Test
+  public void testCreatingInvalidTile() {
+    Assert.assertThrows(IllegalArgumentException.class, () ->
+            new Tile(0, -1, 2));
+    Assert.assertThrows(IllegalArgumentException.class, () ->
+            new Tile(-100, 100, 1));
+
+    Tile t = new Tile(1, -2, 1); // a valid tile, coords = 0;
+  }
+
+  @Test
   public void testGetSide3HexagonBoard() {
     Assert.assertEquals(model.getHexSideLength(), 3);
   }
 
 
   @Test
-  public void testGetPieceAt() {
+  public void testGetPieceAtCoord() {
     Assert.assertEquals(model.getPieceAt(0, 0, 0), ReversiPiece.EMPTY);
     Assert.assertEquals(model.getPieceAt(1, -1, 0), ReversiPiece.WHITE);
     Assert.assertEquals(model.getPieceAt(0, 1, -1), ReversiPiece.WHITE);
@@ -62,6 +81,36 @@ public class TestReversiModel {
     Assert.assertEquals(model.getPieceAt(1, 0, -1), ReversiPiece.BLACK);
     Assert.assertEquals(model.getPieceAt(-1, 1, 0), ReversiPiece.BLACK);
     Assert.assertEquals(model.getPieceAt(0, -1, 1), ReversiPiece.BLACK);
+  }
+
+  @Test
+  public void testGetPieceAtCoordInvalid() {
+    Assert.assertThrows(IllegalArgumentException.class, () ->
+            model.getPieceAt(-2, -4, -12));
+    Assert.assertThrows(IllegalArgumentException.class, () ->
+            model.getPieceAt(102, 0, -2));
+    Assert.assertThrows(IllegalArgumentException.class, () ->
+            model.getPieceAt(-5, 5, 3));
+  }
+
+  @Test
+  public void testGetPieceAtTile() {
+    Tile t = new Tile(0, 0, 0);
+    Assert.assertEquals(model.getPieceAt(t), ReversiPiece.EMPTY);
+    t = new Tile(-1, 0, 1);
+    Assert.assertEquals(model.getPieceAt(t), ReversiPiece.WHITE);
+    t = new Tile(-1, 1, 0);
+    Assert.assertEquals(model.getPieceAt(t), ReversiPiece.BLACK);
+  }
+
+  @Test
+  public void testGetPieceAtTileInvalid() {
+    Assert.assertThrows(IllegalArgumentException.class, () ->
+            model.getPieceAt(new Tile(-2, -4, -12)));
+    Assert.assertThrows(IllegalArgumentException.class, () ->
+            model.getPieceAt(new Tile(102, 0, -2)));
+    Assert.assertThrows(IllegalArgumentException.class, () ->
+            model.getPieceAt(new Tile(-5, 5, 3)));
   }
 
   @Test
