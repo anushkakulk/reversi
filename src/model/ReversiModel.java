@@ -11,6 +11,7 @@ public interface ReversiModel extends ReadOnlyReversiModel {
    * @param r r coord of destination hexagon
    * @param q q coord of destination hexagon
    * @param s s coord of destination hexagon
+   * @throws IllegalStateException    if game is over
    * @throws IllegalStateException    if the move is invalid (meaning either the dest tile is empty,
    *                                  or if the disc being played is adjacent (in at least one
    *                                  direction) to a straight line of the opponent player’s discs,

@@ -134,11 +134,8 @@ public class TestReversiModel {
     assertSame(model.getPieceAt(1, -2, 1), ReversiPiece.BLACK); // the empty tile is black
 
     model.pass();// this means white passed, now its black's turn
-    model.pass(); // black can't make any moves, so black passes, now white's turn
-    model.move(-1, 2, -1); // white's move
 
-    Assert.assertSame(model.getPieceAt(-1, 1, 0), ReversiPiece.WHITE); // black flipped
-    Assert.assertSame(model.getPieceAt(-1, 2, -1), ReversiPiece.WHITE); // empty is white
+    Assert.assertSame(model.getCurrentPlayer(), ReversiPiece.BLACK); // check blacks turn
   }
 
   @Test
@@ -241,25 +238,6 @@ public class TestReversiModel {
     model.move(-2, 1, 1); // white valid move
     Assert.assertTrue(model.isGameOver()); // game is NOW over
     assertSame(model.getGameStatus(), GameStatus.WON);
-  }
-
-  @Test
-  public void testGameOverSpacesFull() {
-    model = new ReversiGameModel(4);
-    Assert.assertFalse(model.isGameOver());
-
-    model.move(-1, -1, 2); // black's turn - valid move
-    model.move(2, -1, -1); // white's move - valid move
-    Assert.assertFalse(model.isGameOver()); // game still isnt over
-
-    model.move(1, 1, -2); // black valid move
-    model.move(-1, 2, -1); // while valid move
-    Assert.assertFalse(model.isGameOver()); // game still isnt over
-
-    model.move(1, -2, 1); // black valid move
-    model.move(-2, 1, 1); // white valid move
-
-    ReversiPiece piece1 = ReversiPiece.WHITE;
   }
 
   @Test

@@ -18,7 +18,7 @@ public class ReversiTextualView implements ReversiView {
    */
   public ReversiTextualView(ReversiModel model) { // GRADERS: USE THIS TO TEST!
     // CREATE A MODEL OBJECT, THEN CREATE A VIEW OBJECT AND PASS IN THAT MODEL.
-    // CALLING render() on THAT VIEW OBJECT WILL OUTPUT THE TEXTUAL VIEW OF THE MODEL.
+    // CALLING toString() on THAT VIEW OBJECT WILL OUTPUT THE TEXTUAL VIEW OF THE MODEL.
     this.model = model;
   }
 
@@ -27,6 +27,7 @@ public class ReversiTextualView implements ReversiView {
    *
    * @return a string showing the current state of the ReversiModel
    */
+  @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     int hexSideLength = model.getHexSideLength();

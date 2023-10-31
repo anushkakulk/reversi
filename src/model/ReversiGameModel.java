@@ -56,11 +56,110 @@ public class ReversiGameModel implements ReversiModel {
     this.gameStatus = GameStatus.PLAYING;
   }
 
+  @Override
+  public ReversiPiece getPieceAt(int q, int r, int s) throws IllegalStateException,
+      IllegalArgumentException {
+    validateCoordinatesInBoard(q, r, s);
+    return this.gameBoard.get(new Tile(q, r, s));
+  }
+
+  @Override
+  public ReversiPiece getPieceAt(Tile t) throws IllegalStateException, IllegalArgumentException {
+    Objects.requireNonNull(t);
+    validateCoordinatesInBoard(t.getQ(), t.getR(), t.getS());
+    return this.gameBoard.get(t);
+  }
+
+  @Override
+  public int getHexSideLength() {
+    return this.hexSideLength;
+  }
+
+  @Override
+  public void move(int q, int r, int s) {
+    if (isGameOver()) {
+      throw new IllegalStateException("Game is Over");
+    }
+    if (!validateCoordinatesInBoard(q, r, s)) { // make sure the given coordinates are in the board
+      throw new IllegalArgumentException("Invalid Coordinates For Move");
+    }
+
+    if (getPieceAt(q, r, s) != ReversiPiece.EMPTY) {
+      // INVARIANT: A move must be made to an empty tile.
+      throw new IllegalStateException("Tile at given coordinates is not empty.");
+    }
+    if (checkNoMoreMovesForOnePlayer(this.getCurrentPlayer())) {
+      pass(); // If a player has no legal moves, they are required to pass
+    }
+    Tile dest = new Tile(q, r, s);
+    List<Tile> allValidNeighbors = getValidNeighbors(dest); // get all neighbors of dest in board
+    List<Tile> neighborsOccupiedByOtherPlayer = findNeighborsOccupiedByOpponent(allValidNeighbors,
+        this.getCurrentPlayer()); // get all tiles with opponent pieces neighboring the dest
+    if (neighborsOccupiedByOtherPlayer.isEmpty()) {
+      throw new IllegalStateException("Invalid move, cannot move to given position as it is" +
+          "not a legal empty cell");
+    }
+    flipTiles(neighborsOccupiedByOtherPlayer, dest);
+    this.consecutivePasses = 0;
+    updateStatusIfGameOver();
+    switchPlayer();
+  }
+
+  @Override
+  public boolean isGameOver() {
+    return consecutivePasses >= 2 ||
+        checkNoMoreMovesForOnePlayer(ReversiPiece.BLACK) ||
+        checkNoMoreMovesForOnePlayer(ReversiPiece.WHITE)
+        || spacesFull();
+  }
+
+  @Override
+  public void pass() throws IllegalStateException {
+    this.consecutivePasses += 1;
+    updateStatusIfGameOver();
+    // INVARIANT: The current player must switch between ReversiPiece.BLACK and ReversiPiece.WHITE
+    // after each valid move or pass.
+    switchPlayer();
+  }
+
+  @Override
+  public ReversiPiece getWinner() {
+    if (isGameOver()) {
+
+      int whiteCount = (int) gameBoard.values().stream()
+          .filter(piece -> piece == ReversiPiece.WHITE)
+          .count();
+      int blackCount = (int) gameBoard.values().stream()
+          .filter(piece -> piece == ReversiPiece.BLACK)
+          .count();
+
+      if (whiteCount == blackCount) {
+
+        return ReversiPiece.EMPTY; // this means no winner, its a tie
+      } else if (whiteCount > blackCount) {
+        return ReversiPiece.WHITE;
+      } else {
+        return ReversiPiece.BLACK;
+      }
+    }
+    throw new IllegalStateException("Game is still being played");
+  }
+
+  @Override
+  public ReversiPiece getCurrentPlayer() {
+    return this.currentPlayer;
+  }
+
+  @Override
+  public GameStatus getGameStatus() {
+    return this.gameStatus;
+  }
+
   // helper method that constructs a valid hexagon board of the given hexSideLength
   private List<Tile> createBoard(int hexSideLength) throws IllegalArgumentException {
     if (hexSideLength < 2) {
       throw new IllegalArgumentException("Cannot play with a board with " +
-              "side length smaller than 2");
+          "side length smaller than 2");
     }
     List<Tile> board = new ArrayList<>();
 
@@ -80,6 +179,15 @@ public class ReversiGameModel implements ReversiModel {
     return board;
   }
 
+  // helper method that throws the given coordinates are for a tile outside of the game board,
+  // otherwise returns true, meaning the coordinates are for a tile in the game board.
+  private boolean validateCoordinatesInBoard(int q, int r, int s) {
+    if (q >= this.hexSideLength || r >= this.hexSideLength || s >= this.hexSideLength
+        || q <= -this.hexSideLength || r <= -this.hexSideLength || s <= -this.hexSideLength) {
+      throw new IllegalArgumentException("Accessing a tile out of bounds!");
+    }
+    return true;
+  }
 
   // helper method that puts pieces in starting position: places 3 black and 3 white pieces in
   // alternating order in the inner most hexagon.
@@ -92,64 +200,6 @@ public class ReversiGameModel implements ReversiModel {
       this.gameBoard.put(neighbor, alternatingPieces[alternatingPieceIndex]);
       alternatingPieceIndex = 1 - alternatingPieceIndex; // this flips the init black and white
     }
-  }
-
-
-  @Override
-  public ReversiPiece getPieceAt(int q, int r, int s) throws IllegalStateException,
-          IllegalArgumentException {
-    validateCoordinatesInBoard(q, r, s);
-    return this.gameBoard.get(new Tile(q, r, s));
-  }
-
-  @Override
-  public ReversiPiece getPieceAt(Tile t) throws IllegalStateException, IllegalArgumentException {
-    Objects.requireNonNull(t);
-    validateCoordinatesInBoard(t.getQ(), t.getR(), t.getS());
-    return this.gameBoard.get(t);
-  }
-
-
-  // helper method that throws the given coordinates are for a tile outside of the game board,
-  // otherwise returns true, meaning the coordinates are for a tile in the game board.
-  private boolean validateCoordinatesInBoard(int q, int r, int s) {
-    if (q >= this.hexSideLength || r >= this.hexSideLength || s >= this.hexSideLength
-            || q <= -this.hexSideLength || r <= -this.hexSideLength || s <= -this.hexSideLength) {
-      throw new IllegalArgumentException("Accessing a tile out of bounds!");
-    }
-    return true;
-  }
-
-  @Override
-  public int getHexSideLength() {
-    return this.hexSideLength;
-  }
-
-  @Override
-  public void move(int q, int r, int s) {
-    if (!validateCoordinatesInBoard(q, r, s)) { // make sure the given coordinates are in the board
-      throw new IllegalArgumentException("Invalid Coordinates For Move");
-    }
-
-    if (getPieceAt(q, r, s) != ReversiPiece.EMPTY) {
-      // INVARIANT: A move must be made to an empty tile.
-      throw new IllegalStateException("Tile at given coordinates is not empty.");
-    }
-    if (checkNoMoreMovesForOnePlayer(this.getCurrentPlayer())) {
-      pass(); // If a player has no legal moves, they are required to pass
-    }
-    Tile dest = new Tile(q, r, s);
-    List<Tile> allValidNeighbors = getValidNeighbors(dest); // get all neighbors of dest in board
-    List<Tile> neighborsOccupiedByOtherPlayer = findNeighborsOccupiedByOpponent(allValidNeighbors,
-            this.getCurrentPlayer()); // get all tiles with opponent pieces neighboring the dest
-    if (neighborsOccupiedByOtherPlayer.isEmpty()) {
-      throw new IllegalStateException("Invalid move, cannot move to given position as it is" +
-              "not a legal empty cell");
-    }
-    flipTiles(neighborsOccupiedByOtherPlayer, dest);
-    this.consecutivePasses = 0;
-    updateStatusIfGameOver();
-    switchPlayer();
   }
 
   private List<Tile> getValidNeighbors(Tile dest) {
@@ -182,7 +232,7 @@ public class ReversiGameModel implements ReversiModel {
     }
     for (Tile opp : neighborsOccupiedByOtherPlayer) {
       int[] direction = {opp.getQ() - dest.getQ(), opp.getR() - dest.getR(),
-              opp.getS() - dest.getS()};
+          opp.getS() - dest.getS()};
       ArrayList<Tile> toBeFlipped = new ArrayList<>();
       toBeFlipped.add(opp);
       // add the direction vector to find the next tile. the next tile is in the same direction as
@@ -246,7 +296,7 @@ public class ReversiGameModel implements ReversiModel {
       Tile opp = neighborsOccupiedByOtherPlayer.get(i);
       // find the direction vector from the opponent's piece respective to the dest tile.
       int[] direction = {opp.getQ() - dest.getQ(), opp.getR() - dest.getR(),
-              opp.getS() - dest.getS()};
+          opp.getS() - dest.getS()};
 
       // get the tile that is in the same direction from the opponent's piece as the opponent's
       // piece is to the dest tile.
@@ -271,27 +321,10 @@ public class ReversiGameModel implements ReversiModel {
     return false;
   }
 
-  @Override
-  public void pass() throws IllegalStateException {
-    this.consecutivePasses += 1;
-    updateStatusIfGameOver();
-    // INVARIANT: The current player must switch between ReversiPiece.BLACK and ReversiPiece.WHITE
-    // after each valid move or pass.
-    switchPlayer();
-  }
-
   // switches player turns
   private void switchPlayer() {
     this.currentPlayer = this.currentPlayer == ReversiPiece.BLACK ?
-            ReversiPiece.WHITE : ReversiPiece.BLACK;
-  }
-
-  @Override
-  public boolean isGameOver() {
-    return consecutivePasses >= 2 ||
-            checkNoMoreMovesForOnePlayer(ReversiPiece.BLACK) ||
-            checkNoMoreMovesForOnePlayer(ReversiPiece.WHITE)
-            || spacesFull();
+        ReversiPiece.WHITE : ReversiPiece.BLACK;
   }
 
 
@@ -307,7 +340,7 @@ public class ReversiGameModel implements ReversiModel {
         ReversiPiece currentPiece = getPieceAt(tile);
         if (currentPiece == playerToCheck || currentPiece == ReversiPiece.EMPTY) {
           List<Tile> opponentNeighbors =
-                  findNeighborsOccupiedByOpponent(getValidNeighbors(tile), playerToCheck);
+              findNeighborsOccupiedByOpponent(getValidNeighbors(tile), playerToCheck);
           if (isLegalMove(opponentNeighbors, tile, playerToCheck)) {
             return false;
           }
@@ -333,27 +366,6 @@ public class ReversiGameModel implements ReversiModel {
     return true;
   }
 
-  @Override
-  public ReversiPiece getWinner() {
-    if (isGameOver()) {
-      int whiteCount = (int) gameBoard.values().stream()
-              .filter(piece -> piece == ReversiPiece.WHITE)
-              .count();
-      int blackCount = (int) gameBoard.values().stream()
-              .filter(piece -> piece == ReversiPiece.BLACK)
-              .count();
-
-      if (whiteCount == blackCount) {
-        return ReversiPiece.EMPTY; // this means no winner, its a tie
-      } else if (whiteCount > blackCount) {
-        return ReversiPiece.WHITE;
-      } else {
-        return ReversiPiece.BLACK;
-      }
-    }
-    throw new IllegalStateException("Game is still being played");
-  }
-
   // called after every move/pass. checks if the game is over, and updates the game status
   // accordingly
   private void updateStatusIfGameOver() {
@@ -364,15 +376,5 @@ public class ReversiGameModel implements ReversiModel {
         this.gameStatus = GameStatus.WON;
       }
     }
-  }
-
-  @Override
-  public ReversiPiece getCurrentPlayer() {
-    return this.currentPlayer;
-  }
-
-  @Override
-  public GameStatus getGameStatus() {
-    return this.gameStatus;
   }
 }
