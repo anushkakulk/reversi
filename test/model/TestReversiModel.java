@@ -1,3 +1,5 @@
+package model;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -7,9 +9,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-
-import static org.junit.Assert.assertTrue;
 
 public class TestReversiModel {
 
@@ -25,8 +24,8 @@ public class TestReversiModel {
   public void testMove() {
     model.move(1, -2, 1);
 
-    assertTrue(model.getPieceAt(1, -1, 0) == ReversiPiece.BLACK);
-    assertTrue(model.getPieceAt(1, -2, 1) == ReversiPiece.BLACK);
+    assertSame(model.getPieceAt(1, -1, 0), ReversiPiece.BLACK);
+    assertSame(model.getPieceAt(1, -2, 1), ReversiPiece.BLACK);
   }
 
 
@@ -34,12 +33,12 @@ public class TestReversiModel {
   public void testTileGetNeighbors() {
     Tile t = new Tile(0, 0, 0);
     List<Tile> expectedNeighbors = new ArrayList<>(Arrays.asList(
-        new Tile(1, 0, -1),
-        new Tile(1, -1, 0),
-        new Tile(0, -1, 1),
-        new Tile(-1, 0, 1),
-        new Tile(-1, 1, 0),
-        new Tile(0, 1, -1)
+            new Tile(1, 0, -1),
+            new Tile(1, -1, 0),
+            new Tile(0, -1, 1),
+            new Tile(-1, 0, 1),
+            new Tile(-1, 1, 0),
+            new Tile(0, 1, -1)
     ));
     Assert.assertEquals(expectedNeighbors, t.getNeighbors());
   }
@@ -152,12 +151,10 @@ public class TestReversiModel {
     model.move(2, -1, -1); // white's move - valid move
 
     Assert.assertThrows(IllegalStateException.class, () ->
-        model.move(-1, -1, 2));
+            model.move(-1, -1, 2));
 
   }
 
-  // TODO WRITE TEST FOR PLAYING GAME TO COMPLETION
-  // TODO TEST ALL CASES FOR GAME OVER
   @Test
   public void testGameOverAfterTwoConsecutivePasses() {
     Assert.assertFalse(model.isGameOver());
@@ -168,6 +165,7 @@ public class TestReversiModel {
     Assert.assertFalse(model.isGameOver()); // still moves left, only one pass
     model.pass();
     Assert.assertTrue(model.isGameOver()); // 2 consecutive passes, so game over!
+    Assert.assertSame(model.getGameStatus(), GameStatus.STALEMATE); // tie game!
   }
 
   @Test
@@ -177,19 +175,24 @@ public class TestReversiModel {
     model.move(-1, -1, 2); // black's turn - valid move
     model.move(2, -1, -1); // white's move - valid move
     Assert.assertFalse(model.isGameOver()); // game still isnt over
+    assertSame(model.getGameStatus(), GameStatus.PLAYING);
+
 
     model.move(1, 1, -2); // black valid move
     model.move(-1, 2, -1); // while valid move
     Assert.assertFalse(model.isGameOver()); // game still isnt over
+    assertSame(model.getGameStatus(), GameStatus.PLAYING);
+
 
     model.move(1, -2, 1); // black valid move
     model.move(-2, 1, 1); // white valid move
-    Assert.assertTrue(model.isGameOver()); // game still isnt over
+    Assert.assertTrue(model.isGameOver()); // game is NOW over
+    assertSame(model.getGameStatus(), GameStatus.WON);
   }
 
-  //TODO figure spacesfull out
   @Test
   public void testGameOverSpacesFull() {
+    model = new ReversiGameModel(4);
     Assert.assertFalse(model.isGameOver());
 
     model.move(-1, -1, 2); // black's turn - valid move
@@ -213,16 +216,20 @@ public class TestReversiModel {
     model.move(-1, -1, 2); // black's turn - valid move
     model.move(2, -1, -1); // white's move - valid move
     Assert.assertFalse(model.isGameOver()); // game still isnt over
+    Assert.assertSame(model.getGameStatus(), GameStatus.PLAYING);
 
     model.move(1, 1, -2); // black valid move
     model.move(-1, 2, -1); // while valid move
     Assert.assertFalse(model.isGameOver()); // game still isnt over
+    Assert.assertSame(model.getGameStatus(), GameStatus.PLAYING);
+
 
     model.move(1, -2, 1); // black valid move
     model.move(-2, 1, 1); // white valid move
 
     Assert.assertTrue(model.isGameOver());
-    Assert.assertTrue(model.getWinner() == ReversiPiece.BLACK);
+    Assert.assertSame(model.getGameStatus(), GameStatus.WON);
+    assertSame(model.getWinner(), ReversiPiece.BLACK);
     //check to see if winner is correct
 
   }
@@ -230,12 +237,13 @@ public class TestReversiModel {
   @Test
   public void testGetWinnerIfBothAreEqual() {
     model = new ReversiGameModel(2);
-    Assert.assertTrue(model.getWinner() == ReversiPiece.EMPTY);
+    Assert.assertSame(model.getGameStatus(), GameStatus.PLAYING);
+    assertSame(model.getWinner(), ReversiPiece.EMPTY);
     //checks to see if both black and white chips are equal so there is no winner
   }
 
   @Test
-  public void testGetWinnerIfGameIsntOver() {
+  public void testGetWinnerIfGameIsNotOver() {
     Assert.assertFalse(model.isGameOver());
 
     model.move(-1, -1, 2); // black's turn - valid move
@@ -245,9 +253,48 @@ public class TestReversiModel {
     model.move(1, 1, -2); // black valid move
     model.move(-1, 2, -1); // while valid move
     Assert.assertFalse(model.isGameOver()); // game still isnt over
-    Assert.assertEquals(null, model.getWinner());
+    Assert.assertSame(model.getGameStatus(), GameStatus.PLAYING);
+
+    Assert.assertThrows(IllegalStateException.class, () -> model.getWinner());
     //check to see if you can't get winner when game isnt over
   }
 
+  @Test
+  public void testGetCurrPlayer() {
+    Assert.assertSame(model.getCurrentPlayer(), ReversiPiece.BLACK);
+    model.pass(); // skip black's turn
+    Assert.assertSame(model.getCurrentPlayer(), ReversiPiece.WHITE);
+    model.move(2, -1, -1); // white's move - valid move
+    Assert.assertSame(model.getCurrentPlayer(), ReversiPiece.BLACK);
+    model.move(-1, -1, 2); // black's turn - valid move
+    Assert.assertSame(model.getCurrentPlayer(), ReversiPiece.WHITE);
+  }
+
+  @Test
+  public void testFlippingInBothDirectionsAfterValidMove() {
+    model = new ReversiGameModel(7);
+    // continously make valid moves that capture one or two of the opponents piece
+    model.move(1, -2, 1); // black
+    model.move(2, -1, -1); // white
+    model.move(-2, 1, 1); // black
+    model.move(1, -3, 2); // white
+    model.move(1, 1, -2); // black
+    model.move(-1, 2, -1); // white
+    model.move(2, -3, 1); // black
+    // HERE, IT IS WHITE's TURN. THE TILE CHOSEN HAS A VALID SEQUENCE OF OPPONENT PIECES ENDING WITH
+    // CURR PLAYER'S PIECE IN BOTH THE RIGHT AND BOTTOM RIGHT DIRECTIONS. SO BOTH DIRECTIONS SHOULD
+    // BE FLIPPED.
+    model.move(-1, -1, 2); // white
+    // make sure all tiles in the right direction are now white
+    Assert.assertSame(model.getPieceAt(-1, -1, 2), ReversiPiece.WHITE);
+    Assert.assertSame(model.getPieceAt(0, -1, 1), ReversiPiece.WHITE);
+    Assert.assertSame(model.getPieceAt(1, -1, 0), ReversiPiece.WHITE);
+    Assert.assertSame(model.getPieceAt(2, -1, -1), ReversiPiece.WHITE);
+
+    // make sure all tiles in the bottom right direction are now white
+    Assert.assertSame(model.getPieceAt(-1, -1, 2), ReversiPiece.WHITE);
+    Assert.assertSame(model.getPieceAt(-1, 0, 1), ReversiPiece.WHITE);
+    Assert.assertSame(model.getPieceAt(-1, 1, 0), ReversiPiece.WHITE);
+  }
 
 }

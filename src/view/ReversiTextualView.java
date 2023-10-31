@@ -1,22 +1,13 @@
-import java.util.List;
+package view;
+
+import model.*;
 
 /**
  * Represents the Textual representation of a Game of Reversi.
  */
 public class ReversiTextualView implements ReversiView {
   private final ReversiModel model;
-  private final Appendable output;
 
-  /**
-   * Constructor with ReversiModel argument, which has all info needed for rendering.
-   *
-   * @param model  the Reversi game model that we are viewing.
-   * @param output the Appendable to which the view should append the output.
-   */
-  public ReversiTextualView(ReversiModel model, Appendable output) {
-    this.model = model;
-    this.output = output;
-  }
 
   /**
    * Constructor with ReversiModel argument, which has all info needed for rendering.
@@ -27,13 +18,12 @@ public class ReversiTextualView implements ReversiView {
     // CREATE A MODEL OBJECT, THEN CREATE A VIEW OBJECT AND PASS IN THAT MODEL.
     // CALLING render() on THAT VIEW OBJECT WILL OUTPUT THE TEXTUAL VIEW OF THE MODEL.
     this.model = model;
-    this.output = new StringBuilder();
   }
 
   /**
    * Represents the ReversiModel as a String.
    *
-   * @return a string showing the current state of the ReversiModel.
+   * @return a string showing the current state of the ReversiModel
    */
   public String render() {
     StringBuilder sb = new StringBuilder();
@@ -49,8 +39,8 @@ public class ReversiTextualView implements ReversiView {
         Tile t = new Tile(q, r, -q - r);
         ReversiPiece piece = model.getPieceAt(t);
         if (piece == ReversiPiece.WHITE
-            || piece == ReversiPiece.EMPTY
-            || piece == ReversiPiece.BLACK) {
+                || piece == ReversiPiece.EMPTY
+                || piece == ReversiPiece.BLACK) {
           sb.append(piece).append(" "); // this appends the string rep of the piece at that spot
         }
       }
