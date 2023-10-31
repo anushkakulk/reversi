@@ -6,7 +6,7 @@ package view;
 public interface ReversiView {
 
   /**
-   * Renders the current state of the model.ReversiModel.
+   * Renders the current state of the ReversiModel.
    */
-  String render();
+  String toString();
 }

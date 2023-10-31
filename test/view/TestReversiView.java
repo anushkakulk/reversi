@@ -8,7 +8,10 @@ import model.ReversiGameModel;
 import model.ReversiModel;
 import model.ReversiPiece;
 
-
+/**
+ * Test Suite for testing all public methods in the View package, specifically from
+ * the ReversiView interface.
+ */
 public class TestReversiView {
   private ReversiModel modelSize7;
   private ReversiTextualView viewSize7;
@@ -41,7 +44,7 @@ public class TestReversiView {
                     "     _ _ _ _ _ _ _ _ \n" +
                     "      _ _ _ _ _ _ _ \n";
 
-    Assert.assertEquals(initBoard, viewSize7.render());
+    Assert.assertEquals(initBoard, viewSize7.toString());
   }
 
   @Test
@@ -51,7 +54,7 @@ public class TestReversiView {
 
     modelSize3.move(1, -2, 1);
 
-    Assert.assertEquals(viewSize3.render(),
+    Assert.assertEquals(viewSize3.toString(),
             "  _ X _ \n" +
                     " _ X X _ \n" +
                     "_ O _ X _ \n" +
@@ -65,7 +68,7 @@ public class TestReversiView {
   public void testViewAfterMultipleMoves() {
     modelSize7.move(1, -2, 1); // black moves and captures a white
     modelSize7.move(-1, 2, -1); // white mirrors the move, captures a black
-    Assert.assertEquals(viewSize7.render(),
+    Assert.assertEquals(viewSize7.toString(),
             "      _ _ _ _ _ _ _ \n" +
                     "     _ _ _ _ _ _ _ _ \n" +
                     "    _ _ _ _ _ _ _ _ _ \n" +
@@ -84,14 +87,14 @@ public class TestReversiView {
   @Test
   public void testViewAfterMoveWhereTheresTwoDirectionsToFollow() {
     modelSize7.move(1, -2, 1);
-    System.out.println(viewSize7.render());
+    System.out.println(viewSize7.toString());
     modelSize7.move(2, -1, -1);
     // there are opponents in two neighbors of the destination tile. this tests whether the move
     // method correctly finds out where the move is coming from to be valid (as in, it should know
     // that even though there are two X's to the left of the dest tile, there is no O adjacent
     // to the X's, so it should look at the other neighbor. That neighbor has an O adjacent to it
     // so it makes that valid legal move.
-    Assert.assertEquals(viewSize7.render(),
+    Assert.assertEquals(viewSize7.toString(),
             "      _ _ _ _ _ _ _ \n" +
                     "     _ _ _ _ _ _ _ _ \n" +
                     "    _ _ _ _ _ _ _ _ _ \n" +
@@ -121,26 +124,26 @@ public class TestReversiView {
     modelSize7.move(-1, 2, -1); // white
 
     modelSize7.move(2, -3, 1); // black
-    Assert.assertEquals(viewSize7.render(),
+    Assert.assertEquals(viewSize7.toString(),
             "      _ _ _ _ _ _ _ \n" +
-            "     _ _ _ _ _ _ _ _ \n" +
-            "    _ _ _ _ _ _ _ _ _ \n" +
-            "   _ _ _ _ O X _ _ _ _ \n" +
-            "  _ _ _ _ _ X _ _ _ _ _ \n" +
-            " _ _ _ _ _ X O O _ _ _ _ \n" +
-            "_ _ _ _ _ X _ O _ _ _ _ _ \n" +
-            " _ _ _ _ X X O X _ _ _ _ \n" +
-            "  _ _ _ _ _ O _ _ _ _ _ \n" +
-            "   _ _ _ _ _ _ _ _ _ _ \n" +
-            "    _ _ _ _ _ _ _ _ _ \n" +
-            "     _ _ _ _ _ _ _ _ \n" +
-            "      _ _ _ _ _ _ _ \n");
+                    "     _ _ _ _ _ _ _ _ \n" +
+                    "    _ _ _ _ _ _ _ _ _ \n" +
+                    "   _ _ _ _ O X _ _ _ _ \n" +
+                    "  _ _ _ _ _ X _ _ _ _ _ \n" +
+                    " _ _ _ _ _ X O O _ _ _ _ \n" +
+                    "_ _ _ _ _ X _ O _ _ _ _ _ \n" +
+                    " _ _ _ _ X X O X _ _ _ _ \n" +
+                    "  _ _ _ _ _ O _ _ _ _ _ \n" +
+                    "   _ _ _ _ _ _ _ _ _ _ \n" +
+                    "    _ _ _ _ _ _ _ _ _ \n" +
+                    "     _ _ _ _ _ _ _ _ \n" +
+                    "      _ _ _ _ _ _ _ \n");
 
     modelSize7.move(-1, -1, 2); // white
     // that white move is a case where (-1, -1, 2) is a legal move both to the right and to the
-    // bottom right, so both directions should flip over the black pieces until hitting a white piece
-    // meaning white captured in both directions
-    Assert.assertEquals(viewSize7.render(),
+    // bottom right, so both directions should flip over the black pieces until hitting a white
+    // piece, meaning white captured in both directions
+    Assert.assertEquals(viewSize7.toString(),
             "      _ _ _ _ _ _ _ \n" +
                     "     _ _ _ _ _ _ _ _ \n" +
                     "    _ _ _ _ _ _ _ _ _ \n" +

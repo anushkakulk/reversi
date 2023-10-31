@@ -130,19 +130,19 @@ view = new ReversiTextualView(model);
 
 // this outputs the initial state as a string, which is just 
 // 3 black and 3 white pieces in alternating order in the innermost hexagon
-System.out.println(view.render()); 
+System.out.println(view.toString()); 
 
  move(-1, -1, 2); // move made by black
 
 // this now shows black's piece ("X") at tile (-1, -1, 2) and the white
 // piece on the tile that black went over to get to the dest tile is now a black piece
-System.out.println(render()); 
+System.out.println(toString()); 
 
  move(-2, -1, 3); // move made by white
 
 // this now shows white's piece ("O") at tile (-2, -1, 3) and the black
 // piece on the tile that white went over to get to the dest tile is now a white piece
-System.out.println(view.render());
+System.out.println(view.toString());
 
 
 ```

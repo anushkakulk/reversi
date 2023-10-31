@@ -7,7 +7,7 @@ package model;
  */
 public interface ReadOnlyReversiModel {
   /**
-   * Returns the piece at the tile of the given coordinates in the gameboard
+   * Returns the piece at the tile of the given coordinates in the gameboard.
    *
    * @param q the q coord of the tile.
    * @param r the r coord of the tile.
@@ -19,7 +19,7 @@ public interface ReadOnlyReversiModel {
 
 
   /**
-   * Returns the piece at the given tile in the gameboard
+   * Returns the piece at the given tile in the gameboard.
    *
    * @param t the given tile for which we wish to see the piece on top of it
    * @return the ReversiPiece at the requested position
@@ -28,7 +28,7 @@ public interface ReadOnlyReversiModel {
   ReversiPiece getPieceAt(Tile t) throws IllegalArgumentException;
 
   /**
-   * Returns the side length of the hexagonal game board
+   * Returns the side length of the hexagonal game board.
    *
    * @return the side length of the board
    */

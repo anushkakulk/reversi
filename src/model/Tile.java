@@ -9,7 +9,9 @@ import java.util.Objects;
  * together to form a game board for Reversi.
  */
 public class Tile {
-  private final int q, r, s;
+  private final int q;
+  private final int r;
+  private final int s;
 
   /**
    * Constructs a Tile object with the given coordinates.
@@ -62,8 +64,8 @@ public class Tile {
     }
     Tile tile = (Tile) o;
     return (this.q == tile.getQ()
-        && this.r == tile.getR()
-        && this.s == tile.getS());
+            && this.r == tile.getR()
+            && this.s == tile.getS());
   }
 
   @Override
@@ -75,12 +77,12 @@ public class Tile {
    * Returns all neighboring tiles of this tile.
    *
    * @return A list of tiles that have the coordinates of one of each of the 6
-   * neighbors to this tile.
+   *                              neighbors to this tile.
    */
   List<Tile> getNeighbors() {
     int[][] cubeDirectionVectors = {
-        {+1, 0, -1}, {+1, -1, 0}, {0, -1, +1},
-        {-1, 0, +1}, {-1, +1, 0}, {0, +1, -1}
+            {+1, 0, -1}, {+1, -1, 0}, {0, -1, +1},
+            {-1, 0, +1}, {-1, +1, 0}, {0, +1, -1}
     };
 
     List<Tile> neighbors = new ArrayList<>();
@@ -96,9 +98,16 @@ public class Tile {
     return neighbors;
   }
 
+
+  /**
+   * gets the tile in a specified direction on a hexagonal grid from this tile.
+   *
+   * @param direction the array holding a direction vector for  [q, r, s]
+   * @return the tile in a specified direction on a hexagonal grid from this.
+   */
   Tile addDirection(int... direction) {
     return new Tile(this.q + direction[0], this.r + direction[1],
-        this.s + direction[2]);
+            this.s + direction[2]);
   }
 
 }

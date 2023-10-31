@@ -6,6 +6,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * An implementation of the Reversi game model that represents the game state and enforces rules.
+ * Played on a hexagonal grid with given side length, players take turns making moves,
+ * trying to capture their opponent's pieces by surrounding them. The game continues until no more
+ * valid moves can be made, and the player with the most pieces wins.
+ */
 public class ReversiGameModel implements ReversiModel {
 
   // the actual game board is a map of every coordinated tile to a reversi piece.
@@ -274,6 +280,7 @@ public class ReversiGameModel implements ReversiModel {
     switchPlayer();
   }
 
+  // switches player turns
   private void switchPlayer() {
     this.currentPlayer = this.currentPlayer == ReversiPiece.BLACK ?
             ReversiPiece.WHITE : ReversiPiece.BLACK;
@@ -347,6 +354,8 @@ public class ReversiGameModel implements ReversiModel {
     throw new IllegalStateException("Game is still being played");
   }
 
+  // called after every move/pass. checks if the game is over, and updates the game status
+  // accordingly
   private void updateStatusIfGameOver() {
     if (this.isGameOver()) {
       if (this.getWinner() == ReversiPiece.EMPTY) {

@@ -10,6 +10,10 @@ import java.util.List;
 
 import static org.junit.Assert.assertSame;
 
+/**
+ * Test Suite for testing all public methods in the Model package, specifically from
+ * the ReversiModel interface.
+ */
 public class TestReversiModel {
 
   private ReversiModel model;

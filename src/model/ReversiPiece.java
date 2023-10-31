@@ -11,6 +11,7 @@ public enum ReversiPiece {
   ReversiPiece(String disp) {
     this.display = disp;
   }
+
   @Override
   public String toString() {
     return display;
