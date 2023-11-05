@@ -82,7 +82,7 @@ public class ReversiPanel extends JPanel implements MouseListener {
     Point pointClicked = e.getPoint();
     for (HexTile hexTile : hexTiles) {
       if (hexTile.containsPoint(pointClicked)) {
-        emitTileClick(hexTile.getQ(), hexTile.getR(), hexTile.getS());
+        emitTileClick(hexTile.getR(), hexTile.getQ(), hexTile.getS());
         hexTile.setColor(Color.CYAN);
         repaint();
       }
