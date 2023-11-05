@@ -18,11 +18,19 @@ public class ReversiPanel extends JPanel implements MouseListener {
   private final List<HexTile> hexTiles;
   private final List<ICanvasEvent> listeners;
 
+  private HexTile selectedHexTile;
+  private boolean cellSelected = false; // Track the selection status
+
+
+
   public ReversiPanel(ReadOnlyReversiModel model, int panelWidth, int panelHeight) {
     setPreferredSize(new Dimension(panelWidth, panelHeight));
     this.gameModel = model;
     this.hexTiles = createHexTiles(model);
     addMouseListener(this);
+    selectedHexTile = new HexTile(-1, -1, -1, model.getHexSideLength(),
+            0, 0); // Initialize a default "unselected" cell
+
     this.listeners = new ArrayList<>();
   }
 
@@ -80,15 +88,43 @@ public class ReversiPanel extends JPanel implements MouseListener {
   @Override
   public void mouseClicked(MouseEvent e) {
     Point pointClicked = e.getPoint();
+    boolean cellClicked = false; // has a cell been clicked
+
     for (HexTile hexTile : hexTiles) {
       if (hexTile.containsPoint(pointClicked)) {
+        cellClicked = true;
         emitTileClick(hexTile.getR(), hexTile.getQ(), hexTile.getS());
-        hexTile.setColor(Color.CYAN);
+        if (cellSelected) {
+          // check if the click is for the tile already highlighted
+          if (selectedHexTile == hexTile) {
+            // then deselect it
+            cellSelected = false;
+            selectedHexTile.setColor(Color.GRAY);
+          } else {
+            // deselect the old cell and set the new selected one to blue!
+            hexTile.setColor(Color.CYAN);
+            selectedHexTile.setColor(Color.GRAY);
+            selectedHexTile = hexTile;
+          }
+        } else {
+          // no cell is already selected, so just set the cell to blue
+          cellSelected = true;
+          hexTile.setColor(Color.CYAN);
+          selectedHexTile = hexTile;
+        }
+
         repaint();
+        break;
       }
     }
-  }
 
+    if (!cellClicked && cellSelected) {
+      // Clicking outside the boundary with a cell selected deselects the cell
+      cellSelected = false;
+      selectedHexTile.setColor(Color.GRAY);
+      repaint();
+    }
+  }
   @Override
   public void mousePressed(MouseEvent e) {
   }
