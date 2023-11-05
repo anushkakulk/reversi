@@ -66,4 +66,13 @@ public interface ReadOnlyReversiModel {
    * @return the game status corresponding to the current status of the game.
    */
   GameStatus getGameStatus();
+
+
+  /**
+   * Gets the current score of the given player, which is the number of tiles that player has pieces
+   *              on the board.
+   * @param player the piece associated with the player whose score we want to check
+   * @return the score of the given player.
+   */
+  int getScore(ReversiPiece player);
 }

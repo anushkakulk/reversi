@@ -56,9 +56,10 @@ public class ReversiGameModel implements ReversiModel {
     this.gameStatus = GameStatus.PLAYING;
   }
 
+
   @Override
   public ReversiPiece getPieceAt(int q, int r, int s) throws IllegalStateException,
-      IllegalArgumentException {
+          IllegalArgumentException {
     validateCoordinatesInBoard(q, r, s);
     return this.gameBoard.get(new Tile(q, r, s));
   }
@@ -94,10 +95,10 @@ public class ReversiGameModel implements ReversiModel {
     Tile dest = new Tile(q, r, s);
     List<Tile> allValidNeighbors = getValidNeighbors(dest); // get all neighbors of dest in board
     List<Tile> neighborsOccupiedByOtherPlayer = findNeighborsOccupiedByOpponent(allValidNeighbors,
-        this.getCurrentPlayer()); // get all tiles with opponent pieces neighboring the dest
+            this.getCurrentPlayer()); // get all tiles with opponent pieces neighboring the dest
     if (neighborsOccupiedByOtherPlayer.isEmpty()) {
       throw new IllegalStateException("Invalid move, cannot move to given position as it is" +
-          "not a legal empty cell");
+              "not a legal empty cell");
     }
     flipTiles(neighborsOccupiedByOtherPlayer, dest);
     this.consecutivePasses = 0;
@@ -108,9 +109,9 @@ public class ReversiGameModel implements ReversiModel {
   @Override
   public boolean isGameOver() {
     return consecutivePasses >= 2 ||
-        checkNoMoreMovesForOnePlayer(ReversiPiece.BLACK) ||
-        checkNoMoreMovesForOnePlayer(ReversiPiece.WHITE)
-        || spacesFull();
+            checkNoMoreMovesForOnePlayer(ReversiPiece.BLACK) ||
+            checkNoMoreMovesForOnePlayer(ReversiPiece.WHITE)
+            || spacesFull();
   }
 
   @Override
@@ -127,11 +128,11 @@ public class ReversiGameModel implements ReversiModel {
     if (isGameOver()) {
 
       int whiteCount = (int) gameBoard.values().stream()
-          .filter(piece -> piece == ReversiPiece.WHITE)
-          .count();
+              .filter(piece -> piece == ReversiPiece.WHITE)
+              .count();
       int blackCount = (int) gameBoard.values().stream()
-          .filter(piece -> piece == ReversiPiece.BLACK)
-          .count();
+              .filter(piece -> piece == ReversiPiece.BLACK)
+              .count();
 
       if (whiteCount == blackCount) {
 
@@ -154,6 +155,24 @@ public class ReversiGameModel implements ReversiModel {
   public GameStatus getGameStatus() {
     return this.gameStatus;
   }
+
+  @Override
+  public int getScore(ReversiPiece player) {
+    int score = 0;
+    for (int q = -this.getHexSideLength() + 1; q < this.getHexSideLength(); q++) {
+      int r1 = Math.max(-this.getHexSideLength() + 1, -this.getHexSideLength() - q + 1);
+      int r2 = Math.min(this.getHexSideLength() - 1, this.getHexSideLength() - q - 1);
+      for (int r = r1; r <= r2; r++) {
+        int s = -q - r;
+        if (getPieceAt(q, r, s) == player) {
+          score += 1;
+        }
+      }
+    }
+    return score;
+  }
+
+
 
   // helper method that constructs a valid hexagon board of the given hexSideLength
   private List<Tile> createBoard(int hexSideLength) throws IllegalArgumentException {

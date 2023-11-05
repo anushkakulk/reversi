@@ -5,6 +5,7 @@ complete with a game board, rules keeping, and player management.
 
 
 ## Source Organization
+
 The codebase is organized into the following packages:
 
 - model: contains the core Reversi game model components, including the main game model interfaces
@@ -149,3 +150,10 @@ System.out.println(view.toString());
 
 
 ```
+
+## Changes for Part 2 
+
+- added a getScoreMethod in the ReadOnlyModel Interface, since its an
+observation method. 
+- 
+

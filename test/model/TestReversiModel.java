@@ -301,6 +301,22 @@ public class TestReversiModel {
     Assert.assertSame(model.getCurrentPlayer(), ReversiPiece.WHITE);
   }
 
+
+  @Test
+  public void testGetScore() {
+    Assert.assertSame(model.getScore(ReversiPiece.BLACK), 3);
+    Assert.assertSame(model.getCurrentPlayer(), ReversiPiece.BLACK);
+    model.pass(); // skip black's turn
+    Assert.assertSame(model.getCurrentPlayer(), ReversiPiece.WHITE);
+    Assert.assertSame(model.getScore(ReversiPiece.WHITE), 3);
+    model.move(2, -1, -1); // white's move - valid move
+    Assert.assertSame(model.getCurrentPlayer(), ReversiPiece.BLACK);
+    Assert.assertSame(model.getScore(ReversiPiece.WHITE), 5);
+    model.move(-1, -1, 2); // black's turn - valid move
+    Assert.assertSame(model.getCurrentPlayer(), ReversiPiece.WHITE);
+    Assert.assertSame(model.getScore(ReversiPiece.BLACK), 4);
+  }
+
   @Test
   public void testFlippingInBothDirectionsAfterValidMove() {
     model = new ReversiGameModel(7);
