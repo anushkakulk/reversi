@@ -28,8 +28,7 @@ public class ReversiPanel extends JPanel implements MouseListener {
     this.gameModel = model;
     this.hexTiles = createHexTiles(model);
     addMouseListener(this);
-    selectedHexTile = new HexTile(-1, -1, -1, model.getHexSideLength(),
-            0, 0); // Initialize a default "unselected" cell
+    selectedHexTile = new HexTile(-1, -1, -1, model.getHexSideLength()); // Initialize a default "unselected" cell
 
     this.listeners = new ArrayList<>();
   }
@@ -44,14 +43,12 @@ public class ReversiPanel extends JPanel implements MouseListener {
     }
   }
 
- private List<HexTile> createHexTiles(ReadOnlyReversiModel model) {
+  private List<HexTile> createHexTiles(ReadOnlyReversiModel model) {
     List<HexTile> tiles = new ArrayList<>();
     int hexRadius = 20;
 
-    // TODO!!! SOMETHING ABOUT THE CENTERING OF THESE TILES IS OFF!!!! ITS NOT AT THE
-   //  CENTER OF FRAME
-    int xOffset = -(getWidth() - hexRadius * model.getHexSideLength());
-    int yOffset = -(getHeight() - hexRadius * model.getHexSideLength());
+    int xOffset = 0;
+    int yOffset = 0;
 
     for (int q = -model.getHexSideLength() + 1; q < model.getHexSideLength(); q++) {
       int r1 = Math.max(-model.getHexSideLength() + 1, -model.getHexSideLength() - q + 1);
@@ -60,14 +57,22 @@ public class ReversiPanel extends JPanel implements MouseListener {
       for (int r = r1; r <= r2; r++) {
         int s = -q - r;
         ReversiPiece piece = gameModel.getPieceAt(q, r, s);
-        HexTile hexTile = new HexTile(q, r, s, hexRadius, xOffset, yOffset);
+
+        // Calculate the x and y coordinates based on grid layout
+        int x = (int) (xOffset + q);
+        int y = (int) (yOffset + r);
+
+        HexTile hexTile = new HexTile(q, r, s, hexRadius);
         hexTile.setColor(Color.GRAY);
         hexTile.setPiece(piece);
         tiles.add(hexTile);
       }
     }
+
     return tiles;
   }
+
+
 
 
 
@@ -75,6 +80,7 @@ public class ReversiPanel extends JPanel implements MouseListener {
   @Override
   protected void paintComponent(Graphics g) {
     super.paintComponent(g);
+
 
     g.setColor(Color.WHITE); // white bg
     g.fillRect(0, 0, getWidth(), getHeight());
@@ -93,7 +99,7 @@ public class ReversiPanel extends JPanel implements MouseListener {
     for (HexTile hexTile : hexTiles) {
       if (hexTile.containsPoint(pointClicked)) {
         cellClicked = true;
-        emitTileClick(hexTile.getR(), hexTile.getQ(), hexTile.getS());
+        emitTileClick(hexTile.getQ(), hexTile.getR(), hexTile.getS());
         if (cellSelected) {
           // check if the click is for the tile already highlighted
           if (selectedHexTile == hexTile) {
