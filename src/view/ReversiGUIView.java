@@ -33,10 +33,9 @@ public class ReversiGUIView extends JFrame implements ICanvasEvent {
 
   @Override
   public void tileClicked(int q, int r, int s) {
-    System.out.println("In View: " + q + " " + r + " " + s);
+    System.out.println("Tile Clicked: " + q + " " + r + " " + s);
   }
 
   public void addViewTileClickedListener(ViewTileClickedHandler listener) {
   }
 }
-
