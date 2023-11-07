@@ -27,7 +27,7 @@ public class ReversiPanel extends JPanel implements MouseListener {
   private int panelHeight;
 
   public ReversiPanel(ReadOnlyReversiModel model, int panelWidth, int panelHeight) {
-    setPreferredSize(new Dimension(panelWidth * 10 , panelHeight * 10));
+    setPreferredSize(new Dimension(panelWidth * 100 , panelHeight * 100));
     this.gameModel = model;
     this.hexTiles = createHexTiles(model);
     addMouseListener(this);
@@ -82,7 +82,7 @@ public class ReversiPanel extends JPanel implements MouseListener {
     Graphics2D g2d = (Graphics2D) g;
     g2d.transform(transformLogicalToPhysical());
 
-    g2d.fillRect(0, 0, getWidth(), getHeight());
+    //g2d.fillRect(-getWidth(), getHeight(), getWidth(), getHeight());
 
     for (HexTile hexTile : hexTiles) {
       hexTile.draw(g2d); // draw all the tiles

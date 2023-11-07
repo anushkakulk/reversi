@@ -14,8 +14,8 @@ public class ReversiGUIView extends JFrame implements ICanvasEvent {
   public ReversiGUIView(ReadOnlyReversiModel model) {
     int cellWidth = 100;
     int cellHeight = 100;
-    int boardWidth = model.getHexSideLength() * 2 * cellWidth;
-    int boardHeight = model.getHexSideLength() * 2 * cellHeight;
+    int boardWidth = model.getHexSideLength() * 3/2 * cellWidth;
+    int boardHeight = model.getHexSideLength() * 3/2 * cellHeight;
 
     setPreferredSize(new Dimension(boardWidth, boardHeight));
     setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
