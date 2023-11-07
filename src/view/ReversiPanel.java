@@ -9,6 +9,7 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -75,17 +76,13 @@ public class ReversiPanel extends JPanel implements MouseListener {
   }
 
 
-
-
-
-
   @Override
   protected void paintComponent(Graphics g) {
     super.paintComponent(g);
     Graphics2D g2d = (Graphics2D) g;
     g2d.transform(transformLogicalToPhysical());
 
-    g2d.setColor(Color.WHITE); // white bg
+    g2d.setColor(Color.DARK_GRAY); // white bg
     g2d.fillRect(0, 0, getWidth(), getHeight());
 
     for (HexTile hexTile : hexTiles) {
@@ -93,9 +90,10 @@ public class ReversiPanel extends JPanel implements MouseListener {
     }
   }
 
-  private Dimension getPreferredLogicalSize() {
-    return new Dimension(800, 450);
-  }
+
+    private Dimension getPreferredLogicalSize() {
+      return new Dimension(200, 150);
+    }
 
   /**
    * Computes the transformation that converts board coordinates
@@ -110,7 +108,6 @@ public class ReversiPanel extends JPanel implements MouseListener {
       AffineTransform ret = new AffineTransform();
       Dimension preferred = getPreferredLogicalSize();
 
-      // Calculate scaling factors to match the logical and physical sizes
       double scaleX = (double)getWidth() / preferred.getWidth();
       double scaleY = (double)getHeight() / preferred.getHeight();
 
@@ -141,7 +138,7 @@ public class ReversiPanel extends JPanel implements MouseListener {
 
   @Override
   public void mouseClicked(MouseEvent e) {
-    Point pointClicked = e.getPoint();
+    Point2D pointClicked = transformPhysicalToLogical().transform(e.getPoint(), null);
     boolean cellClicked = false; // has a cell been clicked
 
     for (HexTile hexTile : hexTiles) {
