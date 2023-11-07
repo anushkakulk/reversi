@@ -82,7 +82,6 @@ public class ReversiPanel extends JPanel implements MouseListener {
     Graphics2D g2d = (Graphics2D) g;
     g2d.transform(transformLogicalToPhysical());
 
-    g2d.setColor(Color.DARK_GRAY); // white bg
     g2d.fillRect(0, 0, getWidth(), getHeight());
 
     for (HexTile hexTile : hexTiles) {
@@ -92,7 +91,7 @@ public class ReversiPanel extends JPanel implements MouseListener {
 
 
     private Dimension getPreferredLogicalSize() {
-      return new Dimension(200, 150);
+      return new Dimension(1000, 1000);
     }
 
   /**
