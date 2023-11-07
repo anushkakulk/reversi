@@ -1,7 +1,6 @@
 package view;
 
 import java.awt.*;
-import java.util.List;
 
 import javax.swing.*;
 
@@ -11,7 +10,6 @@ public class ReversiGUIView extends JFrame implements ICanvasEvent {
   private final static int cellWidth = 100;
   private final static int cellHeight = 100;
   private final ReversiPanel canvas;
-
 
   public ReversiGUIView(ReadOnlyReversiModel model) {
     int cellWidth = 100;
@@ -25,10 +23,11 @@ public class ReversiGUIView extends JFrame implements ICanvasEvent {
     setLocationRelativeTo(null);
     this.canvas = new ReversiPanel(model, boardWidth, boardHeight);
     this.canvas.addPanelListener(this);
+    getContentPane().add(this.canvas, BorderLayout.CENTER);
+
     add(this.canvas);
     pack();
     setVisible(true);
-
   }
 
   @Override

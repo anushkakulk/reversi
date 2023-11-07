@@ -8,6 +8,7 @@ import model.ReversiPiece;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,16 +20,17 @@ public class ReversiPanel extends JPanel implements MouseListener {
   private final List<ICanvasEvent> listeners;
 
   private HexTile selectedHexTile;
-  private boolean cellSelected = false; // Track the selection status
+  private boolean cellSelected = false;
 
-
+  private int panelWidth;
+  private int panelHeight;
 
   public ReversiPanel(ReadOnlyReversiModel model, int panelWidth, int panelHeight) {
-    setPreferredSize(new Dimension(panelWidth, panelHeight));
+    setPreferredSize(new Dimension(panelWidth * 10 , panelHeight * 10));
     this.gameModel = model;
     this.hexTiles = createHexTiles(model);
     addMouseListener(this);
-    selectedHexTile = new HexTile(-1, -1, -1, model.getHexSideLength()); // Initialize a default "unselected" cell
+    selectedHexTile = new HexTile(-1, -1, -1, model.getHexSideLength());
 
     this.listeners = new ArrayList<>();
   }
@@ -80,14 +82,60 @@ public class ReversiPanel extends JPanel implements MouseListener {
   @Override
   protected void paintComponent(Graphics g) {
     super.paintComponent(g);
+    Graphics2D g2d = (Graphics2D) g;
+    g2d.transform(transformLogicalToPhysical());
 
-
-    g.setColor(Color.WHITE); // white bg
-    g.fillRect(0, 0, getWidth(), getHeight());
+    g2d.setColor(Color.WHITE); // white bg
+    g2d.fillRect(0, 0, getWidth(), getHeight());
 
     for (HexTile hexTile : hexTiles) {
-      hexTile.draw(g); // draw all the tiles
+      hexTile.draw(g2d); // draw all the tiles
     }
+  }
+
+  private Dimension getPreferredLogicalSize() {
+    return new Dimension(800, 450);
+  }
+
+  /**
+   * Computes the transformation that converts board coordinates
+   * (with (0,0) in center, width and height our logical size)
+   * into screen coordinates (with (0,0) in upper-left,
+   * width and height in pixels).
+   * <p>
+   * @return The necessary transformation
+   */
+
+    private AffineTransform transformLogicalToPhysical() {
+      AffineTransform ret = new AffineTransform();
+      Dimension preferred = getPreferredLogicalSize();
+
+      // Calculate scaling factors to match the logical and physical sizes
+      double scaleX = (double)getWidth() / preferred.getWidth();
+      double scaleY = (double)getHeight() / preferred.getHeight();
+
+      ret.translate(getWidth() / 2., getHeight() / 2.);
+      ret.scale(scaleX, scaleY);
+      ret.scale(1, -1);
+      return ret;
+    }
+
+
+  /**
+   * Computes the transformation that converts screen coordinates
+   * (with (0,0) in upper-left, width and height in pixels)
+   * into board coordinates (with (0,0) in center, width and height
+   * our logical size).
+   * <p>
+   * @return The necessary transformation
+   */
+  private AffineTransform transformPhysicalToLogical() {
+    AffineTransform ret = new AffineTransform();
+    Dimension preferred = getPreferredLogicalSize();
+    ret.scale(1, -1);
+    ret.scale(preferred.getWidth() / getWidth(), preferred.getHeight() / getHeight());
+    ret.translate(-getWidth() / 2., -getHeight() / 2.);
+    return ret;
   }
 
 
