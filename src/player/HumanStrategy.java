@@ -6,14 +6,24 @@ import java.util.Scanner;
 import model.ReadOnlyReversiModel;
 import model.ReversiPiece;
 
+/**
+ * Represents the strategy for a human player, which involves reading user input to determine the
+ * next move.
+ */
 public class HumanStrategy implements IPlayerMoveStrategy {
+  private final Scanner input;
 
-  Scanner input;
-
+  /**
+   * Initializes a HumanStrategy with a new scanner object to read input from.
+   */
   HumanStrategy() {
     this(new Scanner(System.in));
   }
 
+  /**
+   * Creates an instance of HumanStrategy.
+   * @param input the scanner object to read user input from.
+   */
   public HumanStrategy(Scanner input) {
     this.input = input;
   }
@@ -21,7 +31,7 @@ public class HumanStrategy implements IPlayerMoveStrategy {
   @Override
   public Optional<ReversiPosn> playStrategy(ReadOnlyReversiModel model, ReversiPiece player) {
     System.out.println("Enter the destination tile's q, r, and s coordinates " +
-            "(with spaces between all of them) to move there or enter 'p' to pass your turn.");
+            "(with spaces in between) you wish to move to, or enter 'p'/'P' to pass your turn.");
     if (input.next().equalsIgnoreCase("p")) {
       return Optional.empty();
     } else {

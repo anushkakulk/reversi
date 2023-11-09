@@ -7,6 +7,10 @@ import java.util.Optional;
 import model.ReadOnlyReversiModel;
 import model.ReversiPiece;
 
+/**
+ * Represents a player strategy that will pick a position that is not immediately next to a corner
+ * spot on the Reversi Board.
+ */
 public class AvoidNextToCornersStrategy implements IPlayerMoveStrategy {
   @Override
   public Optional<ReversiPosn> playStrategy(ReadOnlyReversiModel model, ReversiPiece piece) {
@@ -28,6 +32,8 @@ public class AvoidNextToCornersStrategy implements IPlayerMoveStrategy {
     return ReversiPosn.findBestMove(possibleMoves);
   }
 
+  // helper method to determine whether the given coords are for a tile bordering a
+  // corner tile in the reversi board
   private boolean isBorderingCorner(int q, int r, int s, int hexSideLength) {
     int absQ = Math.abs(q);
     int absR = Math.abs(r);

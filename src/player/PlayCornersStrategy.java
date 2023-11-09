@@ -7,7 +7,11 @@ import java.util.Optional;
 import model.ReadOnlyReversiModel;
 import model.ReversiPiece;
 
+/**
+ * Represents a strategy for only playing into corners in Reversi.
+ */
 public class PlayCornersStrategy implements IPlayerMoveStrategy {
+
   @Override
   public Optional<ReversiPosn> playStrategy(ReadOnlyReversiModel model, ReversiPiece piece) {
     Map<ReversiPosn, Integer> possibleMoves = new HashMap<>();
@@ -29,6 +33,7 @@ public class PlayCornersStrategy implements IPlayerMoveStrategy {
     return ReversiPosn.findBestMove(possibleMoves);
   }
 
+  // helper method to determine whether the given coords are for a corner tile in the reversi board
   private boolean isCornerPosition(int q, int r, int s, int hexSideLength) {
     int absQ = Math.abs(q);
     int absR = Math.abs(r);

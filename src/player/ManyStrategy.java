@@ -6,9 +6,18 @@ import java.util.Optional;
 import model.ReadOnlyReversiModel;
 import model.ReversiPiece;
 
+/**
+ * Represents a strategy that relies on having a series of strategies to play. If one fails, it
+ * tries to find a move from the next strategy in the list, until the strategy hasn't found a posn
+ * to move to after iterating through the list of strategies.
+ */
 public class ManyStrategy implements IPlayerMoveStrategy {
   private final List<IPlayerMoveStrategy> strategyList;
 
+  /**
+   * Creates an instance of ManyStrategy.
+   * @param s the list of strategies we want our manyStrategies to have in its repertoire.
+   */
   public ManyStrategy(List<IPlayerMoveStrategy> s) {
     this.strategyList = s;
   }

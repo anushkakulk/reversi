@@ -69,16 +69,23 @@ public class HexTile {
     return this.hexagon.contains(point);
   }
 
-
+  /**
+   * Calculates the pixel equivalent (x,y) coordinates  of the tile's (q,r,s) coordinates and
+   * creates the polygon shape using the pixel coordinates.
+   */
   private void calculateHexagonCoordinates() {
-    int x = hexToPixelQ(this.q, this.r) ;
-    int y = hexToPixelR(this.r);
+    int x = hexToPixelX(this.q, this.r) ;
+    int y = hexToPixelY(this.r);
     this.x = x;
     this.y = y;
     this.hexagon = calculateHexagonVertices(this.x, this.y, this.hexRadius);
   }
 
-  public void draw(Graphics g) { //191 219.5
+  /**
+   * Renders this HexTile
+   * @param g the graphic object to draw on top of.
+   */
+  public void draw(Graphics g) {
     g.setColor(this.tileColor);
     g.fillPolygon(this.hexagon);
 
@@ -94,23 +101,36 @@ public class HexTile {
     g.drawPolygon(this.hexagon);
   }
 
+  /**
+   * Sets this hexTile's color (for when it is rendered).
+   * @param color the color the hexTile should be filled with when it's drawn.
+   */
   public void setColor(Color color) {
     this.tileColor = Objects.requireNonNull(color);
   }
 
+  /**
+   * Sets this hexTile's piece, which sits on top of the hexTile (for when it is rendered).
+   * @param piece the piece that sits on top of the hexTile that will be drawn.
+   */
   public void setPiece(ReversiPiece piece) {
     this.piece = Objects.requireNonNull(piece);
   }
 
 
-  private int hexToPixelQ(int q, int r) {
+  // helper method that translates our game's coordinates of this hextile
+  // into the screen's x coordinate equivalent.
+  private int hexToPixelX(int q, int r) {
     return (int) (Math.sqrt(3) * hexRadius * (q + r / 2.0));
   }
 
-  private int hexToPixelR(int r) {
+  // helper method that translates our game's coordinates of this hextile
+  // into the screen's y coordinate equivalent.
+  private int hexToPixelY(int r) {
     return (int) (1.5 * hexRadius * r);
   }
 
+  // creates a hexagon polygon shape dependent on the x y coordinates and of a certain size.
   private Polygon calculateHexagonVertices(int x, int y, int radius) {
     int[] xPoints = new int[6];
     int[] yPoints = new int[6];

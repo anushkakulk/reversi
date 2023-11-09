@@ -14,9 +14,7 @@ public class Pass implements IPlayerMove {
 
   }
 
-  /**
-   * Executes the pass on the model
-   */
+  @Override
   public void run(ReversiModel model) {
     model.pass();
   }

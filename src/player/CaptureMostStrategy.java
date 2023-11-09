@@ -6,6 +6,11 @@ import java.util.Optional;
 
 import model.ReadOnlyReversiModel;
 import model.ReversiPiece;
+
+/**
+ * Represents a player strategy that will choose the position that captures the most amount of
+ * opponent tiles in Reversi.
+ */
 public class CaptureMostStrategy implements IPlayerMoveStrategy {
   @Override
   public Optional<ReversiPosn> playStrategy(ReadOnlyReversiModel model, ReversiPiece piece) {
