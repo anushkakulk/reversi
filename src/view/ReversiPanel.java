@@ -19,12 +19,8 @@ public class ReversiPanel extends JPanel implements MouseListener, KeyListener {
   private final ReadOnlyReversiModel gameModel;
   private final List<HexTile> hexTiles;
   private final List<ICanvasEvent> listeners;
-
   private HexTile selectedHexTile;
   private boolean cellSelected = false;
-
-  private int panelWidth;
-  private int panelHeight;
 
   public ReversiPanel(ReadOnlyReversiModel model, int panelWidth, int panelHeight) {
     setPreferredSize(new Dimension(panelWidth * 100 , panelHeight * 100));
@@ -65,10 +61,6 @@ public class ReversiPanel extends JPanel implements MouseListener, KeyListener {
         int s = -q - r;
         ReversiPiece piece = gameModel.getPieceAt(q, r, s);
 
-        // Calculate the x and y coordinates based on grid layout
-        int x = (int) (xOffset + q);
-        int y = (int) (yOffset + r);
-
         HexTile hexTile = new HexTile(q, r, s, hexRadius);
         hexTile.setColor(Color.GRAY);
         hexTile.setPiece(piece);
@@ -85,8 +77,6 @@ public class ReversiPanel extends JPanel implements MouseListener, KeyListener {
     super.paintComponent(g);
     Graphics2D g2d = (Graphics2D) g;
     g2d.transform(transformLogicalToPhysical());
-
-    //g2d.fillRect(-getWidth(), getHeight(), getWidth(), getHeight());
 
     for (HexTile hexTile : hexTiles) {
       hexTile.draw(g2d); // draw all the tiles

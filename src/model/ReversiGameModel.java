@@ -172,13 +172,60 @@ public class ReversiGameModel implements ReversiModel {
     return score;
   }
 
+  @Override
+  public boolean isValidMove(int q, int r, int s, ReversiPiece piece) {
+    if (!validateCoordinatesInBoard(q, r, s)) { // make sure the given coordinates are in the board
+      throw new IllegalArgumentException("Invalid Coordinates For Move");
+    }
+    if (getPieceAt(q, r, s) != ReversiPiece.EMPTY) {
+      // INVARIANT: A move must be made to an empty tile.
+      throw new IllegalStateException("Tile at given coordinates is not empty.");
+    }
+
+    Tile dest = new Tile(q, r, s);
+    List<Tile> allValidNeighbors = getValidNeighbors(dest); // get all neighbors of dest in board
+    List<Tile> neighborsOccupiedByOtherPlayer = findNeighborsOccupiedByOpponent(allValidNeighbors,
+            this.getCurrentPlayer());
+    return isLegalMove(neighborsOccupiedByOtherPlayer, dest, piece);
+  }
+
+  @Override
+  public int numTilesFlipped(int q, int r, int s, ReversiPiece piece) {
+    int numFlipped = 0;
+    if (isValidMove(q, r, s, piece)) {
+      Tile dest = new Tile(q, r, s);
+      List<Tile> neighborsOccupiedByOtherPlayer =
+              findNeighborsOccupiedByOpponent(getValidNeighbors(dest),
+              this.getCurrentPlayer());
+
+      for (Tile opp : neighborsOccupiedByOtherPlayer) {
+        int[] direction = {opp.getQ() - dest.getQ(), opp.getR() - dest.getR(),
+                opp.getS() - dest.getS()};
+        ArrayList<Tile> toBeFlipped = new ArrayList<>();
+        toBeFlipped.add(opp);
+        numFlipped += 1;
+        // add the direction vector to find the next tile. the next tile is in the same direction as
+        // the neighboring tile with the opponent is as the neighboring tile with the opponent is
+        // to the destination tile.
+        Tile nextTile = opp.addDirection(direction);
+
+        while (handleCoordinate(nextTile)) {
+          if (!processNextTile(nextTile, dest, toBeFlipped)) { // we found the end of the sequence
+            break;
+          }
+          nextTile = nextTile.addDirection(direction);
+        }
+      }
+    }
+    return numFlipped;
+  }
 
 
   // helper method that constructs a valid hexagon board of the given hexSideLength
   private List<Tile> createBoard(int hexSideLength) throws IllegalArgumentException {
     if (hexSideLength < 2) {
       throw new IllegalArgumentException("Cannot play with a board with " +
-          "side length smaller than 2");
+              "side length smaller than 2");
     }
     List<Tile> board = new ArrayList<>();
 
@@ -202,7 +249,7 @@ public class ReversiGameModel implements ReversiModel {
   // otherwise returns true, meaning the coordinates are for a tile in the game board.
   private boolean validateCoordinatesInBoard(int q, int r, int s) {
     if (q >= this.hexSideLength || r >= this.hexSideLength || s >= this.hexSideLength
-        || q <= -this.hexSideLength || r <= -this.hexSideLength || s <= -this.hexSideLength) {
+            || q <= -this.hexSideLength || r <= -this.hexSideLength || s <= -this.hexSideLength) {
       throw new IllegalArgumentException("Accessing a tile out of bounds!");
     }
     return true;
@@ -251,7 +298,7 @@ public class ReversiGameModel implements ReversiModel {
     }
     for (Tile opp : neighborsOccupiedByOtherPlayer) {
       int[] direction = {opp.getQ() - dest.getQ(), opp.getR() - dest.getR(),
-          opp.getS() - dest.getS()};
+              opp.getS() - dest.getS()};
       ArrayList<Tile> toBeFlipped = new ArrayList<>();
       toBeFlipped.add(opp);
       // add the direction vector to find the next tile. the next tile is in the same direction as
@@ -315,7 +362,7 @@ public class ReversiGameModel implements ReversiModel {
       Tile opp = neighborsOccupiedByOtherPlayer.get(i);
       // find the direction vector from the opponent's piece respective to the dest tile.
       int[] direction = {opp.getQ() - dest.getQ(), opp.getR() - dest.getR(),
-          opp.getS() - dest.getS()};
+              opp.getS() - dest.getS()};
 
       // get the tile that is in the same direction from the opponent's piece as the opponent's
       // piece is to the dest tile.
@@ -343,7 +390,7 @@ public class ReversiGameModel implements ReversiModel {
   // switches player turns
   private void switchPlayer() {
     this.currentPlayer = this.currentPlayer == ReversiPiece.BLACK ?
-        ReversiPiece.WHITE : ReversiPiece.BLACK;
+            ReversiPiece.WHITE : ReversiPiece.BLACK;
   }
 
 
@@ -359,7 +406,7 @@ public class ReversiGameModel implements ReversiModel {
         ReversiPiece currentPiece = getPieceAt(tile);
         if (currentPiece == playerToCheck || currentPiece == ReversiPiece.EMPTY) {
           List<Tile> opponentNeighbors =
-              findNeighborsOccupiedByOpponent(getValidNeighbors(tile), playerToCheck);
+                  findNeighborsOccupiedByOpponent(getValidNeighbors(tile), playerToCheck);
           if (isLegalMove(opponentNeighbors, tile, playerToCheck)) {
             return false;
           }

@@ -9,11 +9,8 @@ import model.ReadOnlyReversiModel;
 public class ReversiGUIView extends JFrame implements ICanvasEvent {
   private final static int cellWidth = 100;
   private final static int cellHeight = 100;
-  private final ReversiPanel canvas;
 
   public ReversiGUIView(ReadOnlyReversiModel model) {
-    int cellWidth = 100;
-    int cellHeight = 100;
     int boardWidth = model.getHexSideLength() * 3/2 * cellWidth;
     int boardHeight = model.getHexSideLength() * 3/2 * cellHeight;
 
@@ -21,11 +18,11 @@ public class ReversiGUIView extends JFrame implements ICanvasEvent {
     setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     setResizable(true);
     setLocationRelativeTo(null);
-    this.canvas = new ReversiPanel(model, boardWidth, boardHeight);
-    this.canvas.addPanelListener(this);
-    getContentPane().add(this.canvas, BorderLayout.CENTER);
+    ReversiPanel canvas = new ReversiPanel(model, boardWidth, boardHeight);
+    canvas.addPanelListener(this);
+    getContentPane().add(canvas, BorderLayout.CENTER);
 
-    add(this.canvas);
+    add(canvas);
     pack();
     setVisible(true);
   }
@@ -35,10 +32,7 @@ public class ReversiGUIView extends JFrame implements ICanvasEvent {
     System.out.println("Tile Clicked: " + q + " " + r + " " + s);
   }
 
-  public void tileClicked() {
-    System.out.println("Tile Clicked:");
-  }
-
   public void addViewTileClickedListener(ViewTileClickedHandler listener) {
+    // nothing in here for now, will need this when the controller is implemented!
   }
 }

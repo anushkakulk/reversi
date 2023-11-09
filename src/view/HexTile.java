@@ -6,41 +6,69 @@ import java.util.Objects;
 
 import model.ReversiPiece;
 
+/**
+ * Represents a Tile for the view: this tile observes facets of a Tile for the model, and contains
+ * information for rendering that information as a hexagon game tile in the view.
+ */
 public class HexTile {
-  private final int q;
-  private final int r;
-  private final int s;
-  private final int hexRadius;
-  private int x;
-  private int y; // Center y-coordinate of the hexagon
-  private Color tileColor;
-  private ReversiPiece piece;
+  private final int q; // our game coordinates q
+  private final int r; // our game coordinates r
+  private final int s; // our game coordinates s
+  private final int hexRadius; // the radius of the drawn hexagon (in pixels)
+  private int x; // the x-coordinate for a hexagon's center (in pixels)
+  private int y; // the y-coordinate for a hexagon's center (in pixels)
+  private Color tileColor; // the color of the tile to be drawn
+  private ReversiPiece piece; // the piece that's on top of every hexTile in our game
   private Polygon hexagon;
 
+  /**
+   * Creates a Hextile for the given model Tile's q r s coords.
+   * @param q the Hextile's q coord
+   * @param r the Hextile's r coord
+   * @param s the Hextile's s coord
+   * @param hexRadius the radius of thi hextile, for when it is drawn on the canvas.
+   */
   public HexTile(int q, int r, int s, int hexRadius) {
     this.q = q;
     this.r = r;
     this.s = s;
-
     this.hexRadius = hexRadius;
     calculateHexagonCoordinates();
   }
 
+  /**
+   * Gets this Hextile's q coord.
+   * @return this Hextile's q coord.
+   */
   public int getQ() {
     return this.q;
   }
 
+  /**
+   * Gets this Hextile's r coord.
+   * @return this Hextile's r coord
+   */
   public int getR() {
     return this.r;
   }
 
+  /**
+   * Gets this Hextile's s coord.
+   * @return this Hextile's s coord.
+   */
   public int getS() {
     return this.s;
   }
 
+  /**
+   * Determines if this hextile contains the given point.
+   * @param point a Point2D, a point on the canvas.
+   * @return true if this hextile contains the given point.
+   */
   public boolean containsPoint(Point2D point) {
     return this.hexagon.contains(point);
   }
+
 
   private void calculateHexagonCoordinates() {
     int x = hexToPixelQ(this.q, this.r) ;
@@ -71,7 +99,7 @@ public class HexTile {
   }
 
   public void setPiece(ReversiPiece piece) {
-    this.piece = piece;
+    this.piece = Objects.requireNonNull(piece);
   }
 
 

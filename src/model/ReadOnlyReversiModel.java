@@ -75,4 +75,26 @@ public interface ReadOnlyReversiModel {
    * @return the score of the given player.
    */
   int getScore(ReversiPiece player);
+
+  /**
+   * Determines if a move to the given coordinates is a valid move for the given piece.
+   * @param q the q coord of the tile.
+   * @param r the r coord of the tile.
+   * @param s the s coord of the tile.
+   * @param piece the piece of the player that is checking whether they can validly move or not.
+   * @return true if it is a valid move.
+   */
+  boolean isValidMove(int q, int r, int s, ReversiPiece piece);
+
+  /**
+   * Returns the number of tiles that would get flipped if the given piece moves to the given
+   * coordinates.
+   * @param q the q coord of the tile.
+   * @param r the r coord of the tile.
+   * @param s the s coord of the tile.
+   * @param piece the piece of the player that is checking how many tiles they would flip if they
+   *              moved there.
+   * @return the number of tiles that would flip.
+   */
+  int numTilesFlipped(int q, int r, int s, ReversiPiece piece);
 }
