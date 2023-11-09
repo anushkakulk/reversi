@@ -50,7 +50,7 @@ public class HexTile {
     this.hexagon = calculateHexagonVertices(this.x, this.y, this.hexRadius);
   }
 
-  public void draw(Graphics g) {
+  public void draw(Graphics g) { //191 219.5
     g.setColor(this.tileColor);
     g.fillPolygon(this.hexagon);
 

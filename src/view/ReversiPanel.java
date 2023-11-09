@@ -1,11 +1,11 @@
 package view;
 
-import view.HexTile;
-import view.ICanvasEvent;
 import model.ReadOnlyReversiModel;
 import model.ReversiPiece;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.geom.AffineTransform;
@@ -15,7 +15,7 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
-public class ReversiPanel extends JPanel implements MouseListener {
+public class ReversiPanel extends JPanel implements MouseListener, KeyListener {
   private final ReadOnlyReversiModel gameModel;
   private final List<HexTile> hexTiles;
   private final List<ICanvasEvent> listeners;
@@ -31,9 +31,13 @@ public class ReversiPanel extends JPanel implements MouseListener {
     this.gameModel = model;
     this.hexTiles = createHexTiles(model);
     addMouseListener(this);
+    addKeyListener(this);
     selectedHexTile = new HexTile(-1, -1, -1, model.getHexSideLength());
 
     this.listeners = new ArrayList<>();
+
+    setFocusable(true);
+    requestFocusInWindow();
   }
 
   public void addPanelListener(ICanvasEvent listener) {
@@ -175,6 +179,7 @@ public class ReversiPanel extends JPanel implements MouseListener {
       repaint();
     }
   }
+
   @Override
   public void mousePressed(MouseEvent e) {
   }
@@ -190,4 +195,34 @@ public class ReversiPanel extends JPanel implements MouseListener {
   @Override
   public void mouseExited(MouseEvent e) {
   }
+
+  @Override
+  public void keyTyped(KeyEvent e) {
+  }
+
+  @Override
+  public void keyPressed(KeyEvent e) {
+    int keyCode = e.getKeyCode();
+
+    if (cellSelected) {
+      if (keyCode == KeyEvent.VK_ENTER) {
+        System.out.println("Move to: " + selectedHexTile.getQ()
+            + " " + selectedHexTile.getR() + " " + selectedHexTile.getS());
+        cellSelected = false;
+        selectedHexTile.setColor(Color.GRAY);
+        repaint();
+      } else if (keyCode == KeyEvent.VK_SPACE) {
+        System.out.println("Player passed");
+        cellSelected = false;
+        selectedHexTile.setColor(Color.GRAY);
+        repaint();
+      }
+    }
+  }
+
+  @Override
+  public void keyReleased(KeyEvent e) {
+
+  }
+
 }
