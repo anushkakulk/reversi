@@ -2,13 +2,13 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import model.GameStatus;
-import model.ReversiGameModel;
-import model.ReversiModel;
-import model.ReversiPiece;
-import model.Tile;
-import view.ReversiTextualView;
-import view.ReversiView;
+import cs3500.reversi.model.GameStatus;
+import cs3500.reversi.model.ReversiGameModel;
+import cs3500.reversi.model.ReversiModel;
+import cs3500.reversi.model.ReversiPiece;
+import cs3500.reversi.model.Tile;
+import cs3500.reversi.view.ReversiTextualView;
+import cs3500.reversi.view.ReversiView;
 
 import static org.junit.Assert.assertSame;
 

@@ -154,6 +154,13 @@ System.out.println(view.toString());
 ## Changes for Part 2 
 
 - added a getScoreMethod in the ReadOnlyModel Interface, since its an
-observation method. 
+observation method. It iterates over the the board and returns the number of tiles occupied by the 
+given player's piece
+- added a isLegalMove method that takes in q, r, s coords and a piece that wishes to move there.
+This is now a public method (as opposed to private) as players (specifically AI players) need to 
+know where they can move to or not. 
+- added the ability to copy a model completely. This copies the game board as well all other fields
+of a ReversiGameModel. This allows for efficient testing and ensuring differences in our strategies.
+also added a method that returns a copy of the current board, for the same reasons.
 - 
 
