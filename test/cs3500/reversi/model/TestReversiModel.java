@@ -319,7 +319,7 @@ public class TestReversiModel {
   }
 
   @Test
-  public void testCopyingModelAtStart() {
+  public void testCopyingAtStart() {
     Map<Tile, ReversiPiece> copyBoard= model.getBoard();
     ReversiModel m = new ReversiGameModel(copyBoard, 3);
 
@@ -334,19 +334,39 @@ public class TestReversiModel {
   }
 
   @Test
-  public void testCopyingModelInMiddle() {
-    // TODO
+  public void testCopyingInMiddle() {
+    model = new ReversiGameModel(7);
+    model.move(1, -2, 1); // black
+    model.move(2, -1, -1); // white
+    model.move(-2, 1, 1); // black
+    model.move(1, -3, 2); // white
+    model.move(1, 1, -2); // black
+    model.move(-1, 2, -1); // white
+    model.move(2, -3, 1); // black
+    model.move(-1, -1, 2); // white
+
+    Map<Tile, ReversiPiece> copyBoard = model.getBoard();
+    ReversiModel m = new ReversiGameModel(copyBoard, 7);
+
+    Assert.assertEquals(m.getBoard(), model.getBoard()); // same boards
+    // same score
+    Assert.assertEquals(m.getScore(ReversiPiece.BLACK), model.getScore(ReversiPiece.BLACK));
+    Assert.assertEquals(m.getScore(ReversiPiece.WHITE), model.getScore(ReversiPiece.WHITE));
+
+    // same pieces in same spot
+    Assert.assertSame(model.getPieceAt(-1, -1, 2), m.getPieceAt(-1,-1,2));
+    Assert.assertSame(model.getPieceAt(0, -1, 1), m.getPieceAt(0, -1, 1));
+    Assert.assertSame(model.getPieceAt(1, -1, 0),m.getPieceAt(1, -1, 0));
+    Assert.assertSame(model.getPieceAt(2, -1, -1), m.getPieceAt(2, -1, -1));
+
+    Assert.assertSame(model.getPieceAt(-1, -1, 2), m.getPieceAt(-1, -1, 2));
+    Assert.assertSame(model.getPieceAt(-1, 0, 1), m.getPieceAt(-1, 0, 1));
+    Assert.assertSame(model.getPieceAt(-1, 1, 0), m.getPieceAt(-1, 1, 0));
+
+    // same curr player
+    Assert.assertSame(model.getCurrentPlayer(), m.getCurrentPlayer());
   }
 
-  @Test
-  public void testGetBoardAtStart() {
-    // TODO
-  }
-
-  @Test
-  public void testGetBoardInMiddle() {
-    // TODO
-  }
   @Test
   public void testFlippingInBothDirectionsAfterValidMove() {
     model = new ReversiGameModel(7);
