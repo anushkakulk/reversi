@@ -23,9 +23,14 @@ public class TestStrategies {
     Strategy cornerStrat = new Strategy(new PlayCornersStrategy());
     Player AIEasy = new Player(cornerStrat, ReversiPiece.BLACK);
 
+
+    AIEasy.getPlayerDecision(mock);
     // and then check that the output for this contains the positions of all for corner tiles,
     // meaning it correctly checked every option
-    AIEasy.getPlayerDecision(mock);
+    // as in write something like 6 versions of (assert.equals(out.contains (q, r, s))),
+    // where q r s are the coords for a corner position, since this strat tries to pick corners
+    // first
+
   }
 
   // write similar such tests for the CaptureMost strategy, avoidNextToCorners strategy,
@@ -34,7 +39,8 @@ public class TestStrategies {
 
    /*
    so like i guess a checklist of ones to do would be
-   - just capturemost
+   - just capturemost (for this one, call and test the getPlayerDecision a few times since this one
+             will probably always actually pick a valid move)
    - just avoid next to corners
    - just human strategy (you have to give human strategy a readable, so make a string reader with sample inputs to move to)
    - capture most and avoidnext to corners playing next to each other
