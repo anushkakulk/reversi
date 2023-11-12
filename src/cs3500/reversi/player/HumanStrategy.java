@@ -1,5 +1,6 @@
 package cs3500.reversi.player;
 
+import java.io.InputStreamReader;
 import java.util.Optional;
 import java.util.Scanner;
 
@@ -17,15 +18,15 @@ public class HumanStrategy implements IPlayerMoveStrategy {
    * Initializes a HumanStrategy with a new scanner object to read input from.
    */
   HumanStrategy() {
-    this(new Scanner(System.in));
+    this(new InputStreamReader(System.in));
   }
 
   /**
    * Creates an instance of HumanStrategy.
    * @param input the scanner object to read user input from.
    */
-  public HumanStrategy(Scanner input) {
-    this.input = input;
+  public HumanStrategy(Readable input) {
+    this.input = new Scanner(input);
   }
 
   @Override
