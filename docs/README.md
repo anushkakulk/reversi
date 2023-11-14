@@ -3,6 +3,11 @@
 This codebase is an implementation of the Reversi game,
 complete with a game board, rules keeping, and player management.
 
+## NOTE FOR GRADERS: EXTRA CREDIT
+We successfully implemented and tested a human strategy, strategies 1, 2, and 3, and the ability to
+combine the strategies in any order (using a strategy that takes in a list of strategies and 
+executes them in order (if the first fails, try the second... and so on until all strats in the 
+list have been tried)) from the course website. This is all present in src/cs500.reversi/player.
 
 ## Source Organization
 
@@ -21,18 +26,39 @@ The codebase is organized into the following packages:
   - view Package:
     - ReversiView: Interface for viewing a game of Reversi.
     - ReversiTextualView: A class that implements the ReversiView interface to provide a textual 
-     representation of the Reversi game.
-- player: contains components for making game play decisions, like a Player interface, a (potential) 
+      representation of the Reversi game.
+    - ReversiGUIView: An extension of JFrame to serve as our window for visually viewing the game
+    - ReversiPanel: An extension of JPanel to serve as our canvas for visually viewing and 
+      interacting with the game
+    - HexTile: Represents the gui representation of a tile from the model class. Has the ability to
+      draw itself on the canvas.
+    - ICanvasEvent: Represents any event that can happen on the canvas
+- player: contains components for making game play decisions, like a Player interface, a 
 concrete player class, and interfaces and classes to work to represent a Player's next move and 
 strategy.
   - player Package: 
     - ReversiPlayer: Interface representing a player of Reversi.
-    - Pass: Class representing a pass move, a type of move that a player can make.
-    - MovePiece: Class representing moving a piece, a type of move that a player can make.
+    - Player: A class representing a player with a move strategy and Reversi piece.
     - IPlayerMoveStrategy: Interface for executing a player move in the model, if valid.
-    - IPlayerMove: Interface representing a player move.
-    - Player: A class representing a player with a move strategy, Reversi piece, 
-      and read only access to the game model (NOT IMPLEMENTED YET)
+    - Strategy: Class representing an infallible Reversi game strategy, that will return
+      the next move to make given the state of a game model. 
+    - HumanStrategy: Class representing the strategy of a human, which takes in user input to
+      determine the next move.
+    - CaptureMostStrategy: Class representing the strategy of determining the next move by choosing 
+      a valid tile from that will yield the most tiles flipped over.
+    - PlayCornersStrategy: Class representing the strategy of determining the next move by choosing
+         a valid tile from that will yield the most tiles flipped over that is in the corner.
+    - AvoidNextToCornersStrategy: Class representing the strategy of determining the next move by 
+      choosing a valid tile from that will yield the most tiles flipped over that is not next to a 
+      corner.
+    - ManyStrategy: Class representing the combination of multiple strategies to determine the next 
+      move by getting the next valid move by going through all the strategies. if one fails, 
+      it tries the next in its repertoire.
+    - IPlayerMove: Interface representing a player move. (either pass or move)
+    - Pass: Class representing a pass move, a type of move that a player can make.
+    - Move: Class representing moving a piece, a type of move that a player can make.
+    
+    
 
 # Model 
 
@@ -67,6 +93,12 @@ adding direction vectors. We chose tiles with cubic coordinates for the hexagona
 efficiency in representing tile positions. they provide a consistent and symmetrical system
 where each tile's position is defined by three integers (q, r, s) with q + r + s = 0,
  which simplifies operations like finding neighboring tiles (which is a key part of Reversi).
+q goes along the x axis (moving left on the hexagon decrements the q coordinate, moving right on the
+hexagon increases the q coordinate), r goes along the y axis (moving north up the hexagon decrements 
+the r coordinate, moving south down the hexagon increases the r coordinate), s is like the northwest 
+axis(moving northwest up the hexagon increases the s coordinate, moving southeast down the hexagon 
+decrements the s coordinate). the origin in a board is a tile with (0, 0, 0), which indicates the 
+center of the hexagonic board.
 
 #### ReversiPiece Enum
 
@@ -109,12 +141,71 @@ if (game.isGameOver()) {
 }
 ```
 
+# Player
+
+## Key Components
+
+### ReversiPlayer Interface
+
+Represents the interface for a Player of Reversi.
+
+### IPlayerMove Interface
+
+Represents the Player Moves that are available in the Reversi game. As of now, only move or pass.
+
+### IPlayerMoveStrategy Interface
+
+Represents a strategy pattern for Reversi players. implementers of this must define a method to 
+return an Optional<ReversiPosn> that represents the next valid position to move to. If a strategy
+finds multiple tiles that will be the best move, then it will return the tile with the upper-left
+most coordinates in the board. If there is a tile between a tile that is up and left, then it will
+choose the left most tile.
+Current implemented strategies are: CaptureMostStrategy (), AvoidNextToCornersStrategy(),
+PlayCornersStrategy(), ManyStrategy(List<IPlayerMoveStrategy> strategiesToPlayInOrder); 
+
+## Key Subcomponents
+
+#### Strategy
+
+Represents an Infallible Strategy for Reversi. It attempts an IPlayerMoveStrategy to find a move, 
+but if it fails to find a move, or chooses to pass, then the strategy says to pass. 
+
+#### Player
+
+Represents a Player of Reversi, which plays a given strategy and has a piece associated with it.
+
+#### ReversiPosn
+
+Represents a position on a board on which the Reversi game is being played. Has a q, r, s coordinate
+(see tile for explanation on coordinates.) 
+
+## Player/Strategy Example
+
+Here's an example of how to create and play the model using the players and strategies:
+
+```
+// makes a game with a hexagonal board of side length 7
+model = new ReversiGameModel(7);
+
+Strategy captureMost = new Strategy(new CaptureMost()); 
+ReversiPlayer AIEasy = new Player(captureMost, ReversiPiece.BLACK); 
+
+// this method call will return the move made by the captureMost strategy
+IPlayerMove nextMove = AIEasy.getPlayerDecision(model); 
+
+nextMove.run();  // this will executive the move on the model. 
+
+```
+
+
 # View  
+
+## Key Components
 
 ### ReversiView Interface
 
-The ReversiView interface represents the primary view interface for viewing a game of Reversi, using
-a method to render the model's board.
+The ReversiView interface represents the  view interface for textually viewing a game of Reversi, 
+using a method to render the model's board.
 
 
 ### ReversiTextualView Class
@@ -122,10 +213,42 @@ a method to render the model's board.
 The ReversiTextualView class is an implementation of the ReversiView interface, providing a textual
 representation of a game of Reversi. It renders the current state of the ReversiModel as a String.
 
+### ReversiGUIView Class
+The ReversiGUIView is an extension of JFrame, that serves as our window for visually 
+viewing the game. It holds the canvas on it and listens to the panel. 
+
+
+### ReversiPanel Class
+The ReversiPanel is an extension of JPanel to serve as our canvas for visually viewing and
+interacting with the game. It implements mouse-click listener and key listener. If someone clicks
+on a tile, then it highlights blue. If a tile is clicked and the key "enter" is clicked, then the 
+panel indicates that there is a wish to move to that tile. If a tile is clicked and the key "space"
+is clicked, then the panel indicates that there is a wish to pass the current turn.
+
+### Key Subcomponents 
+
+#### HexTile Class
+Represents the gui representation of a tile from the model class. 
+Has the ability to draw itself on the canvas, and translates the model tile's q,r,s 
+coordinates into pixel x,y coordinates. 
+
+#### ICanvasEvent Interface
+Represents any event that can happen on the canvas
 
 ## View Example
 
-Here's an example of how to create and view the model using the view:
+Here's an example of how to create and view the model using the gui view:
+
+```
+// makes a game with a hexagonal board of side length 6
+ ReversiModel model = new ReversiGameModel(6);
+ 
+ ReversiGUIView view = new ReversiGUIView(model);
+ view.setVisible(true);
+ // now, the user can interact with the board (click tiles and enter/space) and resize the window
+```
+
+Here's an example of how to create and view the model using the textual view:
 
 ```
 // makes a game with a hexagonal board of side length 7
@@ -162,5 +285,5 @@ know where they can move to or not.
 - added the ability to copy a model completely. This copies the game board as well all other fields
 of a ReversiGameModel. This allows for efficient testing and ensuring differences in our strategies.
 also added a method that returns a copy of the current board, for the same reasons.
-- 
+- added a clear explanation of our tile coordinates 
 

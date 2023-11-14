@@ -22,9 +22,9 @@ public class AvoidNextToCornersStrategy implements IPlayerMoveStrategy {
       for (int r = r1; r <= r2; r++) {
         int s = -q - r;
 
-        if ((isBorderingCorner(q, r, s, model.getHexSideLength())) &&
+        if ((!isBorderingCorner(q, r, s, model.getHexSideLength())) &&
             model.isValidMove(q, r, s, piece)) {
-          possibleMoves.put(new ReversiPosn(q, r, s), model.numTilesFlipped(q, r, s, piece));
+          possibleMoves.put(new ReversiPosn(q, r, s), model.numTilesGained(q, r, s, piece));
         }
       }
     }

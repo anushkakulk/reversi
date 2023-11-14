@@ -98,7 +98,7 @@ public interface ReadOnlyReversiModel {
    *              moved there.
    * @return the number of tiles that would flip.
    */
-  int numTilesFlipped(int q, int r, int s, ReversiPiece piece);
+  int numTilesGained(int q, int r, int s, ReversiPiece piece);
 
   /**
    * Returns a copy of this model's board.

@@ -1,6 +1,9 @@
 package cs3500.reversi.view;
 
-import java.awt.*;
+
+import java.awt.Color;
+import java.awt.Polygon;
+import java.awt.Graphics;
 import java.awt.geom.Point2D;
 import java.util.Objects;
 
@@ -82,7 +85,7 @@ public class HexTile {
   }
 
   /**
-   * Renders this HexTile
+   * Renders this HexTile.
    * @param g the graphic object to draw on top of.
    */
   public void draw(Graphics g) {
@@ -127,7 +130,7 @@ public class HexTile {
   // helper method that translates our game's coordinates of this hextile
   // into the screen's y coordinate equivalent.
   private int hexToPixelY(int r) {
-    return (int) (1.5 * hexRadius * r);
+    return (int) - (1.5 * hexRadius * r);
   }
 
   // creates a hexagon polygon shape dependent on the x y coordinates and of a certain size.
@@ -141,6 +144,23 @@ public class HexTile {
       yPoints[i] = (int) (y + radius * Math.sin(angle + i * Math.PI / 3));
     }
     return new Polygon(xPoints, yPoints, 6);
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (!(obj instanceof HexTile)) {
+      return false;
+    }
+    HexTile hexTile = (HexTile) obj;
+    return q == hexTile.q && r == hexTile.r && s == hexTile.s &&
+            hexRadius == hexTile.hexRadius && x == hexTile.x && y == hexTile.y &&
+            tileColor.equals(hexTile.tileColor) && piece == hexTile.piece &&
+            hexagon.equals(hexTile.hexagon);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(q, r, s, hexRadius, x, y, tileColor, piece, hexagon);
   }
 
 }

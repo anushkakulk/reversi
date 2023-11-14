@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -19,8 +20,8 @@ public class ReversiPosn {
   public final int s;
 
   /**
-   * creates a ReversiPosn Object, where the given coordinates are the coordinates of the destination
-   * tile that the player wants to move to.
+   * creates a ReversiPosn Object, where the given coordinates are the coordinates of the
+   * destination tile that the player wants to move to.
    *
    * @param q - the q coord of dest tile
    * @param r - the r coord of dest tile
@@ -34,15 +35,16 @@ public class ReversiPosn {
 
 
   /**
-   * Returns the upper leftmost ReversiPosn from a list of ReversiPosns
+   * Returns the upper leftmost ReversiPosn from a list of ReversiPosns.
+   *
    * @param positions a list of ReversiPosns from which we are trying to find the upper left most
-   * @return the upper leftmost ReversiPosn from a list of ReversiPosns/
+   * @return the upper leftmost ReversiPosn from a list of ReversiPosns
    */
   private static ReversiPosn findUppermostLeftmostPosition(List<ReversiPosn> positions) {
     ReversiPosn uppermostLeftmost = positions.get(0);
 
     for (ReversiPosn posn : positions) {
-      if (posn.q < uppermostLeftmost.q || (posn.q == uppermostLeftmost.q
+      if ((posn.q <= uppermostLeftmost.q
               && posn.r < uppermostLeftmost.r)) {
         uppermostLeftmost = posn;
       }
@@ -52,10 +54,11 @@ public class ReversiPosn {
 
   /**
    * Given a map of possible moves and the amt of tiles that move flips, returns the best option
-   *                  (if it exists).
+   * (if it exists).
+   *
    * @param possibleMoves a map of valid moves to the number of tiles that move flips over.
    * @return a ReversiPosn that is the best destination to move to out of the given possible moves,
-   *                  ONLY IF the strategy found at least one valid move.
+   *                    ONLY IF the strategy found at least one valid move.
    */
   public static Optional<ReversiPosn> findBestMove(Map<ReversiPosn, Integer> possibleMoves) {
     if (!possibleMoves.isEmpty()) {
@@ -73,5 +76,22 @@ public class ReversiPosn {
     } else {
       return Optional.empty();
     }
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(this.q, this.r, this.s);
+  }
+
+
+  @Override
+  public boolean equals(Object obj) {
+    if (!(obj instanceof ReversiPosn)) {
+      return false;
+    }
+    ReversiPosn posn = (ReversiPosn) obj;
+    return this.q == posn.q
+            && this.r == posn.r
+            && this.s == posn.s;
   }
 }

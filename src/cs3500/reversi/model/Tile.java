@@ -13,6 +13,16 @@ public class Tile {
   // efficiency in representing tile positions. they provide a consistent and symmetrical system
   // where each tile's position is defined by three integers (q, r, s) with q + r + s = 0,
   // which simplifies operations like finding neighboring tiles (which is a key part of Reversi).
+  // q goes along the x axis
+  // - moving left on the hexagon decrements the q coordinate
+  // - moving right on the hexagon increases the q coordinate
+  // r goes along the y axis
+  // - moving north up the hexagon decrements the r coordinate
+  // - moving south down the hexagon increases the r coordinate
+  // s is like the northwest axis
+  // - moving northwest up the hexagon increases the s coordinate
+  // - moving southeast down the hexagon decrements the s coordinate
+  // the origin is a tile with (0, 0, 0), which is the center of the hexagonic board.
   private final int q;
   private final int r;
   private final int s;

@@ -33,8 +33,8 @@ public class HumanStrategy implements IPlayerMoveStrategy {
 
   @Override
   public Optional<ReversiPosn> playStrategy(ReadOnlyReversiModel model, ReversiPiece player) {
-    System.out.println("Enter the destination tile's q, r, and s coordinates separated by spaces, " +
-        "or type 'p'/'P' to pass your turn:");
+    System.out.println("Enter the destination tile's q, r, and s coordinates separated by " +
+            "spaces, or type 'p'/'P' to pass your turn:");
 
     if (input.hasNext("p|P")) {
       input.next();
@@ -44,14 +44,20 @@ public class HumanStrategy implements IPlayerMoveStrategy {
         int q = input.nextInt();
         int r = input.nextInt();
         int s = input.nextInt();
+        if (model.isValidMove(q, r, s, player)) {
+          return Optional.of(new ReversiPosn(q, r, s));
+        }
+      } catch (InputMismatchException ignored) {
 
-        return Optional.of(new ReversiPosn(q, r, s));
-      } catch (InputMismatchException e) {
-        input.nextLine();
-        System.out.println("Invalid input. Enter 'p' to pass or three space-separated numbers for coordinates.");
-        return playStrategy(model, player);
       }
     }
+    return handleBadInput(model, player);
+  }
+
+  private Optional<ReversiPosn> handleBadInput(ReadOnlyReversiModel model, ReversiPiece player) {
+    input.nextLine();
+    System.out.println("Invalid input. Enter 'p' to pass or three space-separated " +
+            "numbers for coordinates.");
+    return playStrategy(model, player);
   }
 }
-

@@ -25,7 +25,7 @@ public class PlayCornersStrategy implements IPlayerMoveStrategy {
         if (isCornerPosition(q, r, s, model.getHexSideLength())
             && model.isValidMove(q, r, s, piece)
         ) {
-          possibleMoves.put(new ReversiPosn(q, r, s), model.numTilesFlipped(q, r, s, piece));
+          possibleMoves.put(new ReversiPosn(q, r, s), model.numTilesGained(q, r, s, piece));
         }
       }
     }

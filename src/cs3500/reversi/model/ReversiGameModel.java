@@ -59,7 +59,12 @@ public class ReversiGameModel implements ReversiModel {
   }
 
 
-  // second constructor that takes in a given board and its hexSideLength and plays a game with it.
+  /**
+   * second constructor that takes in a given board and its hexSideLength and plays a game with it.
+   *
+   * @param boardToPlayOn a board that this model should continue to be played on
+   * @param hexSideLength the side length of the given board
+   */
   public ReversiGameModel(Map<Tile, ReversiPiece> boardToPlayOn, int hexSideLength) {
     this.hexSideLength = hexSideLength;
     Set<Tile> expectedTiles = new HashSet<>(createBoard(hexSideLength));
@@ -215,17 +220,17 @@ public class ReversiGameModel implements ReversiModel {
   }
 
   @Override
-  public int numTilesFlipped(int q, int r, int s, ReversiPiece piece) {
+  public int numTilesGained(int q, int r, int s, ReversiPiece piece) {
     int numFlipped = 0;
     if (isValidMove(q, r, s, piece)) {
       Tile dest = new Tile(q, r, s);
       List<Tile> neighborsOccupiedByOtherPlayer =
-          findNeighborsOccupiedByOpponent(getValidNeighbors(dest),
-              this.getCurrentPlayer());
+              findNeighborsOccupiedByOpponent(getValidNeighbors(dest),
+                      this.getCurrentPlayer());
 
       for (Tile opp : neighborsOccupiedByOtherPlayer) {
         int[] direction = {opp.getQ() - dest.getQ(), opp.getR() - dest.getR(),
-            opp.getS() - dest.getS()};
+                opp.getS() - dest.getS()};
         numFlipped += 1;
         // add the direction vector to find the next tile. the next tile is in the same direction as
         // the neighboring tile with the opponent is as the neighboring tile with the opponent is
@@ -235,8 +240,9 @@ public class ReversiGameModel implements ReversiModel {
         while (handleCoordinate(nextTile)) {
           ReversiPiece nextPiece = getPieceAt(nextTile);
           if (nextPiece == ReversiPiece.EMPTY) {
+            numFlipped += 1;
             break;
-          } else if  (nextPiece != currentPlayer){ // we found the end of the sequence
+          } else if (nextPiece != currentPlayer) { // we found the end of the sequence
             numFlipped += 1;
           }
           nextTile = nextTile.addDirection(direction);

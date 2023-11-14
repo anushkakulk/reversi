@@ -22,7 +22,7 @@ public class CaptureMostStrategy implements IPlayerMoveStrategy {
       for (int r = r1; r <= r2; r++) {
         int s = -q - r;
         if (model.isValidMove(q, r, s, piece)) {
-          possibleMoves.put(new ReversiPosn(q, r, s), model.numTilesFlipped(q, r, s, piece));
+          possibleMoves.put(new ReversiPosn(q, r, s), model.numTilesGained(q, r, s, piece));
         }
       }
     }

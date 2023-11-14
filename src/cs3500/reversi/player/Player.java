@@ -14,8 +14,8 @@ public class Player implements ReversiPlayer {
 
 
   /**
-   * Creates an instance of a player/
-   * @param strategy the strategy thi player wishes to play with.
+   * Creates an instance of a player.
+   * @param strategy the strategy this player wishes to play with.
    * @param piece this player's associated piece on the board.
    */
   public Player(Strategy strategy, ReversiPiece piece) {
@@ -25,7 +25,7 @@ public class Player implements ReversiPlayer {
 
   /**
    * Returns this player's next move in the game.
-   * @param model the game .model, from which the player is determining the next move to make.
+   * @param model the game model, from which the player is determining the next move to make.
    * @return an IPlayerMove (either a pass or move function object)
    */
   @Override

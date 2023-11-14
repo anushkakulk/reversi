@@ -87,7 +87,6 @@ public class TestReversiView {
   @Test
   public void testViewAfterMoveWhereTheresTwoDirectionsToFollow() {
     modelSize7.move(1, -2, 1);
-    System.out.println(viewSize7.toString());
     modelSize7.move(2, -1, -1);
     // there are opponents in two neighbors of the destination tile. this tests whether the move
     // method correctly finds out where the move is coming from to be valid (as in, it should know

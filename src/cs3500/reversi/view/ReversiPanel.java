@@ -1,6 +1,9 @@
 package cs3500.reversi.view;
 
-import java.awt.*;
+import java.awt.Graphics;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -10,7 +13,7 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.*;
+import javax.swing.JPanel;
 
 import cs3500.reversi.model.ReadOnlyReversiModel;
 import cs3500.reversi.model.ReversiPiece;
@@ -103,7 +106,7 @@ public class ReversiPanel extends JPanel implements MouseListener, KeyListener {
    * (with (0,0) in center, width and height our logical size)
    * into screen coordinates (with (0,0) in upper-left,
    * width and height in pixels).
-   * <p>
+   *
    *
    * @return The necessary transformation
    */
@@ -127,7 +130,7 @@ public class ReversiPanel extends JPanel implements MouseListener, KeyListener {
    * (with (0,0) in upper-left, width and height in pixels)
    * into board coordinates (with (0,0) in center, width and height
    * our logical size).
-   * <p>
+   *
    *
    * @return The necessary transformation
    */
@@ -184,22 +187,27 @@ public class ReversiPanel extends JPanel implements MouseListener, KeyListener {
 
   @Override
   public void mousePressed(MouseEvent e) {
+    // nothing to handle here
   }
 
   @Override
   public void mouseReleased(MouseEvent e) {
+    // nothing to handle here
   }
 
   @Override
   public void mouseEntered(MouseEvent e) {
+    // nothing to handle here
   }
 
   @Override
   public void mouseExited(MouseEvent e) {
+    // nothing to handle here
   }
 
   @Override
   public void keyTyped(KeyEvent e) {
+    // nothing to handle here
   }
 
   @Override
@@ -224,7 +232,7 @@ public class ReversiPanel extends JPanel implements MouseListener, KeyListener {
 
   @Override
   public void keyReleased(KeyEvent e) {
-
+    // nothing to handle here
   }
 
 }
