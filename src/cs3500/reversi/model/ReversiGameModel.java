@@ -200,11 +200,11 @@ public class ReversiGameModel implements ReversiModel {
   @Override
   public boolean isValidMove(int q, int r, int s, ReversiPiece piece) {
     if (!validateCoordinatesInBoard(q, r, s)) { // make sure the given coordinates are in the board
-      throw new IllegalArgumentException("Invalid Coordinates For Move");
+      return false;
     }
     if (getPieceAt(q, r, s) != ReversiPiece.EMPTY) {
       // INVARIANT: A move must be made to an empty tile.
-      throw new IllegalStateException("Tile at given coordinates is not empty.");
+      return false;
     }
 
     Tile dest = new Tile(q, r, s);
@@ -220,12 +220,12 @@ public class ReversiGameModel implements ReversiModel {
     if (isValidMove(q, r, s, piece)) {
       Tile dest = new Tile(q, r, s);
       List<Tile> neighborsOccupiedByOtherPlayer =
-              findNeighborsOccupiedByOpponent(getValidNeighbors(dest),
-                      this.getCurrentPlayer());
+          findNeighborsOccupiedByOpponent(getValidNeighbors(dest),
+              this.getCurrentPlayer());
 
       for (Tile opp : neighborsOccupiedByOtherPlayer) {
         int[] direction = {opp.getQ() - dest.getQ(), opp.getR() - dest.getR(),
-                opp.getS() - dest.getS()};
+            opp.getS() - dest.getS()};
         numFlipped += 1;
         // add the direction vector to find the next tile. the next tile is in the same direction as
         // the neighboring tile with the opponent is as the neighboring tile with the opponent is

@@ -4,7 +4,7 @@ import java.util.Map;
 
 import cs3500.reversi.Reversi;
 
-public class MockReversiGameModel implements  ReversiModel{
+public class MockReversiGameModel implements  ReversiModel {
   private ReversiModel actualModel;
   private final StringBuilder log;
 
@@ -20,74 +20,82 @@ public class MockReversiGameModel implements  ReversiModel{
 
   @Override
   public ReversiPiece getPieceAt(int q, int r, int s) throws IllegalArgumentException {
-    // so you'd do something like. TODO do this kinda thing for all the methods in this
     log.append("getPieceAt: ").append(q).append(", ").append(r).append(", ").append(s);
     return actualModel.getPieceAt(q, r, s);
   }
 
   @Override
   public ReversiPiece getPieceAt(Tile t) throws IllegalArgumentException {
-    return null;
-  }
-
-  @Override
-  public int getHexSideLength() {
-    return 0;
-  }
-
-  @Override
-  public boolean isGameOver() {
-    return false;
-  }
-
-  @Override
-  public ReversiPiece getWinner() throws IllegalStateException {
-    return null;
-  }
-
-  @Override
-  public ReversiPiece getCurrentPlayer() {
-    return null;
-  }
-
-  @Override
-  public GameStatus getGameStatus() {
-    return null;
-  }
-
-  @Override
-  public int getScore(ReversiPiece player) {
-    return 0;
-  }
-
-  @Override
-  public boolean isValidMove(int q, int r, int s, ReversiPiece piece) {
-    return false;
+    log.append("getPieceAt: ").append(t);
+    return actualModel.getPieceAt(t);
   }
 
   @Override
   public int numTilesFlipped(int q, int r, int s, ReversiPiece piece) {
+    int flipped = actualModel.numTilesFlipped(q, r, s, piece);
+    log.append("numTilesFlipped: ").append(flipped).append(". ");
+    return flipped;
+  }
 
+  @Override
+  public int getHexSideLength() {
+    return actualModel.getHexSideLength();
+  }
+
+  @Override
+  public boolean isGameOver() {
+    log.append("isGameOver");
+    return actualModel.isGameOver();
+  }
+
+  @Override
+  public ReversiPiece getWinner() throws IllegalStateException {
+    log.append("getWinner");
+    return actualModel.getWinner();
+  }
+
+  @Override
+  public ReversiPiece getCurrentPlayer() {
+    log.append("getCurrentPlayer");
+    return actualModel.getCurrentPlayer();
+  }
+
+  @Override
+  public GameStatus getGameStatus() {
+    log.append("getGameStatus");
+    return actualModel.getGameStatus();
+  }
+
+  @Override
+  public int getScore(ReversiPiece player) {
+    log.append("getScore: ").append(player);
+    return actualModel.getScore(player);
+  }
+
+  @Override
+  public boolean isValidMove(int q, int r, int s, ReversiPiece piece) {
+    log.append("isValidMove: ").append(q).append(", ").append(r).append(", ").append(s).append(", ")
+        .append(piece).append(". ");
+    return actualModel.isValidMove(q, r, s, piece);
   }
 
   @Override
   public Map<Tile, ReversiPiece> getBoard() {
-    return null;
+    log.append("getBoard");
+    return actualModel.getBoard();
   }
 
   @Override
   public void move(int q, int r, int s) throws IllegalStateException, IllegalArgumentException {
-
+    log.append("move: ").append(q).append(", ").append(r).append(", ").append(s);
+    actualModel.move(q, r, s);
   }
 
   @Override
   public void pass() {
-
+    log.append("pass");
+    actualModel.pass();
   }
-
-
-
-
-
-
 }
+
+
