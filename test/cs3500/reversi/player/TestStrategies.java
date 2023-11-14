@@ -3,10 +3,14 @@ package cs3500.reversi.player;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Map;
+
+import cs3500.reversi.model.GameStatus;
 import cs3500.reversi.model.MockReversiGameModel;
 import cs3500.reversi.model.ReversiGameModel;
 import cs3500.reversi.model.ReversiModel;
 import cs3500.reversi.model.ReversiPiece;
+import cs3500.reversi.model.Tile;
 
 public class TestStrategies {
 
