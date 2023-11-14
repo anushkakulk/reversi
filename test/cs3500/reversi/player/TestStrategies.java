@@ -8,12 +8,14 @@ import cs3500.reversi.model.MockReversiGameModel;
 import cs3500.reversi.model.ReversiGameModel;
 import cs3500.reversi.model.ReversiModel;
 import cs3500.reversi.model.ReversiPiece;
-import cs3500.reversi.view.ReversiTextualView;
 
-import java.io.StringReader;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Test Suite for testing all strategies, specifically from
+ * the IPlayerMoveStrategy interface.
+ */
 public class TestStrategies {
 
   private ReversiModel m;
