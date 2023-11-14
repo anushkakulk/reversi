@@ -1,6 +1,7 @@
 package cs3500.reversi.player;
 
 import java.io.InputStreamReader;
+import java.util.InputMismatchException;
 import java.util.Optional;
 import java.util.Scanner;
 
@@ -23,6 +24,7 @@ public class HumanStrategy implements IPlayerMoveStrategy {
 
   /**
    * Creates an instance of HumanStrategy.
+   *
    * @param input the scanner object to read user input from.
    */
   public HumanStrategy(Readable input) {
@@ -31,15 +33,25 @@ public class HumanStrategy implements IPlayerMoveStrategy {
 
   @Override
   public Optional<ReversiPosn> playStrategy(ReadOnlyReversiModel model, ReversiPiece player) {
-    System.out.println("Enter the destination tile's q, r, and s coordinates " +
-            "(with spaces in between) you wish to move to, or enter 'p'/'P' to pass your turn.");
-    if (input.next().equalsIgnoreCase("p")) {
+    System.out.println("Enter the destination tile's q, r, and s coordinates separated by spaces, " +
+        "or type 'p'/'P' to pass your turn:");
+
+    if (input.hasNext("p|P")) {
+      input.next();
       return Optional.empty();
     } else {
-      int q = input.nextInt();
-      int r = input.nextInt();
-      int s = input.nextInt();
-      return Optional.of(new ReversiPosn(q, r, s));
+      try {
+        int q = input.nextInt();
+        int r = input.nextInt();
+        int s = input.nextInt();
+
+        return Optional.of(new ReversiPosn(q, r, s));
+      } catch (InputMismatchException e) {
+        input.nextLine();
+        System.out.println("Invalid input. Enter 'p' to pass or three space-separated numbers for coordinates.");
+        return playStrategy(model, player);
+      }
     }
   }
 }
+

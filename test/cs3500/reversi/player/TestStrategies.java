@@ -1,5 +1,6 @@
 package cs3500.reversi.player;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -7,14 +8,21 @@ import cs3500.reversi.model.MockReversiGameModel;
 import cs3500.reversi.model.ReversiGameModel;
 import cs3500.reversi.model.ReversiModel;
 import cs3500.reversi.model.ReversiPiece;
+import cs3500.reversi.view.ReversiTextualView;
+
+import java.io.StringReader;
+import java.util.Arrays;
+import java.util.List;
 
 public class TestStrategies {
 
   private ReversiModel m;
+
   @Before
   public void setUp() {
     m = new ReversiGameModel(6);
   }
+
   @Test
   public void testOnlyCornersAIStrat() {
     StringBuilder out = new StringBuilder();
@@ -25,27 +33,101 @@ public class TestStrategies {
 
 
     AIEasy.getPlayerDecision(mock);
-    // and then check that the output for this contains the positions of all for corner tiles,
-    // meaning it correctly checked every option
-    // as in write something like 6 versions of (assert.equals(out.contains (q, r, s))),
-    // where q r s are the coords for a corner position, since this strat tries to pick corners
-    // first
+    Assert.assertTrue(out.toString().contains("isValidMove: -5, 0, 5, X."));
+    Assert.assertTrue(out.toString().contains("isValidMove: -5, 5, 0, X."));
+    Assert.assertTrue(out.toString().contains("isValidMove: 0, -5, 5, X."));
+    Assert.assertTrue(out.toString().contains("isValidMove: 0, 5, -5, X."));
+    Assert.assertTrue(out.toString().contains("isValidMove: 5, -5, 0, X."));
+    Assert.assertTrue(out.toString().contains("isValidMove: 5, 0, -5, X."));
+
 
   }
 
-  // write similar such tests for the CaptureMost strategy, avoidNextToCorners strategy,
-  // tests where there are two players of different strategies, and with the ManyStrategy, which is
-  // a strategy that can take multiple strategies.
+  @Test
+  public void testOnlyCaptureMost() {
+    StringBuilder out = new StringBuilder();
+    ReversiModel mock = new MockReversiGameModel(m, out);
 
-   /*
-   so like i guess a checklist of ones to do would be
-   - just capturemost (for this one, call and test the getPlayerDecision a few times since this one
-             will probably always actually pick a valid move)
-   - just avoid next to corners
-   - just human strategy (you have to give human strategy a readable, so make a string reader with sample inputs to move to)
-   - capture most and avoidnext to corners playing next to each other
-   - capture most and playcorners
-   - capture most and human player
-    */
+    Strategy capStrat = new Strategy(new CaptureMostStrategy());
+    Player AIEasy = new Player(capStrat, ReversiPiece.BLACK);
+
+    AIEasy.getPlayerDecision(mock);
+    Assert.assertTrue(out.toString().contains("numTilesFlipped: 1."));
+    m.move(-1,-1,2);
+    m.move(2,-1,-1);
+    AIEasy.getPlayerDecision(mock);
+    Assert.assertTrue(out.toString().contains("numTilesFlipped: 1."));
+    Assert.assertTrue(out.toString().contains("numTilesFlipped: 2."));
+  }
+
+  @Test
+  public void testOnlyAvoidCorners() {
+    StringBuilder out = new StringBuilder();
+    ReversiModel mock = new MockReversiGameModel(m, out);
+
+    Strategy avoidStrat = new Strategy(new AvoidNextToCornersStrategy());
+    Player AIEasy = new Player(avoidStrat, ReversiPiece.BLACK);
+
+    AIEasy.getPlayerDecision(mock);
+    Assert.assertTrue(out.toString().contains("isValidMove: -5, 1, 4, X."));
+    Assert.assertTrue(out.toString().contains("isValidMove: -4, -1, 5, X."));
+    Assert.assertTrue(out.toString().contains("isValidMove: 1, -5, 4, X."));
+    Assert.assertTrue(out.toString().contains("isValidMove: 4, -4, 0, X."));
+    Assert.assertTrue(out.toString().contains("isValidMove: 4, 0, -4, X."));
+    Assert.assertTrue(out.toString().contains("isValidMove: -1, 5, -4, X."));
+  }
+
+  @Test
+  public void testBothCaptureMostAndAvoid() {
+    StringBuilder out = new StringBuilder();
+    ReversiModel mock = new MockReversiGameModel(m, out);
+
+    List<IPlayerMoveStrategy> strategyList = Arrays.asList(new CaptureMostStrategy(),
+        new AvoidNextToCornersStrategy());
+    Strategy humanStrat = new Strategy(new ManyStrategy(strategyList));
+    Player AIEasy = new Player(humanStrat, ReversiPiece.BLACK);
+
+    AIEasy.getPlayerDecision(mock);
+    Assert.assertTrue(out.toString().contains("numTilesFlipped: 1."));
+    Assert.assertTrue(out.toString().contains("isValidMove: -4, 4, 0, X."));
+    Assert.assertTrue(out.toString().contains("isValidMove: 1, -5, 4, X."));
+    Assert.assertTrue(out.toString().contains("isValidMove: 5, -4, -1, X."));
+
+    m.move(-1,-1,2);
+    m.move(2,-1,-1);
+    AIEasy.getPlayerDecision(mock);
+    Assert.assertTrue(out.toString().contains("numTilesFlipped: 1."));
+    Assert.assertTrue(out.toString().contains("numTilesFlipped: 2."));
+    Assert.assertTrue(out.toString().contains("isValidMove: -4, 4, 0, X."));
+    Assert.assertTrue(out.toString().contains("isValidMove: 1, -5, 4, X."));
+    Assert.assertTrue(out.toString().contains("isValidMove: 5, -4, -1, X."));
+
+  }
+
+  @Test
+  public void testBothCaptureMostAndPlayCorners() {
+    StringBuilder out = new StringBuilder();
+    ReversiModel mock = new MockReversiGameModel(m, out);
+
+    List<IPlayerMoveStrategy> strategyList = Arrays.asList(new CaptureMostStrategy(),
+        new PlayCornersStrategy());
+    Strategy humanStrat = new Strategy(new ManyStrategy(strategyList));
+    Player AIEasy = new Player(humanStrat, ReversiPiece.BLACK);
+
+    AIEasy.getPlayerDecision(mock);
+    Assert.assertTrue(out.toString().contains("numTilesFlipped: 1."));
+    Assert.assertTrue(out.toString().contains("isValidMove: -5, 0, 5, X."));
+    Assert.assertTrue(out.toString().contains("isValidMove: -5, 5, 0, X."));
+    Assert.assertTrue(out.toString().contains("isValidMove: 0, -5, 5, X."));
+
+    m.move(-1,-1,2);
+    m.move(2,-1,-1);
+    AIEasy.getPlayerDecision(mock);
+    Assert.assertTrue(out.toString().contains("numTilesFlipped: 1."));
+    Assert.assertTrue(out.toString().contains("numTilesFlipped: 2."));
+    Assert.assertTrue(out.toString().contains("isValidMove: -5, 0, 5, X."));
+    Assert.assertTrue(out.toString().contains("isValidMove: -5, 5, 0, X."));
+    Assert.assertTrue(out.toString().contains("isValidMove: 0, -5, 5, X."));
+  }
 
 }

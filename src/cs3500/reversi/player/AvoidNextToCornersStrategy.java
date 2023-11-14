@@ -22,9 +22,8 @@ public class AvoidNextToCornersStrategy implements IPlayerMoveStrategy {
       for (int r = r1; r <= r2; r++) {
         int s = -q - r;
 
-        if (model.isValidMove(q, r, s, piece) &&
-                // avoid any spots nexts to corners positions!
-                (!isBorderingCorner(q,r,s, model.getHexSideLength()))) {
+        if ((isBorderingCorner(q, r, s, model.getHexSideLength())) &&
+            model.isValidMove(q, r, s, piece)) {
           possibleMoves.put(new ReversiPosn(q, r, s), model.numTilesFlipped(q, r, s, piece));
         }
       }
@@ -46,11 +45,17 @@ public class AvoidNextToCornersStrategy implements IPlayerMoveStrategy {
     // (hexSideLength - 1, hexSideLength - 2, and 1) OR any permutation of coords
     // (hexSideLength - 2, hexSideLength - 2, and 0)
     return (absQ == hexSideMinus1 && absR == hexSideMinus2 && absS == 1) ||
-            (absR == hexSideMinus1 && absS == hexSideMinus2 && absQ == 1) ||
-            (absS == hexSideMinus1 && absQ == hexSideMinus2 && absR == 1) ||
-            (absQ == hexSideMinus2 && absR == hexSideMinus2 && absS == 0) ||
-            (absR == hexSideMinus2 && absS == hexSideMinus2 && absQ == 0) ||
-            (absS == hexSideMinus2 && absQ == hexSideMinus2 && absR == 0);
+        (absQ == hexSideMinus1 && absS == hexSideMinus2 && absR == 1) ||
+        (absR == hexSideMinus1 && absS == hexSideMinus2 && absQ == 1) ||
+        (absR == hexSideMinus1 && absQ == hexSideMinus2 && absS == 1) ||
+        (absS == hexSideMinus1 && absQ == hexSideMinus2 && absR == 1) ||
+        (absS == hexSideMinus1 && absR == hexSideMinus2 && absQ == 1) ||
+        (absQ == hexSideMinus2 && absR == hexSideMinus2 && absS == 0) ||
+        (absQ == hexSideMinus2 && absS == hexSideMinus2 && absR == 0) ||
+        (absR == hexSideMinus2 && absS == hexSideMinus2 && absQ == 0) ||
+        (absR == hexSideMinus2 && absQ == hexSideMinus2 && absS == 0) ||
+        (absS == hexSideMinus2 && absQ == hexSideMinus2 && absR == 0) ||
+        (absS == hexSideMinus2 && absR == hexSideMinus2 && absQ == 0);
   }
 
 }
