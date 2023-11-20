@@ -61,6 +61,18 @@ public class ReversiPanel extends JPanel implements MouseListener, KeyListener {
     }
   }
 
+  private void emitTileMoved(int q, int r, int s) {
+    for (ICanvasEvent e : listeners) {
+      e.moved(q, r, s);
+    }
+  }
+
+  private void emitPass() {
+    for (ICanvasEvent e : listeners) {
+      e.passed();
+    }
+  }
+
   // creates a list of hextiles (the view's tiles), with one hextile corresponsing to every tile
   // in the model.
   private List<HexTile> createHexTiles(ReadOnlyReversiModel model) {
@@ -216,13 +228,12 @@ public class ReversiPanel extends JPanel implements MouseListener, KeyListener {
 
     if (cellSelected) {
       if (keyCode == KeyEvent.VK_ENTER) {
-        System.out.println("Move to: " + selectedHexTile.getQ()
-                + " " + selectedHexTile.getR() + " " + selectedHexTile.getS());
+        emitTileMoved( selectedHexTile.getQ(), selectedHexTile.getR() , selectedHexTile.getS());
         cellSelected = false;
         selectedHexTile.setColor(Color.GRAY);
         repaint();
       } else if (keyCode == KeyEvent.VK_SPACE) {
-        System.out.println("Player passed");
+        emitPass();
         cellSelected = false;
         selectedHexTile.setColor(Color.GRAY);
         repaint();

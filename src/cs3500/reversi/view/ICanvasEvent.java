@@ -12,4 +12,9 @@ public interface ICanvasEvent {
    */
   void tileClicked(int xCoord, int rCoord, int sCoord);
 
+  void moved(int xCoord, int rCoord, int sCoord);
+
+  void passed();
+
+
 }
