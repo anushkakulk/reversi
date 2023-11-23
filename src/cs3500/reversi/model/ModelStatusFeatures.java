@@ -12,4 +12,9 @@ public interface ModelStatusFeatures {
   void handlePlayerChange(ReversiPiece currPlayer);
 
 
+  /**
+   * Handles the model's notification that the game is over.
+   */
+  void handleGameOver();
+
 }

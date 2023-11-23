@@ -14,7 +14,6 @@ import cs3500.reversi.model.ReversiModel;
 public class ReversiGUIView extends JFrame implements ReversiView, PlayerActionFeatures {
   private final static int cellWidth = 100;
   private final static int cellHeight = 100;
-
   private final ReversiPanel panel;
 
 
@@ -66,9 +65,13 @@ public class ReversiGUIView extends JFrame implements ReversiView, PlayerActionF
   }
 
   @Override
-  public void handleInvalidOperation(String message) {
+  public void displayMessage(String message) {
     JOptionPane.showMessageDialog(this, message,
             "Invalid Move", JOptionPane.ERROR_MESSAGE);
   }
 
+  @Override
+  public void displayTitle(String titleMessage) {
+    this.setTitle("Reversi Game: " + titleMessage);
+  }
 }

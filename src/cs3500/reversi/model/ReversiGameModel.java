@@ -496,9 +496,16 @@ public class ReversiGameModel implements ReversiModel {
       } else {
         this.gameStatus = GameStatus.WON;
       }
+      notifyGameEnd();
     }
   }
 
+
+  private void notifyGameEnd() {
+    for (ModelStatusFeatures listener : this.listeners) {
+      listener.handleGameOver();
+    }
+  }
 
   private void notifyTurn() {
     for (ModelStatusFeatures listener : this.listeners) {

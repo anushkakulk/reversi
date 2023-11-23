@@ -14,9 +14,14 @@ public interface ReversiView extends SimpleReversiView {
   void update();
 
   /**
-   * manages an invalid operation for the view.
-   * @param message
+   * prints out a message about the game state for the view.
+   * @param message some message about the gamestate
    */
-  void handleInvalidOperation(String message);
+  void displayMessage(String message);
 
+  /**
+   * prints out a message for the title of  the view.
+   * @param titleMessage some message about the title
+   */
+  void displayTitle(String titleMessage);
 }
