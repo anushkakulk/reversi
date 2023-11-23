@@ -7,7 +7,7 @@ import cs3500.reversi.model.Tile;
 /**
  * Represents the Textual representation of a Game of Reversi.
  */
-public class ReversiTextualView implements ReversiView {
+public class ReversiTextualView implements SimpleReversiView {
   private final ReversiModel model;
 
 
@@ -53,6 +53,5 @@ public class ReversiTextualView implements ReversiView {
     }
     return sb.toString();
   }
-
 
 }

@@ -60,7 +60,7 @@ public class ReversiPosn {
    * @return a ReversiPosn that is the best destination to move to out of the given possible moves,
    *                    ONLY IF the strategy found at least one valid move.
    */
-  public static Optional<ReversiPosn> findBestMove(Map<ReversiPosn, Integer> possibleMoves) {
+  public static Optional<IPlayerMove> findBestMove(Map<ReversiPosn, Integer> possibleMoves) {
     if (!possibleMoves.isEmpty()) {
       int maxTilesCaptured = Collections.max(possibleMoves.values());
       List<ReversiPosn> bestMoves = new ArrayList<>();
@@ -72,7 +72,7 @@ public class ReversiPosn {
       }
 
       // gets the uppermost-leftmost position from the best moves
-      return Optional.of(findUppermostLeftmostPosition(bestMoves));
+      return Optional.of(new Move(findUppermostLeftmostPosition(bestMoves)));
     } else {
       return Optional.empty();
     }

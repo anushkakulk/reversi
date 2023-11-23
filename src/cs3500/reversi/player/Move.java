@@ -24,6 +24,10 @@ public class Move implements IPlayerMove {
     model.move(posn.q, posn.r, posn.s);
   }
 
+  @Override
+  public void notifyPlayer(Player p) {
+    p.notifyMoveChosen(posn.q, posn.r, posn.s);
+  }
 
   @Override
   public int hashCode() {

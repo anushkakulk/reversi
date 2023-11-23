@@ -4,62 +4,71 @@ import java.awt.Dimension;
 import java.awt.BorderLayout;
 import java.util.Objects;
 
-import javax.swing.JFrame;
-import javax.swing.WindowConstants;
+import javax.swing.*;
 
-import cs3500.reversi.model.ReadOnlyReversiModel;
+import cs3500.reversi.model.ReversiModel;
 
 /**
  * The Gui Frame for visually displaying a game of Reversi.
  */
-public class ReversiGUIView extends JFrame implements ICanvasEvent {
+public class ReversiGUIView extends JFrame implements ReversiView, PlayerActionFeatures {
   private final static int cellWidth = 100;
   private final static int cellHeight = 100;
+
+  private final ReversiPanel panel;
+
 
   /**
    * Creates the gui view with a given read only reversi model.
    *
    * @param model a model for a game of Reversi, with only observation methods.
    */
-  public ReversiGUIView(ReadOnlyReversiModel model) {
+  public ReversiGUIView(ReversiModel model) {
     Objects.requireNonNull(model);
     int boardWidth = model.getHexSideLength() * 3 / 2 * cellWidth;
     int boardHeight = model.getHexSideLength() * 3 / 2 * cellHeight;
-
     setPreferredSize(new Dimension(boardWidth, boardHeight));
     setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     setResizable(true);
     setLocationRelativeTo(null);
-    ReversiPanel canvas = new ReversiPanel(model, boardWidth, boardHeight);
-    canvas.addPanelListener(this);
-    getContentPane().add(canvas, BorderLayout.CENTER);
+    panel = new ReversiPanel(model, boardWidth, boardHeight);
+    panel.addPlayerActionListener(this);
+    getContentPane().add(panel, BorderLayout.CENTER);
 
-    add(canvas);
+    add(panel);
     pack();
     setVisible(true);
   }
 
   @Override
-  public void tileClicked(int q, int r, int s) {
+  public void handleTileClicked  (int q, int r, int s) {
     System.out.println("Tile Clicked: " + q + " " + r + " " + s);
   }
 
   @Override
-  public void moved(int q, int r, int s) {
+  public void handleMoveChosen(int q, int r, int s) {
     System.out.println("Tile Moved to: " + q + " " + r + " " + s);
+
   }
 
   @Override
-  public void passed() {
+  public void handlePassChosen() {
     System.out.println("Player Passed");
   }
 
-  /**
-   * adds a listener for the tile clicks to the list of listeners in the view.
-   *
-   * @param listener a handler for when a tile is clicked in the view.
-   */
-  public void addViewTileClickedListener(ViewTileClickedHandler listener) {
-    // nothing in here for now, will need this when the controller is implemented!
+
+  public void addPlayerActionListener(PlayerActionFeatures listener) {
+    this.panel.addPlayerActionListener(listener);
   }
+
+  public void update(){
+    this.panel.update();
+  }
+
+  @Override
+  public void handleInvalidOperation(String message) {
+    JOptionPane.showMessageDialog(this, message,
+            "Invalid Move", JOptionPane.ERROR_MESSAGE);
+  }
+
 }

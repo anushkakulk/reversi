@@ -18,6 +18,7 @@ public class TestMutatingMethodsReversi {
   @Before
   public void setUp() {
     model = new ReversiGameModel(3);
+    model.startGame();
   }
 
   @Test
@@ -79,6 +80,7 @@ public class TestMutatingMethodsReversi {
   @Test
   public void testMakingAMoveThatFlipsMultipleOpponentTiles() {
     model = new ReversiGameModel(5);
+    model.startGame();
 
     assertSame(model.getPieceAt(1, -1, 0), ReversiPiece.WHITE);
     assertSame(model.getPieceAt(1, -2, 1), ReversiPiece.EMPTY);
@@ -97,6 +99,7 @@ public class TestMutatingMethodsReversi {
   @Test
   public void testInvalidDestinationForMove() {
     model = new ReversiGameModel(4);
+    model.startGame();
     // not a legal move, not adjacent to a line of opponent tiles followed by a same player tile
     Assert.assertThrows(IllegalStateException.class, () -> model.move(-3, 0, 3));
   }
@@ -104,6 +107,7 @@ public class TestMutatingMethodsReversi {
   @Test
   public void testMakingAMoveToNonEmptyTile() {
     model = new ReversiGameModel(5);
+    model.startGame();
     assertSame(model.getPieceAt(1, -1, 0), ReversiPiece.WHITE);
     assertSame(model.getPieceAt(1, -2, 1), ReversiPiece.EMPTY);
     model.move(1, -2, 1); // black validly moved to this position
@@ -114,6 +118,7 @@ public class TestMutatingMethodsReversi {
   @Test
   public void testValidMoveWhereTheresTwoDirectionsToCheckFor() {
     model = new ReversiGameModel(5);
+    model.startGame();
     assertSame(model.getPieceAt(1, -1, 0), ReversiPiece.WHITE);
     assertSame(model.getPieceAt(1, -2, 1), ReversiPiece.EMPTY);
 
@@ -184,6 +189,7 @@ public class TestMutatingMethodsReversi {
   @Test
   public void testFlippingInBothDirectionsAfterValidMove() {
     model = new ReversiGameModel(7);
+    model.startGame();
     // continuously make valid moves that capture one or two of the opponents piece
     model.move(1, -2, 1); // black
     model.move(2, -1, -1); // white

@@ -22,6 +22,10 @@ public class Pass implements IPlayerMove {
   }
 
   @Override
+  public void notifyPlayer(Player p) {
+    p.notifyPassChosen();
+  }
+  @Override
   public int hashCode() {
     return Objects.hash();
   }

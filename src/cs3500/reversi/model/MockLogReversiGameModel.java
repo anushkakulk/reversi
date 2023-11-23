@@ -99,6 +99,16 @@ public class MockLogReversiGameModel implements  ReversiModel {
     log.append("pass");
     actualModel.pass();
   }
+
+  @Override
+  public void startGame() {
+    actualModel.startGame();
+  }
+
+  @Override
+  public void addModelStatusListener(ModelStatusFeatures listener) {
+
+  }
 }
 
 

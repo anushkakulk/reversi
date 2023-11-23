@@ -21,6 +21,7 @@ public class TestObservationMethodsReversi {
   @Before
   public void setUp() {
     model = new ReversiGameModel(3);
+    model.startGame();
   }
 
   @Test
@@ -75,6 +76,7 @@ public class TestObservationMethodsReversi {
   @Test
   public void testGetWinnerIfBothAreEqual() {
     model = new ReversiGameModel(2);
+    model.startGame();
     Assert.assertSame(model.getGameStatus(), GameStatus.PLAYING);
     assertSame(model.getWinner(), ReversiPiece.EMPTY);
     //checks to see if both black and white chips are equal so there is no winner
@@ -179,6 +181,7 @@ public class TestObservationMethodsReversi {
   @Test
   public void testGetCopyInMiddle() {
     model = new ReversiGameModel(7);
+    model.startGame();
     model.move(1, -2, 1); // black
     model.move(2, -1, -1); // white
     model.move(-2, 1, 1); // black
@@ -190,6 +193,7 @@ public class TestObservationMethodsReversi {
 
     Map<Tile, ReversiPiece> copyBoard = model.getBoard();
     ReversiModel m = new ReversiGameModel(copyBoard, 7);
+    m.startGame();
 
     Assert.assertEquals(m.getBoard(), model.getBoard()); // same boards
     // same score

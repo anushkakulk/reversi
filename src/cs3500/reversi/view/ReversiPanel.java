@@ -12,6 +12,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.swing.JPanel;
 
@@ -24,8 +25,8 @@ import cs3500.reversi.model.ReversiPiece;
  */
 public class ReversiPanel extends JPanel implements MouseListener, KeyListener {
   private final ReadOnlyReversiModel gameModel;
-  private final List<HexTile> hexTiles;
-  private final List<ICanvasEvent> listeners;
+  private List<HexTile> hexTiles;
+  private final List<PlayerActionFeatures> listeners;
   private HexTile selectedHexTile;
   private boolean cellSelected = false;
   private int hexRadius;
@@ -42,7 +43,7 @@ public class ReversiPanel extends JPanel implements MouseListener, KeyListener {
     setPreferredSize(new Dimension(panelWidth * 100, panelHeight * 100));
     this.gameModel = model;
     this.hexRadius = 20; // TODO, make this size change with model.hexSideLength!
-    this.hexTiles = createHexTiles(model);
+    updateHextiles(model);
     addMouseListener(this);
     addKeyListener(this);
     selectedHexTile = new HexTile(-1, -1, -1, model.getHexSideLength());
@@ -51,31 +52,31 @@ public class ReversiPanel extends JPanel implements MouseListener, KeyListener {
     requestFocusInWindow();
   }
 
-  public void addPanelListener(ICanvasEvent listener) {
-    this.listeners.add(listener);
+  public void addPlayerActionListener(PlayerActionFeatures listener) {
+    this.listeners.add(Objects.requireNonNull(listener));
   }
 
-  private void emitTileClick(int q, int r, int s) {
-    for (ICanvasEvent e : listeners) {
-      e.tileClicked(q, r, s);
+  private void notifyTileClicked(int q, int r, int s) {
+    for (PlayerActionFeatures e : listeners) {
+      e.handleTileClicked(q, r, s);
     }
   }
 
-  private void emitTileMoved(int q, int r, int s) {
-    for (ICanvasEvent e : listeners) {
-      e.moved(q, r, s);
+  private void notifyMoveChosen(int q, int r, int s) {
+    for (PlayerActionFeatures e : listeners) {
+      e.handleMoveChosen(q, r, s);
     }
   }
 
-  private void emitPass() {
-    for (ICanvasEvent e : listeners) {
-      e.passed();
+  private void notifyPassChosen() {
+    for (PlayerActionFeatures e : listeners) {
+      e.handlePassChosen();
     }
   }
 
   // creates a list of hextiles (the view's tiles), with one hextile corresponsing to every tile
   // in the model.
-  private List<HexTile> createHexTiles(ReadOnlyReversiModel model) {
+  private void updateHextiles(ReadOnlyReversiModel model) {
     List<HexTile> tiles = new ArrayList<>();
     //int hexRadius = 20;
 
@@ -93,7 +94,7 @@ public class ReversiPanel extends JPanel implements MouseListener, KeyListener {
       }
     }
 
-    return tiles;
+   this.hexTiles = tiles;
   }
 
 
@@ -106,6 +107,11 @@ public class ReversiPanel extends JPanel implements MouseListener, KeyListener {
     for (HexTile hexTile : hexTiles) {
       hexTile.draw(g2d); // draw all the tiles
     }
+  }
+
+  public void update() {
+    this.updateHextiles(gameModel);
+    this.repaint();
   }
 
 
@@ -164,7 +170,7 @@ public class ReversiPanel extends JPanel implements MouseListener, KeyListener {
     for (HexTile hexTile : hexTiles) {
       if (hexTile.containsPoint(pointClicked)) {
         cellClicked = true;
-        emitTileClick(hexTile.getQ(), hexTile.getR(), hexTile.getS());
+        notifyTileClicked(hexTile.getQ(), hexTile.getR(), hexTile.getS());
         if (cellSelected) {
           // check if the click is for the tile already highlighted
           if (selectedHexTile == hexTile) {
@@ -226,20 +232,19 @@ public class ReversiPanel extends JPanel implements MouseListener, KeyListener {
   public void keyPressed(KeyEvent e) {
     int keyCode = e.getKeyCode();
 
-    if (cellSelected) {
-      if (keyCode == KeyEvent.VK_ENTER) {
-        emitTileMoved( selectedHexTile.getQ(), selectedHexTile.getR() , selectedHexTile.getS());
+    if (cellSelected  && keyCode == KeyEvent.VK_ENTER) {
+        notifyMoveChosen( selectedHexTile.getQ(), selectedHexTile.getR() , selectedHexTile.getS());
         cellSelected = false;
         selectedHexTile.setColor(Color.GRAY);
         repaint();
-      } else if (keyCode == KeyEvent.VK_SPACE) {
-        emitPass();
+    } else if (keyCode == KeyEvent.VK_SPACE) {
+        notifyPassChosen();
         cellSelected = false;
         selectedHexTile.setColor(Color.GRAY);
         repaint();
       }
     }
-  }
+
 
   @Override
   public void keyReleased(KeyEvent e) {

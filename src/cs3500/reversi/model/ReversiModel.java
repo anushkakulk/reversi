@@ -1,5 +1,7 @@
 package cs3500.reversi.model;
 
+import cs3500.reversi.controller.IReversiController;
+
 /**
  * Represents the primary model interface for playing a game of Reversi.
  */
@@ -26,5 +28,18 @@ public interface ReversiModel extends ReadOnlyReversiModel {
    * switches to the next player's turn.
    */
   void pass();
+
+  /**
+   * Begins the game of Reversi. no plays can occur unless this method is called at the beginning.
+   */
+  void startGame();
+
+
+  /**
+   * Adds a listener for model status changes.
+   * @param listener a modelStatusFeatures listener, that is waiting for
+   *                notifications from the model.
+   */
+  void addModelStatusListener(ModelStatusFeatures listener);
 
 }

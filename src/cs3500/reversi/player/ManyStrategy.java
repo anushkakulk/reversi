@@ -24,13 +24,13 @@ public class ManyStrategy implements IPlayerMoveStrategy {
 
 
   @Override
-  public Optional<ReversiPosn> playStrategy(ReadOnlyReversiModel model, ReversiPiece piece) {
+  public Optional<IPlayerMove> playStrategy(ReadOnlyReversiModel model, ReversiPiece piece) {
     for (IPlayerMoveStrategy strat : this.strategyList) {
-      Optional<ReversiPosn> move = strat.playStrategy(model, piece);
+      Optional<IPlayerMove> move = strat.playStrategy(model, piece);
       if (move.isPresent()) {
         return move; // returns the first posn found
       }
     }
-    return Optional.empty();  // none of the strats returned a move!
+    return Optional.of(new Pass());  // none of the strats returned a move!
   }
 }

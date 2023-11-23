@@ -22,9 +22,11 @@ public class TestReversiView {
   public void setUp() {
     modelSize7 = new ReversiGameModel(7);
     viewSize7 = new ReversiTextualView(modelSize7);
+    modelSize7.startGame();
 
     modelSize3 = new ReversiGameModel(3);
     viewSize3 = new ReversiTextualView(modelSize3);
+    modelSize3.startGame();
   }
 
   @Test

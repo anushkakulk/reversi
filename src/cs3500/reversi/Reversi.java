@@ -1,7 +1,14 @@
 package cs3500.reversi;
 
+import cs3500.reversi.controller.IReversiController;
+import cs3500.reversi.controller.ReversiController;
 import cs3500.reversi.model.ReversiGameModel;
 import cs3500.reversi.model.ReversiModel;
+import cs3500.reversi.model.ReversiPiece;
+import cs3500.reversi.player.CaptureMostStrategy;
+import cs3500.reversi.player.HumanStrategy;
+import cs3500.reversi.player.Player;
+import cs3500.reversi.player.Strategy;
 import cs3500.reversi.view.ReversiGUIView;
 
 /**
@@ -14,21 +21,13 @@ public final class Reversi {
    */
   public static void main(String[] args) {
     ReversiModel model = new ReversiGameModel(6);
-    ReversiGUIView view = new ReversiGUIView(model);
-    view.setVisible(true);
+    ReversiGUIView view1 = new ReversiGUIView(model);
+    ReversiGUIView view2 = new ReversiGUIView(model);
+    Player human1 = new Player(new Strategy(new HumanStrategy()), ReversiPiece.BLACK);
+    IReversiController controller = new ReversiController(model, human1, view1);
+    Player human = new Player(new Strategy(new CaptureMostStrategy()), ReversiPiece.WHITE);
+    IReversiController controller2 = new ReversiController(model, human, view2);
+    model.startGame();
+
   }
 }
-
-
-// play to a non trivial point in the game, and then start the view.
-//    model.move(1, -2, 1); // black
-//    model.move(2, -1, -1); // white
-//    model.move(-2, 1, 1); // black
-//    model.move(1, -3, 2); // white
-//    model.move(1, 1, -2); // black
-//    model.move(-1, 2, -1); // white
-//    model.move(2, -3, 1); // black
-//    model.move(-1, -1, 2); // white
-//    model.pass(); // black
-//    model.move(3, -4, 1);// white
-//    model.move(4, -5, 1);// black

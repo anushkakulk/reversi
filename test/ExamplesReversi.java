@@ -8,7 +8,7 @@ import cs3500.reversi.model.ReversiModel;
 import cs3500.reversi.model.ReversiPiece;
 import cs3500.reversi.model.Tile;
 import cs3500.reversi.view.ReversiTextualView;
-import cs3500.reversi.view.ReversiView;
+import cs3500.reversi.view.SimpleReversiView;
 
 import static org.junit.Assert.assertSame;
 
@@ -18,11 +18,12 @@ import static org.junit.Assert.assertSame;
  */
 public class ExamplesReversi {
   private ReversiModel model;
-  private ReversiView view;
+  private SimpleReversiView view;
 
   @Before
   public void setup() {
     model = new ReversiGameModel(3);
+    model.startGame();
     view = new ReversiTextualView(model);
   }
 
@@ -126,6 +127,7 @@ public class ExamplesReversi {
 
     //Game ended in tie
     model = new ReversiGameModel(2);
+    model.startGame();
     model.pass();
     Assert.assertSame(GameStatus.STALEMATE, model.getGameStatus());
     //Game is over
@@ -142,6 +144,7 @@ public class ExamplesReversi {
 
     //or when you do not have a valid move
     model = new ReversiGameModel(2);
+    model.startGame();
     Assert.assertThrows(IllegalStateException.class, () -> model.move(0, 0, 0));
     model.pass();
     Assert.assertSame(ReversiPiece.WHITE, model.getCurrentPlayer());

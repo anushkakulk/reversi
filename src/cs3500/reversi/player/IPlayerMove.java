@@ -14,4 +14,9 @@ public interface IPlayerMove {
    *              via the controller)
    */
   void run(ReversiModel model);
+
+  /**
+   * Notifies the given player of this IPlayerMove.
+   */
+  void notifyPlayer(Player p);
 }

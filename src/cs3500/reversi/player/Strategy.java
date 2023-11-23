@@ -29,9 +29,9 @@ public class Strategy {
    * @return an IPlayerMove(either a pass or move object), which the move to play next.
    */
   public IPlayerMove chooseMove(ReadOnlyReversiModel board, ReversiPiece who) {
-    Optional<ReversiPosn> guess = this.attempt.playStrategy(board, who);
+    Optional<IPlayerMove> guess = this.attempt.playStrategy(board, who);
     if (guess.isPresent()) {
-      return new Move(guess.get());
+      return guess.get();
     }
     return new Pass();
   }

@@ -1,12 +1,22 @@
 package cs3500.reversi.view;
 
-/**
- * Represents the primary view interface for viewing a game of Reversi.
- */
-public interface ReversiView {
+public interface ReversiView extends SimpleReversiView {
+  /**
+   * adds a listener for any player actions to the view.
+   *
+   * @param listener a handler that will listen and handle any player actions.
+   */
+  void addPlayerActionListener(PlayerActionFeatures listener);
 
   /**
-   * Renders the current state of the ReversiModel.
+   * Updates the view based on the state of the model.
    */
-  String toString();
+  void update();
+
+  /**
+   * manages an invalid operation for the view.
+   * @param message
+   */
+  void handleInvalidOperation(String message);
+
 }

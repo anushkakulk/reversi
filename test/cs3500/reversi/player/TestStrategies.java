@@ -25,7 +25,7 @@ public class TestStrategies {
   @Before
   public void setUp() {
     m = new ReversiGameModel(6);
-
+    m.startGame();
   }
 
   @Test
