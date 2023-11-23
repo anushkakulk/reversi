@@ -21,14 +21,25 @@ public final class Reversi {
    * @param args input to main.
    */
   public static void main(String[] args) {
-    if (args.length < 2) {
-      throw new IllegalArgumentException("Cannot begin a game with invalid inputs for players");
-    }
+    // TODO THIS IS THE MAIN VERSION TO USE FOR THE ACTUAL SUBMISSION (works with arg parsing)
+//    if (args.length < 2) {
+//      throw new IllegalArgumentException("Cannot begin a game with invalid inputs for players");
+//    }
+//    ReversiModel model = new ReversiGameModel(6);
+//    ReversiGUIView view1 = new ReversiGUIView(model);
+//    ReversiGUIView view2 = new ReversiGUIView(model);
+//    Player p1 = ReversiArgParser.parsePlayers(args).getPlayer1();
+//    Player p2 = ReversiArgParser.parsePlayers(args).getPlayer2();
+//    IReversiController controller = new ReversiController(model, p1, view1);
+//    IReversiController controller2 = new ReversiController(model, p2, view2);
+//    model.startGame();
+
+    // TODO for the sake of playing the game and trying stuff out, use this
     ReversiModel model = new ReversiGameModel(6);
     ReversiGUIView view1 = new ReversiGUIView(model);
     ReversiGUIView view2 = new ReversiGUIView(model);
-    Player p1 = ReversiArgParser.parsePlayers(args).getPlayer1();
-    Player p2 = ReversiArgParser.parsePlayers(args).getPlayer2();
+    Player p1 = new Player(new Strategy(new HumanStrategy()), ReversiPiece.BLACK);
+    Player p2 = new Player(new Strategy(new CaptureMostStrategy()), ReversiPiece.WHITE);
     IReversiController controller = new ReversiController(model, p1, view1);
     IReversiController controller2 = new ReversiController(model, p2, view2);
     model.startGame();
