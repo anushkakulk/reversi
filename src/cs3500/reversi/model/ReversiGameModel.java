@@ -8,6 +8,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
+import cs3500.reversi.controller.ModelStatusFeatures;
+
 /**
  * An implementation of the Reversi game model that represents the game state and enforces rules.
  * Played on a hexagonal grid with given side length, players take turns making moves,

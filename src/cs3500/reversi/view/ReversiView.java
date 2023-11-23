@@ -1,5 +1,7 @@
 package cs3500.reversi.view;
 
+import cs3500.reversi.controller.SimpleReversiView;
+
 public interface ReversiView extends SimpleReversiView {
   /**
    * adds a listener for any player actions to the view.

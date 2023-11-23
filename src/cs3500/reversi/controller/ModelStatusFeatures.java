@@ -1,4 +1,6 @@
-package cs3500.reversi.model;
+package cs3500.reversi.controller;
+
+import cs3500.reversi.model.ReversiPiece;
 
 /**
  * Represents an event/change that occurs to the model.

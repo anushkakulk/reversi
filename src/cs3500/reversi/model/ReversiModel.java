@@ -1,6 +1,6 @@
 package cs3500.reversi.model;
 
-import cs3500.reversi.controller.IReversiController;
+import cs3500.reversi.controller.ModelStatusFeatures;
 
 /**
  * Represents the primary model interface for playing a game of Reversi.

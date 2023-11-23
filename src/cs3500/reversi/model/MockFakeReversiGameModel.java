@@ -2,6 +2,8 @@ package cs3500.reversi.model;
 
 import java.util.Map;
 
+import cs3500.reversi.controller.ModelStatusFeatures;
+
 /**
  * Represents a Mock for a ReversiGameModel that will return incorrect answers
  * for some of the ReversiModel methods to test that strategies will work as intended.

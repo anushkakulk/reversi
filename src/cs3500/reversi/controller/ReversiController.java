@@ -2,7 +2,6 @@ package cs3500.reversi.controller;
 
 import java.util.Objects;
 
-import cs3500.reversi.model.ModelStatusFeatures;
 import cs3500.reversi.model.ReversiModel;
 import cs3500.reversi.model.ReversiPiece;
 import cs3500.reversi.player.Player;
@@ -60,7 +59,8 @@ public class ReversiController implements IReversiController, PlayerActionFeatur
     handlePlayerAction(model::pass);
   }
 
-  private void handlePlayerAction(Runnable action) {
+  @Override
+  public void handlePlayerAction(Runnable action) {
     if (isMyTurn && !model.isGameOver()) {
       try {
         action.run();

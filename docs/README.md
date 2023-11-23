@@ -24,15 +24,23 @@ The codebase is organized into the following packages:
     - GameStatus: Enum representing game status options (PLAYING, WON, STALEMATE).
 - view: this package holds components responsible for rendering the game's visual representation.
   - view Package:
-    - ReversiView: Interface for viewing a game of Reversi.
-    - ReversiTextualView: A class that implements the ReversiView interface to provide a textual 
+    - ReversiView: Interface for viewing a full game of Reversi. 
+    - SimpleReversiView: Interface for viewing a simple game of Reversi.
+    - ReversiTextualView: A class that implements the SimpleReversiView interface to provide a textual 
       representation of the Reversi game.
-    - ReversiGUIView: An extension of JFrame to serve as our window for visually viewing the game
+    - ReversiGUIView: An extension of JFrame to serve as our window for visually viewing the game.
     - ReversiPanel: An extension of JPanel to serve as our canvas for visually viewing and 
-      interacting with the game
+      interacting with the game.
     - HexTile: Represents the gui representation of a tile from the model class. Has the ability to
       draw itself on the canvas.
-    - ICanvasEvent: Represents any event that can happen on the canvas
+- controller: this package contains components responsible for communication resulting in game play
+  between the model view and players.
+  - controller Package:
+    - PlayerActionFeatures: Represents any event that can happen on the canvas.
+    - ModelStatusFeatures: Features interface for handling any changes to model status.
+    - IReversiController: Interface for reconciling between model, view/player. 
+    - ReversiController: Implementation of the controller that follows the "is-a" relationship with 
+      the features, listening for and executing changes to the model and view
 - player: contains components for making game play decisions, like a Player interface, a 
 concrete player class, and interfaces and classes to work to represent a Player's next move and 
 strategy.
@@ -193,7 +201,6 @@ ReversiPlayer AIEasy = new Player(captureMost, ReversiPiece.BLACK);
 // this method call will return the move made by the captureMost strategy
 IPlayerMove nextMove = AIEasy.getPlayerDecision(model); 
 
-nextMove.run();  // this will executive the move on the model. 
 
 ```
 
@@ -244,7 +251,6 @@ Here's an example of how to create and view the model using the gui view:
  ReversiModel model = new ReversiGameModel(6);
  
  ReversiGUIView view = new ReversiGUIView(model);
- view.setVisible(true);
  // now, the user can interact with the board (click tiles and enter/space) and resize the window
 ```
 
