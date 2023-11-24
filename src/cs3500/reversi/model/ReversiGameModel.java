@@ -126,7 +126,7 @@ public class ReversiGameModel implements ReversiModel {
     List<Tile> neighborsOccupiedByOtherPlayer = findNeighborsOccupiedByOpponent(allValidNeighbors,
             this.getCurrentPlayer()); // get all tiles with opponent pieces neighboring the dest
     if (neighborsOccupiedByOtherPlayer.isEmpty()) {
-      throw new IllegalStateException("Invalid move, cannot move to given position as it is" +
+      throw new IllegalStateException("Invalid move, cannot move to given position as it is " +
               "not a legal empty cell");
     }
     flipTiles(neighborsOccupiedByOtherPlayer, dest);
