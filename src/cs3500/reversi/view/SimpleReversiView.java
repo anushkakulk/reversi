@@ -1,4 +1,4 @@
-package cs3500.reversi.controller;
+package cs3500.reversi.view;
 
 /**
  * Represents the primary view interface for viewing a game of Reversi.

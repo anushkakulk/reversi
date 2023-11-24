@@ -1,6 +1,6 @@
 package cs3500.reversi.view;
 
-import cs3500.reversi.controller.SimpleReversiView;
+import cs3500.reversi.controller.PlayerActionFeatures;
 
 public interface ReversiView extends SimpleReversiView {
   /**

@@ -8,7 +8,7 @@ import cs3500.reversi.model.ReversiModel;
 import cs3500.reversi.model.ReversiPiece;
 import cs3500.reversi.model.Tile;
 import cs3500.reversi.view.ReversiTextualView;
-import cs3500.reversi.controller.SimpleReversiView;
+import cs3500.reversi.view.SimpleReversiView;
 
 import static org.junit.Assert.assertSame;
 

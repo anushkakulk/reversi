@@ -1,4 +1,4 @@
-package cs3500.reversi.view;
+package cs3500.reversi.controller;
 
 /**
  * Represents any event that occurs on the canvas.

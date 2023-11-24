@@ -7,7 +7,7 @@ import java.util.Objects;
 
 import cs3500.reversi.model.ReadOnlyReversiModel;
 import cs3500.reversi.model.ReversiPiece;
-import cs3500.reversi.view.PlayerActionFeatures;
+import cs3500.reversi.controller.PlayerActionFeatures;
 
 /**
  * Represents a Player of Reversi Each Player plays a certain strategy and has a piece associated

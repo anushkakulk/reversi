@@ -6,6 +6,7 @@ import java.util.Objects;
 
 import javax.swing.*;
 
+import cs3500.reversi.controller.PlayerActionFeatures;
 import cs3500.reversi.model.ReversiModel;
 
 /**

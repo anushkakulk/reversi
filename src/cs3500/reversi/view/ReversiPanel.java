@@ -16,6 +16,7 @@ import java.util.Objects;
 
 import javax.swing.JPanel;
 
+import cs3500.reversi.controller.PlayerActionFeatures;
 import cs3500.reversi.model.ReadOnlyReversiModel;
 import cs3500.reversi.model.ReversiPiece;
 

@@ -1,6 +1,5 @@
 package cs3500.reversi.view;
 
-import cs3500.reversi.controller.SimpleReversiView;
 import cs3500.reversi.model.ReversiModel;
 import cs3500.reversi.model.ReversiPiece;
 import cs3500.reversi.model.Tile;

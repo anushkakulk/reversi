@@ -2,7 +2,7 @@ package cs3500.reversi.player;
 
 import cs3500.reversi.model.ReadOnlyReversiModel;
 import cs3500.reversi.model.ReversiPiece;
-import cs3500.reversi.view.PlayerActionFeatures;
+import cs3500.reversi.controller.PlayerActionFeatures;
 
 /**
  * Represents the interface for a Player of Reversi.

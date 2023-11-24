@@ -5,7 +5,6 @@ import java.util.Objects;
 import cs3500.reversi.model.ReversiModel;
 import cs3500.reversi.model.ReversiPiece;
 import cs3500.reversi.player.Player;
-import cs3500.reversi.view.PlayerActionFeatures;
 import cs3500.reversi.view.ReversiView;
 
 public class ReversiController implements IReversiController, PlayerActionFeatures, ModelStatusFeatures {
