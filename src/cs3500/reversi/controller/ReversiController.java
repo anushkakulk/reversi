@@ -6,7 +6,9 @@ import cs3500.reversi.model.ReversiModel;
 import cs3500.reversi.model.ReversiPiece;
 import cs3500.reversi.player.Player;
 import cs3500.reversi.view.ReversiView;
-
+/**
+ * Represents a controller for a Reversi game.
+ */
 public class ReversiController implements IReversiController, PlayerActionFeatures, ModelStatusFeatures {
   private final Player player;
   private final ReversiModel model;
