@@ -109,7 +109,7 @@ public class MockLogReversiGameModel implements  ReversiModel {
 
   @Override
   public void addModelStatusListener(ModelStatusFeatures listener) {
-
+    this.actualModel.addModelStatusListener(listener);
   }
 }
 

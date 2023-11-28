@@ -4,7 +4,9 @@ import java.awt.Dimension;
 import java.awt.BorderLayout;
 import java.util.Objects;
 
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.WindowConstants;
+import javax.swing.JOptionPane;
 
 import cs3500.reversi.controller.PlayerActionFeatures;
 import cs3500.reversi.model.ReversiModel;
@@ -13,8 +15,8 @@ import cs3500.reversi.model.ReversiModel;
  * The Gui Frame for visually displaying a game of Reversi.
  */
 public class ReversiGUIView extends JFrame implements ReversiView, PlayerActionFeatures {
-  private final static int cellWidth = 100;
-  private final static int cellHeight = 100;
+  private static final int cellWidth = 100;
+  private static final int cellHeight = 100;
   private final ReversiPanel panel;
 
 
@@ -41,7 +43,7 @@ public class ReversiGUIView extends JFrame implements ReversiView, PlayerActionF
   }
 
   @Override
-  public void handleTileClicked  (int q, int r, int s) {
+  public void handleTileClicked(int q, int r, int s) {
     System.out.println("Tile Clicked: " + q + " " + r + " " + s);
   }
 
@@ -61,7 +63,7 @@ public class ReversiGUIView extends JFrame implements ReversiView, PlayerActionF
     this.panel.addPlayerActionListener(listener);
   }
 
-  public void update(){
+  public void update() {
     this.panel.update();
   }
 

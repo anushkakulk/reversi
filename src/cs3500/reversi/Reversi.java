@@ -8,7 +8,14 @@ import cs3500.reversi.controller.ReversiController;
 import cs3500.reversi.model.ReversiGameModel;
 import cs3500.reversi.model.ReversiModel;
 import cs3500.reversi.model.ReversiPiece;
-import cs3500.reversi.player.*;
+import cs3500.reversi.player.AvoidNextToCornersStrategy;
+import cs3500.reversi.player.CaptureMostStrategy;
+import cs3500.reversi.player.HumanStrategy;
+import cs3500.reversi.player.IPlayerMoveStrategy;
+import cs3500.reversi.player.ManyStrategy;
+import cs3500.reversi.player.PlayCornersStrategy;
+import cs3500.reversi.player.Player;
+import cs3500.reversi.player.Strategy;
 import cs3500.reversi.view.ReversiGUIView;
 
 /**
@@ -21,28 +28,24 @@ public final class Reversi {
    * @param args input to main.
    */
   public static void main(String[] args) {
-    // TODO THIS IS THE MAIN VERSION TO USE FOR THE ACTUAL SUBMISSION (works with arg parsing)
-//    if (args.length < 2) {
-//      throw new IllegalArgumentException("Cannot begin a game with invalid inputs for players");
-//    }
-//    ReversiModel model = new ReversiGameModel(6);
-//    ReversiGUIView view1 = new ReversiGUIView(model);
-//    ReversiGUIView view2 = new ReversiGUIView(model);
-//    Player p1 = ReversiArgParser.parsePlayers(args).getPlayer1();
-//    Player p2 = ReversiArgParser.parsePlayers(args).getPlayer2();
-//    IReversiController controller = new ReversiController(model, p1, view1);
-//    IReversiController controller2 = new ReversiController(model, p2, view2);
-//    model.startGame();
 
-    // TODO for the sake of playing the game and trying stuff out, use this
+    if (args.length < 2) {
+      throw new IllegalArgumentException("Cannot begin a game with invalid inputs for players");
+    }
+
+
     ReversiModel model = new ReversiGameModel(6);
     ReversiGUIView view1 = new ReversiGUIView(model);
     ReversiGUIView view2 = new ReversiGUIView(model);
-    Player p1 = new Player(new Strategy(new HumanStrategy()), ReversiPiece.BLACK);
-    Player p2 = new Player(new Strategy(new CaptureMostStrategy()), ReversiPiece.WHITE);
+    // here is where it parses command-line args
+    Player p1 = ReversiArgParser.parsePlayers(args).getPlayer1();
+    Player p2 = ReversiArgParser.parsePlayers(args).getPlayer2();
+
     IReversiController controller = new ReversiController(model, p1, view1);
     IReversiController controller2 = new ReversiController(model, p2, view2);
     model.startGame();
+
+
   }
 
   /**
@@ -50,14 +53,14 @@ public final class Reversi {
    */
   private static class ReversiArgParser {
     private int argIndex;
-    private Player player1;
-    private Player player2;
+    private final Player player1;
+    private final Player player2;
 
     /**
      * Creates a helper parser objects for Reversi.
      * @param args the arguments to read.
      */
-    public ReversiArgParser(String[] args) {
+    private ReversiArgParser(String[] args) {
       this.argIndex = 0;
       IPlayerMoveStrategy strat1 = getStrategy(args);
       this.argIndex += 1;
@@ -83,10 +86,9 @@ public final class Reversi {
         case "MANYSTRATEGY":
           this.argIndex += 1;
           int numStrategies = Integer.parseInt(args[this.argIndex]);
-          this.argIndex += 1;
           List<IPlayerMoveStrategy> all = new ArrayList<>();
           for (int i = 0; i < numStrategies; i++) {
-            this.argIndex += i;
+            this.argIndex += 1;
             all.add(getStrategy(args));
           }
           return new ManyStrategy(all);
@@ -95,10 +97,18 @@ public final class Reversi {
       }
     }
 
+    /**
+     * Gets the constructed player object for player1 from the parser.
+     * @return a player.
+     */
     public Player getPlayer1() {
       return this.player1;
     }
 
+    /**
+     * Gets the constructed player object for player2 from the parser.
+     * @return a player.
+     */
     public Player getPlayer2() {
       return this.player2;
     }

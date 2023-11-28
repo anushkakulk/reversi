@@ -6,15 +6,25 @@ import cs3500.reversi.model.ReversiModel;
 import cs3500.reversi.model.ReversiPiece;
 import cs3500.reversi.player.Player;
 import cs3500.reversi.view.ReversiView;
+
 /**
  * Represents a controller for a Reversi game.
  */
-public class ReversiController implements IReversiController, PlayerActionFeatures, ModelStatusFeatures {
+public class ReversiController implements IReversiController, PlayerActionFeatures,
+        ModelStatusFeatures {
   private final Player player;
   private final ReversiModel model;
   private final ReversiView view;
   private boolean isMyTurn = false;
 
+  /**
+   * Creates an instance of a Reversi Controller that handles interaction and updates between the
+   * model and the view for the given player.
+   *
+   * @param model  the model that this controller is listening to for notifications.
+   * @param player the player this controller is for/listening to for notifications.
+   * @param view   the view this controller is listening to for notifications .
+   */
   public ReversiController(ReversiModel model, Player player, ReversiView view) {
     this.player = Objects.requireNonNull(player);
     this.model = Objects.requireNonNull(model);
@@ -73,7 +83,7 @@ public class ReversiController implements IReversiController, PlayerActionFeatur
 
   private void updateViewTile() {
     ReversiPiece me = this.player.getPiece();
-    this.view.displayTitle(me + "'s Board. Score = " +
-            model.getScore(me) + ". Turn: " + model.getCurrentPlayer());
+    this.view.displayTitle(me + "'s Board. Score = " + model.getScore(me) + ". Turn: "
+            + model.getCurrentPlayer());
   }
 }

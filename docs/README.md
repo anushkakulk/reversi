@@ -3,11 +3,63 @@
 This codebase is an implementation of the Reversi game,
 complete with a game board, rules keeping, and player management.
 
-## NOTE FOR GRADERS: EXTRA CREDIT
-We successfully implemented and tested a human strategy, strategies 1, 2, and 3, and the ability to
-combine the strategies in any order (using a strategy that takes in a list of strategies and 
-executes them in order (if the first fails, try the second... and so on until all strats in the 
-list have been tried)) from the course website. This is all present in src/cs500.reversi/player.
+
+# Reversi Game Initialization & Playing Guide
+
+To initiate and start a game of Reversi, you need to provide information about the two players you want to engage in the match.
+
+### Guide to Command Line Parsing
+
+Follow this guide for each of the two players:
+
+#### Choosing a Player Type for One Player:
+- For a human player, enter: `human`
+- For an AI player focused on capturing the most pieces, enter: `strategy1`
+- For an AI player avoiding corner spots, enter: `strategy2`
+- For an AI player targeting corner spots, enter: `strategy3`
+- For a custom combination strategy, enter: `manystrategy` followed by the number of strategies 
+(`n`) and the strategy names from `strategy1`, `strategy2`, and `strategy3`.
+
+## Examples of Valid Command Line Inputs:
+
+```
+// NOTE: player1 will always use piece X and player2 will always use piece O
+
+// two human players
+command line input: human human
+
+// player1 is a human, player 2 is an AI playing to capture the most pieces at each turn
+command line input: human strategy1
+
+// player 1 is an AI playing to capture the most pieces at each turn, player 1 is a human
+command line input: strategy1 human
+
+// player 1 is a human, player 2 plays a combination of all strategies in the order 3->2->1
+command line input: human manystrategy 3 strategy3 strategy2 strategy1
+
+// player 1 plays a combination of all strategies in the order 3->2->1, player 2 is a human
+command line input: manystrategy 3 strategy3 strategy2 strategy1 human 
+
+// player 1 is a human, player 2 plays a combination of all strategies in the order 1->2->3
+command line input: human manystrategy 3 strategy1 strategy2 strategy3
+
+// player 1 plays a combination of all strategies in the order 1->2->3, player 2 is a human
+command line input: manystrategy 3 strategy1 strategy2 strategy3 human 
+
+// player 1 plays a combination of strategy 1 and 2, in the order
+// 2->1 (if strategy2 fails to find a move, it tries strategy1), player 2 is a human
+command line input: manystrategy 2  strategy2 strategy1 human 
+
+
+
+```
+
+
+### Interacting with the View for Human Players:
+
+On the human player's view, use the mouse to click on any tile to select that tile 
+(it will highlight blue), then press `enter` to make a move to that selected tile. 
+If you wish to pass your turn, press `spacebar`.
 
 ## Source Organization
 
@@ -41,6 +93,8 @@ The codebase is organized into the following packages:
     - IReversiController: Interface for reconciling between model, view/player. 
     - ReversiController: Implementation of the controller that follows the "is-a" relationship with 
       the features, listening for and executing changes to the model and view
+    - IEmitPlayerActions: Interface for defining the notifications that can be sent by anything to
+      listeners of player actions.
 - player: contains components for making game play decisions, like a Player interface, a 
 concrete player class, and interfaces and classes to work to represent a Player's next move and 
 strategy.
@@ -247,7 +301,7 @@ Represents any event that can happen on the canvas
 Here's an example of how to create and view the model using the gui view:
 
 ```
-// makes a game with a hexagonal board of side length 6
+ // makes a game with a hexagonal board of side length 6
  ReversiModel model = new ReversiGameModel(6);
  
  ReversiGUIView view = new ReversiGUIView(model);
@@ -280,6 +334,39 @@ System.out.println(view.toString());
 
 ```
 
+
+# Controller
+
+## Key Components
+
+### IReversiController Interface
+
+The Reversi interface represents the controller interface for playing a game of Reversi. Any 
+implementation of this interface must handle player action to play the game.
+
+### ModelStatusFeatures Interface
+This interface is the "features" interface for the model, where all methods in this interface
+involve handling the notification from the model of a change to the game, such as turn change and 
+the game being over. Listeners of the model will implement in this features interface to observe 
+the model.
+
+### PlayerActionFeatures Interface
+This interface is the "features" interface for both the player (for AI players) and the view 
+(for human players), where all methods in this interface
+involve handling the notification from either the player or the view that of a player action
+that wishes to change the game, such as indicating a player they want to move to a certain tile
+or pass their turn. Listeners for player actions will implement in this features interface to observe
+the model.
+
+### IEmitPlayerActions Interface
+This interface is for classes that emit notifications to the controller about chosen player actions,
+such as the view (for human players) or the player itself (for AI players), defining what 
+notifications should be sent. 
+
+
+### ReversiController Class
+
+
 ## Changes for Part 2 
 
 - added a getScoreMethod in the ReadOnlyModel Interface, since its an
@@ -293,3 +380,22 @@ of a ReversiGameModel. This allows for efficient testing and ensuring difference
 also added a method that returns a copy of the current board, for the same reasons.
 - added a clear explanation of our tile coordinates 
 
+## Changes for Part 3
+- fixed the key press functionality from pt2 to now work with a player action interface that follows the 
+notification/subscriber pattern (it used to just print to command line, now we have a methods
+notifyMoveChosen and notifyPassChosen that get called when a tile selected + `enter` and `spacebar`
+is pressed, respectively
+- made an update method for the JPanel, then when called, will repaint the view's board. 
+- created a new type of IPlayerMove, called `HumanChoice` that gets returned from the human 
+strategy's playStrategy method since the Optional.of(ReversiPosn) indicates a move and Optional.empty
+indicates a pass. for a human, they won't be using their strategy to determine their next move, they
+would be making that decision through the view, so therefore they need their own representation of 
+their move for their strategy.
+- added more detail to readme about what specific key presses mean.
+
+
+## NOTE FOR GRADERS: EXTRA CREDIT FROM PART 2
+We successfully implemented and tested a human strategy, strategies 1, 2, and 3, and the ability to
+combine the strategies in any order (using a strategy that takes in a list of strategies and
+executes them in order (if the first fails, try the second... and so on until all strats in the
+list have been tried)) from the course website. This is all present in src/cs500.reversi/player.

@@ -61,7 +61,6 @@ public class ReversiGameModel implements ReversiModel {
   }
 
 
-
   @Override
   public void startGame() {
     this.currentPlayer = ReversiPiece.BLACK;
@@ -120,7 +119,7 @@ public class ReversiGameModel implements ReversiModel {
 
   @Override
   public void move(int q, int r, int s) {
-    validateConditionsToMove(q,  r,  s);
+    validateConditionsToMove(q, r, s);
     Tile dest = new Tile(q, r, s);
     List<Tile> allValidNeighbors = getValidNeighbors(dest); // get all neighbors of dest in board
     List<Tile> neighborsOccupiedByOtherPlayer = findNeighborsOccupiedByOpponent(allValidNeighbors,
@@ -200,6 +199,7 @@ public class ReversiGameModel implements ReversiModel {
       throw new IllegalStateException("Game is not in play.");
     }
   }
+
   @Override
   public ReversiPiece getCurrentPlayer() {
     return this.currentPlayer;
@@ -502,13 +502,16 @@ public class ReversiGameModel implements ReversiModel {
     }
   }
 
-
+  // INVARIANT: called only when the game is over; this notifies all of this model's listeners
+  // that the game is over and to handle the situation.
   private void notifyGameEnd() {
     for (ModelStatusFeatures listener : this.listeners) {
       listener.handleGameOver();
     }
   }
 
+  // INVARIANT: called only when the turn switches; this notifies all of this model's listeners
+  // who the current player is/ whose turn it is.
   private void notifyTurn() {
     for (ModelStatusFeatures listener : this.listeners) {
       listener.handlePlayerChange(this.getCurrentPlayer());

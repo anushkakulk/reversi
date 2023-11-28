@@ -1,8 +1,8 @@
 package cs3500.reversi.view;
 
 import java.awt.Graphics;
-import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Dimension;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -16,6 +16,7 @@ import java.util.Objects;
 
 import javax.swing.JPanel;
 
+import cs3500.reversi.controller.IEmitPlayerActions;
 import cs3500.reversi.controller.PlayerActionFeatures;
 import cs3500.reversi.model.ReadOnlyReversiModel;
 import cs3500.reversi.model.ReversiPiece;
@@ -24,13 +25,13 @@ import cs3500.reversi.model.ReversiPiece;
  * Represents the canvas of our game, and handles any user input (either key or mouse) to the game
  * board and updates it accordingly.
  */
-public class ReversiPanel extends JPanel implements MouseListener, KeyListener {
+public class ReversiPanel extends JPanel implements MouseListener, KeyListener, IEmitPlayerActions {
   private final ReadOnlyReversiModel gameModel;
   private List<HexTile> hexTiles;
   private final List<PlayerActionFeatures> listeners;
   private HexTile selectedHexTile;
   private boolean cellSelected = false;
-  private int hexRadius;
+  private final int hexRadius;
 
   /**
    * Creates a ReversiPanel canvas for the game of Reversi, with a size dependent on the size of
@@ -53,23 +54,38 @@ public class ReversiPanel extends JPanel implements MouseListener, KeyListener {
     requestFocusInWindow();
   }
 
+
+  /**
+   * Adds a listener for player action features to the listener list of this view.
+   *
+   * @param listener something that will listen to the notifications emitted from this view.
+   */
   public void addPlayerActionListener(PlayerActionFeatures listener) {
     this.listeners.add(Objects.requireNonNull(listener));
   }
 
-  private void notifyTileClicked(int q, int r, int s) {
+  /**
+   * Notifies listeners that the tile at the given coords was clicked by a player.
+   *
+   * @param q the chosen tile's q coord.
+   * @param r the chosen tile's r coord.
+   * @param s the chosen tile's s coord.
+   */
+  public void notifyTileClicked(int q, int r, int s) {
     for (PlayerActionFeatures e : listeners) {
       e.handleTileClicked(q, r, s);
     }
   }
 
-  private void notifyMoveChosen(int q, int r, int s) {
+  @Override
+  public void notifyMoveChosen(int q, int r, int s) {
     for (PlayerActionFeatures e : listeners) {
       e.handleMoveChosen(q, r, s);
     }
   }
 
-  private void notifyPassChosen() {
+  @Override
+  public void notifyPassChosen() {
     for (PlayerActionFeatures e : listeners) {
       e.handlePassChosen();
     }
@@ -95,7 +111,7 @@ public class ReversiPanel extends JPanel implements MouseListener, KeyListener {
       }
     }
 
-   this.hexTiles = tiles;
+    this.hexTiles = tiles;
   }
 
 
@@ -110,6 +126,9 @@ public class ReversiPanel extends JPanel implements MouseListener, KeyListener {
     }
   }
 
+  /**
+   * Updates the view based on the status of the game model.
+   */
   public void update() {
     this.updateHextiles(gameModel);
     this.repaint();
@@ -125,7 +144,6 @@ public class ReversiPanel extends JPanel implements MouseListener, KeyListener {
    * (with (0,0) in center, width and height our logical size)
    * into screen coordinates (with (0,0) in upper-left,
    * width and height in pixels).
-   *
    *
    * @return The necessary transformation
    */
@@ -149,7 +167,6 @@ public class ReversiPanel extends JPanel implements MouseListener, KeyListener {
    * (with (0,0) in upper-left, width and height in pixels)
    * into board coordinates (with (0,0) in center, width and height
    * our logical size).
-   *
    *
    * @return The necessary transformation
    */
@@ -233,18 +250,18 @@ public class ReversiPanel extends JPanel implements MouseListener, KeyListener {
   public void keyPressed(KeyEvent e) {
     int keyCode = e.getKeyCode();
 
-    if (cellSelected  && keyCode == KeyEvent.VK_ENTER) {
-        notifyMoveChosen( selectedHexTile.getQ(), selectedHexTile.getR() , selectedHexTile.getS());
-        cellSelected = false;
-        selectedHexTile.setColor(Color.GRAY);
-        repaint();
+    if (cellSelected && keyCode == KeyEvent.VK_ENTER) {
+      notifyMoveChosen(selectedHexTile.getQ(), selectedHexTile.getR(), selectedHexTile.getS());
+      cellSelected = false;
+      selectedHexTile.setColor(Color.GRAY);
+      repaint();
     } else if (keyCode == KeyEvent.VK_SPACE) {
-        notifyPassChosen();
-        cellSelected = false;
-        selectedHexTile.setColor(Color.GRAY);
-        repaint();
-      }
+      notifyPassChosen();
+      cellSelected = false;
+      selectedHexTile.setColor(Color.GRAY);
+      repaint();
     }
+  }
 
 
   @Override

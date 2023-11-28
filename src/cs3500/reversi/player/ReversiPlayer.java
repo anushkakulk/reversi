@@ -1,8 +1,8 @@
 package cs3500.reversi.player;
 
+import cs3500.reversi.controller.PlayerActionFeatures;
 import cs3500.reversi.model.ReadOnlyReversiModel;
 import cs3500.reversi.model.ReversiPiece;
-import cs3500.reversi.controller.PlayerActionFeatures;
 
 /**
  * Represents the interface for a Player of Reversi.
@@ -12,7 +12,6 @@ public interface ReversiPlayer {
   /**
    * This method is where the player decides what the next move for their gameplay is, where they
    * can either Pass or Move.
-   *
    */
   IPlayerMove getPlayerDecision(ReadOnlyReversiModel model);
 
@@ -21,9 +20,11 @@ public interface ReversiPlayer {
    */
   ReversiPiece getPiece();
 
-   /**
+  /**
+   * Adds a listener for player actions (like a move or pass being chosen) for a player.
    *
-   * @param listener
+   * @param listener some PlayerActionFeatures that will listen to notifications emitted by this
+   *                 player
    */
-   void addPlayerActionListener(PlayerActionFeatures listener);
+  void addPlayerActionListener(PlayerActionFeatures listener);
 }

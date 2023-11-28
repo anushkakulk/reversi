@@ -115,7 +115,7 @@ public class MockFakeReversiGameModel implements ReversiModel {
 
   @Override
   public void addModelStatusListener(ModelStatusFeatures listener) {
-
+    this.actualModel.addModelStatusListener(listener);
   }
 }
 

@@ -2,6 +2,9 @@ package cs3500.reversi.view;
 
 import cs3500.reversi.controller.PlayerActionFeatures;
 
+/**
+ * Represents the primary view interface for viewing a game of Reversi via GUI.
+ */
 public interface ReversiView extends SimpleReversiView {
   /**
    * adds a listener for any player actions to the view.

@@ -14,9 +14,9 @@ public interface PlayerActionFeatures {
 
   /**
    * handles the event that the next move is a move to the tile with that coord was chosen.
-   * @param xCoord
-   * @param rCoord
-   * @param sCoord
+   * @param xCoord - the chosen tile's xCoord.
+   * @param rCoord - the chosen tile's rCoord.
+   * @param sCoord - the chosen tile's sCoord.
    */
   void handleMoveChosen(int xCoord, int rCoord, int sCoord);
 
