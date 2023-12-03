@@ -9,6 +9,7 @@ import cs3500.reversi.model.MergedReversiModel;
 import cs3500.reversi.model.ReversiGameModel;
 import cs3500.reversi.model.ReversiModel;
 import cs3500.reversi.model.ReversiPiece;
+import cs3500.reversi.player.AdaptedPlayer;
 import cs3500.reversi.player.AvoidNextToCornersStrategy;
 import cs3500.reversi.player.CaptureMostStrategy;
 import cs3500.reversi.player.HumanStrategy;
@@ -16,8 +17,11 @@ import cs3500.reversi.player.IPlayerMoveStrategy;
 import cs3500.reversi.player.ManyStrategy;
 import cs3500.reversi.player.PlayCornersStrategy;
 import cs3500.reversi.player.Player;
+import cs3500.reversi.player.ReversiPlayer;
 import cs3500.reversi.player.Strategy;
 import cs3500.reversi.provider.model.ReadOnlyReversiModel;
+import cs3500.reversi.provider.player.PlayerTurn;
+import cs3500.reversi.provider.strategy.MaximizeCaptureStrategy;
 import cs3500.reversi.provider.view.ReversiGUI;
 import cs3500.reversi.view.ReversiView;
 import cs3500.reversi.view.AdaptedView;
@@ -33,22 +37,24 @@ public final class Reversi {
    * @param args input to main.
    */
   public static void main(String[] args) {
+//
+//    if (args.length < 2) {
+//      throw new IllegalArgumentException("Cannot begin a game with invalid inputs for players");
+//    }
 
-    if (args.length < 2) {
-      throw new IllegalArgumentException("Cannot begin a game with invalid inputs for players");
-    }
-
-    MergedReversiModel model = new MergedReversiModel(6);
-    ReversiView view1 = new AdaptedView(new ReversiGUI(model), model);
-    ReversiView view2 = new ReversiGUIView(model);
+    MergedReversiModel adaptedModel = new MergedReversiModel(6);
+    ReversiView adaptedView = new AdaptedView(new ReversiGUI(adaptedModel), adaptedModel);
+    ReversiView view2 = new ReversiGUIView(adaptedModel);
     // here is where it parses command-line args
-    Player p1 = ReversiArgParser.parsePlayers(args).getPlayer1();
-    Player p2 = ReversiArgParser.parsePlayers(args).getPlayer2();
+    ReversiPlayer p1 = new Player(new Strategy(new CaptureMostStrategy()),  ReversiPiece.BLACK);
+            // ReversiArgParser.parsePlayers(args).getPlayer1();
+    // Player p2 = ReversiArgParser.parsePlayers(args).getPlayer2();
+    ReversiPlayer p2 = new AdaptedPlayer(PlayerTurn.PLAYER2,
+            new MaximizeCaptureStrategy(adaptedModel, PlayerTurn.PLAYER2));
 
-    IReversiController controller = new ReversiController(model, p1, view2);
-    IReversiController controller2 = new ReversiController(model, p2, view1);
-    model.startGame();
-
+    IReversiController controller = new ReversiController(adaptedModel, p1, view2);
+    IReversiController controller2 = new ReversiController(adaptedModel, p2, adaptedView);
+    adaptedModel.startGame();
   }
 
   /**

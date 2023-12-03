@@ -12,7 +12,7 @@ public class HumanChoice implements IPlayerMove {
   }
 
   @Override
-  public void notifyPlayer(Player p) {
+  public void notifyPlayer(ReversiPlayer p) {
   // do nothing since this human player shouldn't notify the controller, the view should notify
   }
 }

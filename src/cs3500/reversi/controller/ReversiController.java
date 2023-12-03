@@ -7,6 +7,7 @@ import cs3500.reversi.model.ReversiModel;
 import cs3500.reversi.model.ReversiPiece;
 import cs3500.reversi.model.Tile;
 import cs3500.reversi.player.Player;
+import cs3500.reversi.player.ReversiPlayer;
 import cs3500.reversi.provider.controller.Event;
 import cs3500.reversi.provider.controller.Listener;
 import cs3500.reversi.view.ReversiView;
@@ -16,7 +17,7 @@ import cs3500.reversi.view.ReversiView;
  */
 public class ReversiController implements IReversiController, PlayerActionFeatures,
         ModelStatusFeatures {
-  private final Player player;
+  private final ReversiPlayer player;
   private final ReversiModel model;
   private final ReversiView view;
   private boolean isMyTurn = false;
@@ -29,14 +30,14 @@ public class ReversiController implements IReversiController, PlayerActionFeatur
    * @param player the player this controller is for/listening to for notifications.
    * @param view   the view this controller is listening to for notifications .
    */
-  public ReversiController(ReversiModel model, Player player, ReversiView view) {
+  public ReversiController(ReversiModel model, ReversiPlayer player, ReversiView view) {
     this.player = Objects.requireNonNull(player);
     this.model = Objects.requireNonNull(model);
     this.view = Objects.requireNonNull(view);
     this.addListeners(model, player, view);
   }
 
-  public void addListeners(ReversiModel model, Player player, ReversiView view) {
+  public void addListeners(ReversiModel model, ReversiPlayer player, ReversiView view) {
     model.addModelStatusListener(this);
     view.addPlayerActionListener(this);
     player.addPlayerActionListener(this);

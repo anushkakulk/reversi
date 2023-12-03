@@ -10,5 +10,5 @@ public interface IPlayerMove {
   /**
    * Notifies the given player of this IPlayerMove.
    */
-  void notifyPlayer(Player p);
+  void notifyPlayer(ReversiPlayer p);
 }

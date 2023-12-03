@@ -17,7 +17,7 @@ public class Pass implements IPlayerMove {
 
 
   @Override
-  public void notifyPlayer(Player p) {
+  public void notifyPlayer(ReversiPlayer p) {
     p.notifyPassChosen();
   }
 

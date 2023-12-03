@@ -32,11 +32,6 @@ public class AdaptedView extends ReversiGUIView implements cs3500.reversi.provid
   }
 
   @Override
-  public void displayTitle(String titleMessage) {
-
-  }
-
-  @Override
   public void render() {
     delegate.render();
   }

@@ -27,4 +27,8 @@ public interface ReversiPlayer {
    *                 player
    */
   void addPlayerActionListener(PlayerActionFeatures listener);
+
+  void notifyPassChosen();
+
+  void notifyMoveChosen(int q, int r, int s);
 }

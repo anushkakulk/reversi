@@ -19,7 +19,7 @@ public class Move implements IPlayerMove {
   }
 
   @Override
-  public void notifyPlayer(Player p) {
+  public void notifyPlayer(ReversiPlayer p) {
     p.notifyMoveChosen(posn.q, posn.r, posn.s);
   }
 

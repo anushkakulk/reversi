@@ -33,7 +33,7 @@ public class MergedReversiModel extends ReversiGameModel implements ReversiModel
     super.addModelStatusListener((ModelStatusFeatures) l);
   }
 
-  public static class DiscImpl implements  Disc {
+  public static class DiscImpl implements Disc {
     private final DiscColor color;
 
     public DiscImpl(DiscColor c) {
@@ -156,7 +156,12 @@ public class MergedReversiModel extends ReversiGameModel implements ReversiModel
   @Override
   public boolean checkValidCoordinates(int x, int y) {
       Tile t = adapterUtils.changeProviderCoordToTileCoord(x,y,this.getHexSideLength());
-      return super.validateCoordinatesInBoard(t.getQ(), t.getR(), t.getS());
+      try {
+        super.validateCoordinatesInBoard(t.getQ(), t.getR(), t.getS());
+      } catch (IllegalArgumentException e) {
+        return false;
+      }
+      return true;
   }
 
   @Override
