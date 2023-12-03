@@ -20,6 +20,7 @@ import cs3500.reversi.controller.IEmitPlayerActions;
 import cs3500.reversi.controller.PlayerActionFeatures;
 import cs3500.reversi.model.ReadOnlyReversiModel;
 import cs3500.reversi.model.ReversiPiece;
+import cs3500.reversi.provider.controller.Listener;
 
 /**
  * Represents the canvas of our game, and handles any user input (either key or mouse) to the game
@@ -44,7 +45,7 @@ public class ReversiPanel extends JPanel implements MouseListener, KeyListener, 
   public ReversiPanel(ReadOnlyReversiModel model, int panelWidth, int panelHeight) {
     setPreferredSize(new Dimension(panelWidth * 100, panelHeight * 100));
     this.gameModel = model;
-    this.hexRadius = 20; // TODO, make this size change with model.hexSideLength!
+    this.hexRadius = 20;
     updateHextiles(model);
     addMouseListener(this);
     addKeyListener(this);
@@ -55,11 +56,7 @@ public class ReversiPanel extends JPanel implements MouseListener, KeyListener, 
   }
 
 
-  /**
-   * Adds a listener for player action features to the listener list of this view.
-   *
-   * @param listener something that will listen to the notifications emitted from this view.
-   */
+  @Override
   public void addPlayerActionListener(PlayerActionFeatures listener) {
     this.listeners.add(Objects.requireNonNull(listener));
   }

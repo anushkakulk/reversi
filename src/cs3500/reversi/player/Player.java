@@ -50,6 +50,7 @@ public class Player implements ReversiPlayer, IEmitPlayerActions {
     return this.piece;
   }
 
+  @Override
   public void addPlayerActionListener(PlayerActionFeatures listener) {
     this.listeners.add(Objects.requireNonNull(listener));
   }

@@ -5,6 +5,7 @@ import java.util.List;
 
 import cs3500.reversi.controller.IReversiController;
 import cs3500.reversi.controller.ReversiController;
+import cs3500.reversi.model.MergedReversiModel;
 import cs3500.reversi.model.ReversiGameModel;
 import cs3500.reversi.model.ReversiModel;
 import cs3500.reversi.model.ReversiPiece;
@@ -16,6 +17,10 @@ import cs3500.reversi.player.ManyStrategy;
 import cs3500.reversi.player.PlayCornersStrategy;
 import cs3500.reversi.player.Player;
 import cs3500.reversi.player.Strategy;
+import cs3500.reversi.provider.model.ReadOnlyReversiModel;
+import cs3500.reversi.provider.view.ReversiGUI;
+import cs3500.reversi.view.ReversiView;
+import cs3500.reversi.view.AdaptedView;
 import cs3500.reversi.view.ReversiGUIView;
 
 /**
@@ -33,18 +38,16 @@ public final class Reversi {
       throw new IllegalArgumentException("Cannot begin a game with invalid inputs for players");
     }
 
-
-    ReversiModel model = new ReversiGameModel(6);
-    ReversiGUIView view1 = new ReversiGUIView(model);
-    ReversiGUIView view2 = new ReversiGUIView(model);
+    MergedReversiModel model = new MergedReversiModel(6);
+    ReversiView view1 = new AdaptedView(new ReversiGUI(model), model);
+    ReversiView view2 = new ReversiGUIView(model);
     // here is where it parses command-line args
     Player p1 = ReversiArgParser.parsePlayers(args).getPlayer1();
     Player p2 = ReversiArgParser.parsePlayers(args).getPlayer2();
 
-    IReversiController controller = new ReversiController(model, p1, view1);
-    IReversiController controller2 = new ReversiController(model, p2, view2);
+    IReversiController controller = new ReversiController(model, p1, view2);
+    IReversiController controller2 = new ReversiController(model, p2, view1);
     model.startGame();
-
 
   }
 

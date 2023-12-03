@@ -88,7 +88,8 @@ The codebase is organized into the following packages:
 - controller: this package contains components responsible for communication resulting in game play
   between the model view and players.
   - controller Package:
-    - PlayerActionFeatures: Represents any event that can happen on the canvas.
+    - PlayerActionFeatures: Features interface for handling any player actions (like moving to a 
+     tile or passing their turn).
     - ModelStatusFeatures: Features interface for handling any changes to model status.
     - IReversiController: Interface for reconciling between model, view/player. 
     - ReversiController: Implementation of the controller that follows the "is-a" relationship with 
@@ -213,7 +214,7 @@ Represents the interface for a Player of Reversi.
 
 ### IPlayerMove Interface
 
-Represents the Player Moves that are available in the Reversi game. As of now, only move or pass.
+Represents the Player Moves that are available in the Reversi game. Either a move, pass or humanchoice.
 
 ### IPlayerMoveStrategy Interface
 
@@ -293,8 +294,6 @@ Represents the gui representation of a tile from the model class.
 Has the ability to draw itself on the canvas, and translates the model tile's q,r,s 
 coordinates into pixel x,y coordinates. 
 
-#### ICanvasEvent Interface
-Represents any event that can happen on the canvas
 
 ## View Example
 
@@ -351,20 +350,38 @@ the game being over. Listeners of the model will implement in this features inte
 the model.
 
 ### PlayerActionFeatures Interface
-This interface is the "features" interface for both the player (for AI players) and the view 
-(for human players), where all methods in this interface
-involve handling the notification from either the player or the view that of a player action
-that wishes to change the game, such as indicating a player they want to move to a certain tile
-or pass their turn. Listeners for player actions will implement in this features interface to observe
-the model.
+The PlayerActionFeatures interface serves as the feature set for both AI players and human views. 
+Methods in this interface are designed to manage notifications from players or views regarding 
+actions that influence the game state, such as moving to a specific tile or passing a turn. 
+Listeners for player actions implement this interface to observe and respond to changes 
+initiated by players.
+
+
 
 ### IEmitPlayerActions Interface
-This interface is for classes that emit notifications to the controller about chosen player actions,
-such as the view (for human players) or the player itself (for AI players), defining what 
-notifications should be sent. 
+The IEmitPlayerActions interface is dedicated to classes responsible for emitting notifications 
+to the controller about chosen player actions. Implelemntations include views for human players and the 
+player implementations for AI players. This interface defines the structure for sending 
+notifications, specifying what information should be communicated to the controller.
+
 
 
 ### ReversiController Class
+The ReversiController class is a concrete implementation of the IReversiController, 
+ModelStatusFeatures, and PlayerActionFeatures interfaces, meaning the Controller "is a" observer for 
+changes in model status or new player actions. It serves as the bridge between the 
+Reversi model, players (both human and AI), and views. By facilitating communication between 
+these components, the ReversiController ensures a cohesive and interactive Reversi gaming experience.
+The class efficiently manages player turns, handles game state changes, and enables responsive 
+interactions between the model and its observers. The flow is such that the controller listens to
+the model to determine who's turn it is. If it is the controller's player's turn, then it will receive
+notifications from either the view (for a human player) or from the player itself (from the AI player).
+Then, it will handle the decision of that action (either a pass or move to a tile) and will
+try to run it on the model (the model handles turn changes). Then, it will call on the view to update to reflect any changes made from 
+that move. This flow will continue between two controllers until they receive the notification from the model
+that the game is over. 
+
+
 
 
 ## Changes for Part 2 

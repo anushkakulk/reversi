@@ -9,7 +9,9 @@ import javax.swing.WindowConstants;
 import javax.swing.JOptionPane;
 
 import cs3500.reversi.controller.PlayerActionFeatures;
-import cs3500.reversi.model.ReversiModel;
+import cs3500.reversi.model.ReadOnlyReversiModel;
+import cs3500.reversi.provider.controller.Event;
+import cs3500.reversi.provider.controller.Listener;
 
 /**
  * The Gui Frame for visually displaying a game of Reversi.
@@ -25,7 +27,7 @@ public class ReversiGUIView extends JFrame implements ReversiView, PlayerActionF
    *
    * @param model a model for a game of Reversi, with only observation methods.
    */
-  public ReversiGUIView(ReversiModel model) {
+  public ReversiGUIView(ReadOnlyReversiModel model) {
     Objects.requireNonNull(model);
     int boardWidth = model.getHexSideLength() * 3 / 2 * cellWidth;
     int boardHeight = model.getHexSideLength() * 3 / 2 * cellHeight;
@@ -59,10 +61,13 @@ public class ReversiGUIView extends JFrame implements ReversiView, PlayerActionF
   }
 
 
+  @Override
   public void addPlayerActionListener(PlayerActionFeatures listener) {
-    this.panel.addPlayerActionListener(listener);
+      this.panel.addPlayerActionListener(listener);
   }
 
+
+  @Override
   public void update() {
     this.panel.update();
   }
@@ -76,5 +81,10 @@ public class ReversiGUIView extends JFrame implements ReversiView, PlayerActionF
   @Override
   public void displayTitle(String titleMessage) {
     this.setTitle("Reversi Game: " + titleMessage);
+  }
+
+  @Override
+  public void update(Event e) {
+
   }
 }

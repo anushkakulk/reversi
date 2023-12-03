@@ -5,7 +5,7 @@ import cs3500.reversi.controller.ModelStatusFeatures;
 /**
  * Represents the primary model interface for playing a game of Reversi.
  */
-public interface ReversiModel extends ReadOnlyReversiModel {
+public interface ReversiModel extends ReadOnlyReversiModel, IModel {
 
   /**
    * makes a move on behalf of the current player to the given coordinates if it is a valid move.

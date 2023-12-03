@@ -5,6 +5,7 @@ import java.util.Objects;
 import cs3500.reversi.model.ReversiModel;
 import cs3500.reversi.model.ReversiPiece;
 import cs3500.reversi.player.Player;
+import cs3500.reversi.provider.controller.Event;
 import cs3500.reversi.view.ReversiView;
 
 /**
@@ -85,5 +86,10 @@ public class MockLogReversiGameController implements IReversiController, PlayerA
     log.append("MyPlayer: ").append(myPlayer).append(", ").append("Pass Chosen")
             .append("\n");
     actualController.handlePassChosen();
+  }
+
+  @Override
+  public void update(Event e) {
+
   }
 }

@@ -2,7 +2,6 @@ package cs3500.reversi.player;
 
 import java.util.Objects;
 
-import cs3500.reversi.model.ReversiModel;
 
 /**
  * A Function Object that indicates moving a piece, a type of move that a player can make.
@@ -17,11 +16,6 @@ public class Move implements IPlayerMove {
    */
   public Move(ReversiPosn posn) {
     this.posn = posn;
-  }
-
-  @Override
-  public void run(ReversiModel model) {
-    model.move(posn.q, posn.r, posn.s);
   }
 
   @Override

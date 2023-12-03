@@ -2,9 +2,13 @@ package cs3500.reversi.controller;
 
 import java.util.Objects;
 
+import cs3500.reversi.adapterUtils;
 import cs3500.reversi.model.ReversiModel;
 import cs3500.reversi.model.ReversiPiece;
+import cs3500.reversi.model.Tile;
 import cs3500.reversi.player.Player;
+import cs3500.reversi.provider.controller.Event;
+import cs3500.reversi.provider.controller.Listener;
 import cs3500.reversi.view.ReversiView;
 
 /**
@@ -29,9 +33,14 @@ public class ReversiController implements IReversiController, PlayerActionFeatur
     this.player = Objects.requireNonNull(player);
     this.model = Objects.requireNonNull(model);
     this.view = Objects.requireNonNull(view);
+    this.addListeners(model, player, view);
+  }
+
+  public void addListeners(ReversiModel model, Player player, ReversiView view) {
     model.addModelStatusListener(this);
     view.addPlayerActionListener(this);
-    this.player.addPlayerActionListener(this);
+    player.addPlayerActionListener(this);
+    System.out.println("i'm listening");
   }
 
   @Override
@@ -85,5 +94,20 @@ public class ReversiController implements IReversiController, PlayerActionFeatur
     ReversiPiece me = this.player.getPiece();
     this.view.displayTitle(me + "'s Board. Score = " + model.getScore(me) + ". Turn: "
             + model.getCurrentPlayer());
+  }
+
+  @Override
+  public void update(Event e) {
+    switch (e.getEventType()) {
+      case MOVE:
+        String strArray[] = e.getMessage().split(" ");
+        Tile moveChosen =
+                adapterUtils.changeProviderCoordToTileCoord(Integer.parseInt(strArray[0]),
+                        Integer.parseInt(strArray[1]), this.model.getHexSideLength());
+        this.handleMoveChosen(moveChosen.getQ(), moveChosen.getR(), moveChosen.getS());
+        break;
+      case PASS:
+        this.handlePassChosen();
+    }
   }
 }

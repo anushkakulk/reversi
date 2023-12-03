@@ -1,0 +1,17 @@
+Review of Provider's Code
+
+
+The main critique I have is that there was not clear documentation about the coordinate system
+used/board representation.
+All that was mentioned was that they used "odd-r" horizontal coordinates, yet they did not
+explain what "odd-r" coordinates are, what was actually contained in the board [][], used in their model implementation, making
+it extremely difficult to translate between our coordinate system and theirs (we had to continuously
+ask them for clarifications about their coordinate system/board representation and such). Similarly,
+the readme was severely lacking in details about how everything works together (model view controller
+communication), and they were missing lots javadoc/comments for public methds in their model interfaces
+, making it difficult to understand what these methods were doing in the view's rendering. Furthermore,
+they never specifiy what board dimensions (?) are. For reference, we refer to a board's size by the
+side length of the hexagonic board and documented our code/units used thoroughly.
+
+Another thing was the decision to use a 2d array as they did, meaning they had a lot of deliberate use
+of null, making it really tough to modify our design to use the nulls.

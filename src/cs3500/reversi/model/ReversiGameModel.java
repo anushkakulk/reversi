@@ -9,6 +9,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import cs3500.reversi.controller.ModelStatusFeatures;
+import cs3500.reversi.provider.controller.Listener;
 
 /**
  * An implementation of the Reversi game model that represents the game state and enforces rules.
@@ -68,6 +69,7 @@ public class ReversiGameModel implements ReversiModel {
     notifyTurn();
   }
 
+  @Override
   public void addModelStatusListener(ModelStatusFeatures listener) {
     this.listeners.add(Objects.requireNonNull(listener));
   }
@@ -303,7 +305,7 @@ public class ReversiGameModel implements ReversiModel {
 
   // helper method that throws the given coordinates are for a tile outside of the game board,
   // otherwise returns true, meaning the coordinates are for a tile in the game board.
-  private boolean validateCoordinatesInBoard(int q, int r, int s) {
+  protected boolean validateCoordinatesInBoard(int q, int r, int s) {
     if (q >= this.hexSideLength || r >= this.hexSideLength || s >= this.hexSideLength
             || q <= -this.hexSideLength || r <= -this.hexSideLength || s <= -this.hexSideLength) {
       throw new IllegalArgumentException("Accessing a tile out of bounds!");

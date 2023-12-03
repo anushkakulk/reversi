@@ -1,9 +1,11 @@
 package cs3500.reversi.controller;
 
+import cs3500.reversi.provider.controller.Listener;
+
 /**
  * Represents any event that occurs on the canvas.
  */
-public interface PlayerActionFeatures {
+public interface PlayerActionFeatures extends Listener  {
   /**
    * does something when the event is that the tile at given coordinates was clicked.
    * @param xCoord - the clicked tile's xCoord.
