@@ -132,7 +132,6 @@ public class ReversiGameModel implements ReversiModel {
     }
     flipTiles(neighborsOccupiedByOtherPlayer, dest);
     this.consecutivePasses = 0;
-    updateStatusIfGameOver();
     switchPlayer();
   }
 
@@ -168,7 +167,7 @@ public class ReversiGameModel implements ReversiModel {
   public void pass() throws IllegalStateException {
     checkIfGameStarted();
     this.consecutivePasses += 1;
-    updateStatusIfGameOver();
+
     // INVARIANT: The current player must switch between ReversiPiece.BLACK and ReversiPiece.WHITE
     // after each valid move or pass.
     switchPlayer();
@@ -446,7 +445,8 @@ public class ReversiGameModel implements ReversiModel {
   }
 
   // switches player turns
-  private void switchPlayer() {
+  protected void switchPlayer() {
+    updateStatusIfGameOver();
     this.currentPlayer = this.currentPlayer == ReversiPiece.BLACK ?
             ReversiPiece.WHITE : ReversiPiece.BLACK;
     notifyTurn();

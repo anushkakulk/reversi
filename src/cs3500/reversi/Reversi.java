@@ -23,6 +23,7 @@ import cs3500.reversi.provider.player.PlayerTurn;
 import cs3500.reversi.provider.strategy.CornersStrategy;
 import cs3500.reversi.provider.strategy.IStrategy;
 import cs3500.reversi.provider.strategy.MaximizeCaptureStrategy;
+import cs3500.reversi.provider.strategy.MiniMaxStrategy;
 import cs3500.reversi.provider.strategy.StrategyType;
 import cs3500.reversi.provider.view.ReversiGUI;
 import cs3500.reversi.view.ReversiView;
@@ -97,6 +98,8 @@ public final class Reversi {
           return new CornersStrategy(this.model, p, false);
         case "PROVIDER3":
           return new CornersStrategy(this.model, p, true);
+        case "PROVIDER4":
+          return new MiniMaxStrategy(this.model, p);
         default:
           throw new IllegalArgumentException("Invalid Player Type");
       }
@@ -159,7 +162,8 @@ public final class Reversi {
     public ReversiPlayer getPlayer1() {
       ReversiPlayer p;
       String input = this.args[argIndex].toUpperCase();
-      if ("PROVIDER1".equals(input) || "PROVIDER2".equals(input) || "PROVIDER3".equals(input)) {
+      if ("PROVIDER1".equals(input) || "PROVIDER2".equals(input) || "PROVIDER3".equals(input)
+      || "PROVIDER4".equals(input)) {
         p = createAdaptedPlayer(getProviderStrategy(args,
                         PlayerTurn.PLAYER1),
                 ReversiPiece.BLACK);
@@ -173,7 +177,8 @@ public final class Reversi {
     public ReversiPlayer getPlayer2() {
       ReversiPlayer p;
       String input = this.args[argIndex].toUpperCase();
-      if ("PROVIDER1".equals(input) || "PROVIDER2".equals(input) || "PROVIDER3".equals(input)) {
+      if ("PROVIDER1".equals(input) || "PROVIDER2".equals(input) || "PROVIDER3".equals(input)
+              || "PROVIDER4".equals(input)) {
         p = createAdaptedPlayer(getProviderStrategy(args,
                         PlayerTurn.PLAYER2),
                 ReversiPiece.WHITE);

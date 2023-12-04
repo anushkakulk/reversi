@@ -60,6 +60,7 @@ public class ReversiController implements IReversiController, PlayerActionFeatur
       message += ". Better luck next time!";
     }
     this.view.displayMessage(message);
+    System.exit(100);
   }
 
   @Override

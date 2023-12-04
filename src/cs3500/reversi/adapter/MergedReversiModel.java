@@ -1,6 +1,7 @@
 package cs3500.reversi.adapter;
 
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Map;
@@ -20,9 +21,22 @@ import cs3500.reversi.provider.player.PlayerTurn;
 
 public class MergedReversiModel extends ReversiGameModel implements ReversiModel {
 
+  private List<ReadOnlyReversiModel> gameStates;
+  private List<List<Integer>> moves;
+
   @Override
   public void startGame(int boardSize) {
     super.startGame();
+  }
+
+  @Override
+  public void move(int q, int r, int s) {
+    super.move(q, r, s);
+    // added functionality for the provider's minimax strategy
+    List<Integer> moveMade = new ArrayList<>();
+    Point2D move = AdapterUtils.changeTileCoordToProviderCoord(q,r,s,this.getHexSideLength());
+    moveMade.add((int)move.getX(), (int) move.getY());
+    moves.add(moveMade);
   }
 
   @Override
@@ -63,8 +77,17 @@ public class MergedReversiModel extends ReversiGameModel implements ReversiModel
     }
   }
 
+  @Override
+  protected void switchPlayer() {
+    super.switchPlayer();;
+    this.gameStates.add(this);
+  }
+
   public MergedReversiModel(int hexSideLength) {
     super(hexSideLength);
+    this.gameStates  = new ArrayList<>();
+    this.moves = new ArrayList<>();
+    this.gameStates.add(this);
   }
 
 
@@ -169,13 +192,23 @@ public class MergedReversiModel extends ReversiGameModel implements ReversiModel
 
   @Override
   public List<ReadOnlyReversiModel> getGameStates() {
-    return null;
+   List<ReadOnlyReversiModel> gameStatesCopy = new ArrayList<>();
+   for (ReadOnlyReversiModel g : this.gameStates) {
+     gameStatesCopy.add(g);
+   }
+   return  gameStatesCopy;
   }
 
   @Override
   public List<List<Integer>> getMoves() {
-    return null;
+    List<List<Integer>> movesCopy = new ArrayList<>();
+    for (List<Integer> innerList : this.moves) {
+      List<Integer> innerListCopy = new ArrayList<>(innerList);
+      movesCopy.add(innerListCopy);
+    }
+    return movesCopy;
   }
+
 
 
 
