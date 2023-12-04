@@ -24,9 +24,13 @@ public class MergedReversiModel extends ReversiGameModel implements ReversiModel
   private List<ReadOnlyReversiModel> gameStates;
   private List<List<Integer>> moves;
 
+
   @Override
-  public void startGame(int boardSize) {
+  public void startGame() {
+    System.out.println("hey start game");
     super.startGame();
+    this.gameStates.add(this);
+    this.moves.add(new ArrayList<>());
   }
 
   @Override
@@ -35,8 +39,14 @@ public class MergedReversiModel extends ReversiGameModel implements ReversiModel
     // added functionality for the provider's minimax strategy
     List<Integer> moveMade = new ArrayList<>();
     Point2D move = AdapterUtils.changeTileCoordToProviderCoord(q,r,s,this.getHexSideLength());
-    moveMade.add((int)move.getX(), (int) move.getY());
-    moves.add(moveMade);
+    moveMade.add((int) move.getX());
+    moveMade.add((int) move.getY());
+    this.moves.add(moveMade);
+  }
+
+  @Override
+  public void startGame(int boardSize) {
+    this.startGame();
   }
 
   @Override
@@ -79,7 +89,8 @@ public class MergedReversiModel extends ReversiGameModel implements ReversiModel
 
   @Override
   protected void switchPlayer() {
-    super.switchPlayer();;
+    super.switchPlayer();
+
     this.gameStates.add(this);
   }
 
@@ -87,6 +98,7 @@ public class MergedReversiModel extends ReversiGameModel implements ReversiModel
     super(hexSideLength);
     this.gameStates  = new ArrayList<>();
     this.moves = new ArrayList<>();
+
     this.gameStates.add(this);
   }
 
@@ -208,16 +220,4 @@ public class MergedReversiModel extends ReversiGameModel implements ReversiModel
     }
     return movesCopy;
   }
-
-
-
-
-/*
-
-[
-
-
-
- */
-
 }

@@ -45,7 +45,7 @@ public class ReversiController implements IReversiController, PlayerActionFeatur
   public void handlePlayerChange(ReversiPiece currPlayer) {
     this.isMyTurn = currPlayer == this.player.getPiece();
     this.view.update();
-    updateViewTile();
+    updateViewTitle();
     if (isMyTurn) {
       this.player.getPlayerDecision(model);
     }
@@ -89,7 +89,7 @@ public class ReversiController implements IReversiController, PlayerActionFeatur
     }
   }
 
-  private void updateViewTile() {
+  private void updateViewTitle() {
     ReversiPiece me = this.player.getPiece();
     this.view.displayTitle(me + "'s Board. Score = " + model.getScore(me) + ". Turn: "
             + model.getCurrentPlayer());
