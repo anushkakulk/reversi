@@ -2,14 +2,12 @@ package cs3500.reversi.controller;
 
 import java.util.Objects;
 
-import cs3500.reversi.adapterUtils;
+import cs3500.reversi.adapter.AdapterUtils;
 import cs3500.reversi.model.ReversiModel;
 import cs3500.reversi.model.ReversiPiece;
 import cs3500.reversi.model.Tile;
-import cs3500.reversi.player.Player;
 import cs3500.reversi.player.ReversiPlayer;
 import cs3500.reversi.provider.controller.Event;
-import cs3500.reversi.provider.controller.Listener;
 import cs3500.reversi.view.ReversiView;
 
 /**
@@ -41,7 +39,6 @@ public class ReversiController implements IReversiController, PlayerActionFeatur
     model.addModelStatusListener(this);
     view.addPlayerActionListener(this);
     player.addPlayerActionListener(this);
-    System.out.println("i'm listening");
   }
 
   @Override
@@ -103,7 +100,7 @@ public class ReversiController implements IReversiController, PlayerActionFeatur
       case MOVE:
         String strArray[] = e.getMessage().split(" ");
         Tile moveChosen =
-                adapterUtils.changeProviderCoordToTileCoord(Integer.parseInt(strArray[0]),
+                AdapterUtils.changeProviderCoordToTileCoord(Integer.parseInt(strArray[0]),
                         Integer.parseInt(strArray[1]), this.model.getHexSideLength());
         this.handleMoveChosen(moveChosen.getQ(), moveChosen.getR(), moveChosen.getS());
         break;

@@ -1,13 +1,15 @@
-package cs3500.reversi;
+package cs3500.reversi.adapter;
 
 import java.awt.geom.Point2D;
 
+import cs3500.reversi.model.ReversiPiece;
 import cs3500.reversi.model.Tile;
+import cs3500.reversi.provider.player.PlayerTurn;
 
-public class adapterUtils {
+public class AdapterUtils {
 
 
-  public static  Tile changeProviderCoordToTileCoord(int x, int y, int sideLength) {
+  public static Tile changeProviderCoordToTileCoord(int x, int y, int sideLength) {
 
     x  = x - sideLength+ 1;
     y = y - sideLength+ 1;
@@ -20,6 +22,10 @@ public class adapterUtils {
     int r = y;
     int s = -(q + r);
     return new Tile(q, r, s);
+  }
+
+  public static PlayerTurn changeReversiPieceToPlayerTurn(ReversiPiece p) {
+   return p == ReversiPiece.BLACK ? PlayerTurn.PLAYER1 : PlayerTurn.PLAYER2;
   }
 
 

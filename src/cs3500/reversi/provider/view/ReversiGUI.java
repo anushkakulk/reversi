@@ -11,7 +11,7 @@ import java.util.List;
 
 import javax.swing.*;
 
-import cs3500.reversi.model.MergedReversiModel;
+import cs3500.reversi.adapter.MergedReversiModel;
 import cs3500.reversi.provider.controller.Event;
 import cs3500.reversi.provider.controller.EventType;
 import cs3500.reversi.provider.controller.Listener;

@@ -1,12 +1,15 @@
-package cs3500.reversi.model;
+package cs3500.reversi.adapter;
 
 import java.awt.geom.Point2D;
 import java.util.List;
 import java.util.Objects;
 import java.util.Map;
 
-import cs3500.reversi.adapterUtils;
 import cs3500.reversi.controller.ModelStatusFeatures;
+import cs3500.reversi.model.GameStatus;
+import cs3500.reversi.model.ReversiGameModel;
+import cs3500.reversi.model.ReversiPiece;
+import cs3500.reversi.model.Tile;
 import cs3500.reversi.provider.controller.Listener;
 import cs3500.reversi.provider.discs.Disc;
 import cs3500.reversi.provider.discs.DiscColor;
@@ -24,7 +27,7 @@ public class MergedReversiModel extends ReversiGameModel implements ReversiModel
 
   @Override
   public void makeMove(int x, int y) {
-    Tile t = adapterUtils.changeProviderCoordToTileCoord(x, y, super.getHexSideLength());
+    Tile t = AdapterUtils.changeProviderCoordToTileCoord(x, y, super.getHexSideLength());
     super.move(t.getQ(), t.getR(), t.getS());
   }
 
@@ -72,9 +75,9 @@ public class MergedReversiModel extends ReversiGameModel implements ReversiModel
 
   @Override
   public Disc getDiscAt(int x, int y) {
-    if (super.getPieceAt(adapterUtils.changeProviderCoordToTileCoord(x, y, super.getHexSideLength())) == ReversiPiece.BLACK) {
+    if (super.getPieceAt(AdapterUtils.changeProviderCoordToTileCoord(x, y, super.getHexSideLength())) == ReversiPiece.BLACK) {
       return new DiscImpl(DiscColor.BLACK);
-    } else if (super.getPieceAt(adapterUtils.changeProviderCoordToTileCoord(x, y, super.getHexSideLength())) == ReversiPiece.WHITE) {
+    } else if (super.getPieceAt(AdapterUtils.changeProviderCoordToTileCoord(x, y, super.getHexSideLength())) == ReversiPiece.WHITE) {
       return new DiscImpl(DiscColor.WHITE);
     } else {
       return new DiscImpl(DiscColor.FACEDOWN);
@@ -83,7 +86,7 @@ public class MergedReversiModel extends ReversiGameModel implements ReversiModel
 
   @Override
   public boolean isDiscFlipped(int x, int y) {
-    return super.getPieceAt(adapterUtils.changeProviderCoordToTileCoord(x, y, super.getHexSideLength())) == ReversiPiece.EMPTY;
+    return super.getPieceAt(AdapterUtils.changeProviderCoordToTileCoord(x, y, super.getHexSideLength())) == ReversiPiece.EMPTY;
   }
 
   @Override
@@ -111,7 +114,7 @@ public class MergedReversiModel extends ReversiGameModel implements ReversiModel
     Map<Tile, ReversiPiece> currState = super.getBoard();
     Disc[][] currBoard = new Disc[getDimensions()][getDimensions()];
     for (Tile t: currState.keySet()) {
-      Point2D p = adapterUtils.changeTileCoordToProviderCoord(t.getQ(), t.getR(), t.getS(), super.getHexSideLength());
+      Point2D p = AdapterUtils.changeTileCoordToProviderCoord(t.getQ(), t.getR(), t.getS(), super.getHexSideLength());
 
       currBoard[(int)p.getY()]
                [(int)p.getX()] =
@@ -155,7 +158,7 @@ public class MergedReversiModel extends ReversiGameModel implements ReversiModel
 
   @Override
   public boolean checkValidCoordinates(int x, int y) {
-      Tile t = adapterUtils.changeProviderCoordToTileCoord(x,y,this.getHexSideLength());
+      Tile t = AdapterUtils.changeProviderCoordToTileCoord(x,y,this.getHexSideLength());
       try {
         super.validateCoordinatesInBoard(t.getQ(), t.getR(), t.getS());
       } catch (IllegalArgumentException e) {
@@ -173,6 +176,7 @@ public class MergedReversiModel extends ReversiGameModel implements ReversiModel
   public List<List<Integer>> getMoves() {
     return null;
   }
+
 
 
 /*

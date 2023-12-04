@@ -1,8 +1,9 @@
-package cs3500.reversi.view;
+package cs3500.reversi.adapter;
 
 import cs3500.reversi.controller.PlayerActionFeatures;
 import cs3500.reversi.model.ReadOnlyReversiModel;
 import cs3500.reversi.provider.controller.Listener;
+import cs3500.reversi.view.ReversiGUIView;
 
 public class AdaptedView extends ReversiGUIView implements cs3500.reversi.provider.view.ReversiView {
   private final cs3500.reversi.provider.view.ReversiView delegate;

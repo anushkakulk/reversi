@@ -506,7 +506,7 @@ public class ReversiGameModel implements ReversiModel {
 
   // INVARIANT: called only when the game is over; this notifies all of this model's listeners
   // that the game is over and to handle the situation.
-  private void notifyGameEnd() {
+  protected void notifyGameEnd() {
     for (ModelStatusFeatures listener : this.listeners) {
       listener.handleGameOver();
     }
@@ -514,7 +514,7 @@ public class ReversiGameModel implements ReversiModel {
 
   // INVARIANT: called only when the turn switches; this notifies all of this model's listeners
   // who the current player is/ whose turn it is.
-  private void notifyTurn() {
+  protected void notifyTurn() {
     for (ModelStatusFeatures listener : this.listeners) {
       listener.handlePlayerChange(this.getCurrentPlayer());
     }
