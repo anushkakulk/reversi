@@ -73,9 +73,9 @@ public class CornersStrategy extends AbstractStrategy {
     List<List<Integer>> validPositions = getPositionsForBFS();
     for (List<Integer> position : validPositions) {
       List<List<List<Integer>>> moveFromPosition = BoardUtils.bfs(super.reversiModel,
-              position.get(0), position.get(1));
+          position.get(0), position.get(1));
       if (!moveIsAdjacentToCorner(moveFromPosition, this.cornerMap)
-              && this.strategyType == StrategyType.AVOIDCORNER) {
+          && this.strategyType == StrategyType.AVOIDCORNER) {
         this.positionMoveMap.put(position, moveFromPosition);
       } else if (this.strategyType == StrategyType.GOFORCORNER) {
         List<List<List<Integer>>> moveInMap = this.positionMoveMap.get(position);
@@ -91,12 +91,12 @@ public class CornersStrategy extends AbstractStrategy {
       }
     }
     this.positionMoveMap.entrySet().removeIf(entry ->
-            this.reversiModel.getDiscAt(entry.getKey().get(0), entry.getKey().get(1)).getColor()
-                    != DiscColor.FACEDOWN);
+        this.reversiModel.getDiscAt(entry.getKey().get(0), entry.getKey().get(1)).getColor()
+            != DiscColor.FACEDOWN);
     this.positionMoveMap.entrySet().removeIf(entry -> entry.getValue().isEmpty());
     return (this.strategyType == StrategyType.AVOIDCORNER)
-            ? getLongestAndMostUpLeftFromMap(this.positionMoveMap) :
-            getMoveWithClosestCoordinateFromMap(this.positionMoveMap, this.cornerMap);
+        ? getLongestAndMostUpLeftFromMap(this.positionMoveMap) :
+        getMoveWithClosestCoordinateFromMap(this.positionMoveMap, this.cornerMap);
   }
 
 

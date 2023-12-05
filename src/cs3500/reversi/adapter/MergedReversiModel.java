@@ -19,11 +19,24 @@ import cs3500.reversi.provider.model.ReversiModel;
 import cs3500.reversi.provider.model.ReadOnlyReversiModel;
 import cs3500.reversi.provider.player.PlayerTurn;
 
+/**
+ * Represents an adapter for a ReversiModel from the provider's code to our code.
+ */
 public class MergedReversiModel extends ReversiGameModel implements ReversiModel {
 
   private List<ReadOnlyReversiModel> gameStates;
   private List<List<Integer>> moves;
 
+  /**
+   * Constructs a new ReversiModel with the given hex side length.
+   */
+  public MergedReversiModel(int hexSideLength) {
+    super(hexSideLength);
+    this.gameStates = new ArrayList<>();
+    this.moves = new ArrayList<>();
+
+    this.gameStates.add(this);
+  }
 
   @Override
   public void startGame() {
@@ -34,19 +47,19 @@ public class MergedReversiModel extends ReversiGameModel implements ReversiModel
   }
 
   @Override
+  public void startGame(int boardSize) {
+    this.startGame();
+  }
+
+  @Override
   public void move(int q, int r, int s) {
     super.move(q, r, s);
     // added functionality for the provider's minimax strategy
     List<Integer> moveMade = new ArrayList<>();
-    Point2D move = AdapterUtils.changeTileCoordToProviderCoord(q,r,s,this.getHexSideLength());
+    Point2D move = AdapterUtils.changeTileCoordToProviderCoord(q, r, s, this.getHexSideLength());
     moveMade.add((int) move.getX());
     moveMade.add((int) move.getY());
     this.moves.add(moveMade);
-  }
-
-  @Override
-  public void startGame(int boardSize) {
-    this.startGame();
   }
 
   @Override
@@ -60,33 +73,6 @@ public class MergedReversiModel extends ReversiGameModel implements ReversiModel
     super.addModelStatusListener((ModelStatusFeatures) l);
   }
 
-  public static class DiscImpl implements Disc {
-    private final DiscColor color;
-
-    public DiscImpl(DiscColor c) {
-      this.color = Objects.requireNonNull(c);
-    }
-
-    @Override
-    public DiscColor getColor() {
-      return color;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-      if (!(o instanceof DiscImpl)) {
-        return false;
-      }
-      DiscImpl tile = (DiscImpl) o;
-      return (this.color.equals(tile.getColor()));
-    }
-
-    @Override
-    public int hashCode() {
-      return Objects.hash(this.color);
-    }
-  }
-
   @Override
   protected void switchPlayer() {
     super.switchPlayer();
@@ -94,25 +80,18 @@ public class MergedReversiModel extends ReversiGameModel implements ReversiModel
     this.gameStates.add(this);
   }
 
-  public MergedReversiModel(int hexSideLength) {
-    super(hexSideLength);
-    this.gameStates  = new ArrayList<>();
-    this.moves = new ArrayList<>();
-
-    this.gameStates.add(this);
-  }
-
-
   @Override
   public PlayerTurn currentTurn() {
-    return super.getCurrentPlayer() == ReversiPiece.BLACK? PlayerTurn.PLAYER1 : PlayerTurn.PLAYER2;
+    return super.getCurrentPlayer() == ReversiPiece.BLACK ? PlayerTurn.PLAYER1 : PlayerTurn.PLAYER2;
   }
 
   @Override
   public Disc getDiscAt(int x, int y) {
-    if (super.getPieceAt(AdapterUtils.changeProviderCoordToTileCoord(x, y, super.getHexSideLength())) == ReversiPiece.BLACK) {
+    if (super.getPieceAt(AdapterUtils.changeProviderCoordToTileCoord(
+        x, y, super.getHexSideLength())) == ReversiPiece.BLACK) {
       return new DiscImpl(DiscColor.BLACK);
-    } else if (super.getPieceAt(AdapterUtils.changeProviderCoordToTileCoord(x, y, super.getHexSideLength())) == ReversiPiece.WHITE) {
+    } else if (super.getPieceAt(AdapterUtils.changeProviderCoordToTileCoord(
+        x, y, super.getHexSideLength())) == ReversiPiece.WHITE) {
       return new DiscImpl(DiscColor.WHITE);
     } else {
       return new DiscImpl(DiscColor.FACEDOWN);
@@ -121,7 +100,8 @@ public class MergedReversiModel extends ReversiGameModel implements ReversiModel
 
   @Override
   public boolean isDiscFlipped(int x, int y) {
-    return super.getPieceAt(AdapterUtils.changeProviderCoordToTileCoord(x, y, super.getHexSideLength())) == ReversiPiece.EMPTY;
+    return super.getPieceAt(AdapterUtils.changeProviderCoordToTileCoord(
+        x, y, super.getHexSideLength())) == ReversiPiece.EMPTY;
   }
 
   @Override
@@ -135,26 +115,27 @@ public class MergedReversiModel extends ReversiGameModel implements ReversiModel
     switch (rn) {
       case PLAYING:
         return GameState.ONGOING;
-      case STALEMATE:
-        return GameState.STALEMATE;
       case WON:
-        return super.getWinner() == ReversiPiece.BLACK ?
-                GameState.PLAYER1WIN :  GameState.PLAYER2WIN;
+        return super.getWinner() == ReversiPiece.BLACK
+            ? GameState.PLAYER1WIN : GameState.PLAYER2WIN;
+      default:
+        return GameState.STALEMATE;
     }
-    return GameState.STALEMATE;
   }
+
 
   @Override
   public Disc[][] getCurrentBoardState() {
     Map<Tile, ReversiPiece> currState = super.getBoard();
     Disc[][] currBoard = new Disc[getDimensions()][getDimensions()];
-    for (Tile t: currState.keySet()) {
-      Point2D p = AdapterUtils.changeTileCoordToProviderCoord(t.getQ(), t.getR(), t.getS(), super.getHexSideLength());
+    for (Tile t : currState.keySet()) {
+      Point2D p = AdapterUtils.changeTileCoordToProviderCoord(
+          t.getQ(), t.getR(), t.getS(), super.getHexSideLength());
 
-      currBoard[(int)p.getY()]
-               [(int)p.getX()] =
-              getDiscAt((int)p.getX(),
-                      (int) p.getY());
+      currBoard[(int) p.getY()]
+          [(int) p.getX()] =
+          getDiscAt((int) p.getX(),
+              (int) p.getY());
     }
 
 
@@ -188,27 +169,27 @@ public class MergedReversiModel extends ReversiGameModel implements ReversiModel
 
   @Override
   public DiscColor getPlayerColor(PlayerTurn player) {
-   return player == PlayerTurn.PLAYER1 ? DiscColor.BLACK : DiscColor.WHITE;
+    return player == PlayerTurn.PLAYER1 ? DiscColor.BLACK : DiscColor.WHITE;
   }
 
   @Override
   public boolean checkValidCoordinates(int x, int y) {
-      Tile t = AdapterUtils.changeProviderCoordToTileCoord(x,y,this.getHexSideLength());
-      try {
-        super.validateCoordinatesInBoard(t.getQ(), t.getR(), t.getS());
-      } catch (IllegalArgumentException e) {
-        return false;
-      }
-      return true;
+    Tile t = AdapterUtils.changeProviderCoordToTileCoord(x, y, this.getHexSideLength());
+    try {
+      super.validateCoordinatesInBoard(t.getQ(), t.getR(), t.getS());
+    } catch (IllegalArgumentException e) {
+      return false;
+    }
+    return true;
   }
 
   @Override
   public List<ReadOnlyReversiModel> getGameStates() {
-   List<ReadOnlyReversiModel> gameStatesCopy = new ArrayList<>();
-   for (ReadOnlyReversiModel g : this.gameStates) {
-     gameStatesCopy.add(g);
-   }
-   return  gameStatesCopy;
+    List<ReadOnlyReversiModel> gameStatesCopy = new ArrayList<>();
+    for (ReadOnlyReversiModel g : this.gameStates) {
+      gameStatesCopy.add(g);
+    }
+    return gameStatesCopy;
   }
 
   @Override
@@ -219,5 +200,35 @@ public class MergedReversiModel extends ReversiGameModel implements ReversiModel
       movesCopy.add(innerListCopy);
     }
     return movesCopy;
+  }
+
+  /**
+   * Represents a disc.
+   */
+  public static class DiscImpl implements Disc {
+    private final DiscColor color;
+
+    public DiscImpl(DiscColor c) {
+      this.color = Objects.requireNonNull(c);
+    }
+
+    @Override
+    public DiscColor getColor() {
+      return color;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+      if (!(o instanceof DiscImpl)) {
+        return false;
+      }
+      DiscImpl tile = (DiscImpl) o;
+      return (this.color.equals(tile.getColor()));
+    }
+
+    @Override
+    public int hashCode() {
+      return Objects.hash(this.color);
+    }
   }
 }

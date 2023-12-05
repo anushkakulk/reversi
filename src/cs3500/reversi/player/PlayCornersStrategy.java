@@ -41,7 +41,7 @@ public class PlayCornersStrategy implements IPlayerMoveStrategy {
     int hexSideMinus1 = hexSideLength - 1;
 
     return (absQ == hexSideMinus1 && absR == hexSideMinus1 && absS == 0) ||
-            (absR == hexSideMinus1 && absS == hexSideMinus1 && absQ == 0) ||
-            (absS == hexSideMinus1 && absQ == hexSideMinus1 && absR == 0);
+        (absR == hexSideMinus1 && absS == hexSideMinus1 && absQ == 0) ||
+        (absS == hexSideMinus1 && absQ == hexSideMinus1 && absR == 0);
   }
 }

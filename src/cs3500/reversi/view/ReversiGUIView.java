@@ -11,7 +11,6 @@ import javax.swing.JOptionPane;
 import cs3500.reversi.controller.PlayerActionFeatures;
 import cs3500.reversi.model.ReadOnlyReversiModel;
 import cs3500.reversi.provider.controller.Event;
-import cs3500.reversi.provider.controller.Listener;
 
 /**
  * The Gui Frame for visually displaying a game of Reversi.
@@ -63,7 +62,7 @@ public class ReversiGUIView extends JFrame implements ReversiView, PlayerActionF
 
   @Override
   public void addPlayerActionListener(PlayerActionFeatures listener) {
-      this.panel.addPlayerActionListener(listener);
+    this.panel.addPlayerActionListener(listener);
   }
 
 
@@ -73,9 +72,14 @@ public class ReversiGUIView extends JFrame implements ReversiView, PlayerActionF
   }
 
   @Override
+  public void update(Event e) {
+    //Providers code
+  }
+
+  @Override
   public void displayMessage(String message) {
     JOptionPane.showMessageDialog(this, message,
-            "Invalid Move", JOptionPane.ERROR_MESSAGE);
+        "Invalid Move", JOptionPane.ERROR_MESSAGE);
   }
 
   @Override
@@ -83,8 +87,4 @@ public class ReversiGUIView extends JFrame implements ReversiView, PlayerActionF
     this.setTitle("Reversi Game: " + titleMessage);
   }
 
-  @Override
-  public void update(Event e) {
-
-  }
 }

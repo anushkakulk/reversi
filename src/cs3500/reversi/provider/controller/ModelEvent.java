@@ -9,10 +9,12 @@ public class ModelEvent implements Event {
   private final EventType modelEventType;
   private final String message;
   private final PlayerTurn executingPlayer;
+
   /**
    * A constructor for a ModelEvent.
+   *
    * @param modelEventType a ModelEventType
-   * @param message a Message
+   * @param message        a Message
    */
   public ModelEvent(EventType modelEventType, String message,
                     PlayerTurn executingPlayer) {
@@ -38,7 +40,4 @@ public class ModelEvent implements Event {
     return this.modelEventType;
   }
 
-  /**
-   * A getter that gets the ModelEventType of a model event.
-   */
 }

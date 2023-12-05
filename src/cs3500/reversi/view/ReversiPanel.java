@@ -20,7 +20,6 @@ import cs3500.reversi.controller.IEmitPlayerActions;
 import cs3500.reversi.controller.PlayerActionFeatures;
 import cs3500.reversi.model.ReadOnlyReversiModel;
 import cs3500.reversi.model.ReversiPiece;
-import cs3500.reversi.provider.controller.Listener;
 
 /**
  * Represents the canvas of our game, and handles any user input (either key or mouse) to the game
@@ -28,11 +27,11 @@ import cs3500.reversi.provider.controller.Listener;
  */
 public class ReversiPanel extends JPanel implements MouseListener, KeyListener, IEmitPlayerActions {
   private final ReadOnlyReversiModel gameModel;
-  private List<HexTile> hexTiles;
   private final List<PlayerActionFeatures> listeners;
+  private final int hexRadius;
+  private List<HexTile> hexTiles;
   private HexTile selectedHexTile;
   private boolean cellSelected = false;
-  private final int hexRadius;
 
   /**
    * Creates a ReversiPanel canvas for the game of Reversi, with a size dependent on the size of

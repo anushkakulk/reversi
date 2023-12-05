@@ -78,8 +78,8 @@ public class Tile {
     }
     Tile tile = (Tile) o;
     return (this.q == tile.getQ()
-            && this.r == tile.getR()
-            && this.s == tile.getS());
+        && this.r == tile.getR()
+        && this.s == tile.getS());
   }
 
   @Override
@@ -90,13 +90,12 @@ public class Tile {
   /**
    * Returns all neighboring tiles of this tile.
    *
-   * @return A list of tiles that have the coordinates of one of each of the 6
-   *                              neighbors to this tile.
+   * @return a list of all neighboring tiles of this tile.
    */
   List<Tile> getNeighbors() {
     int[][] cubeDirectionVectors = {
-            {+1, 0, -1}, {+1, -1, 0}, {0, -1, +1},
-            {-1, 0, +1}, {-1, +1, 0}, {0, +1, -1}
+        {+1, 0, -1}, {+1, -1, 0}, {0, -1, +1},
+        {-1, 0, +1}, {-1, +1, 0}, {0, +1, -1}
     };
 
     List<Tile> neighbors = new ArrayList<>();
@@ -121,7 +120,7 @@ public class Tile {
    */
   Tile addDirection(int... direction) {
     return new Tile(this.q + direction[0], this.r + direction[1],
-            this.s + direction[2]);
+        this.s + direction[2]);
   }
 
 }

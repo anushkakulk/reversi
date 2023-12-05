@@ -43,7 +43,7 @@ public class ExamplesReversi {
   public void examplesHexSideLength() {
     // Has to be 2 or more
     Assert.assertThrows(IllegalArgumentException.class, () ->
-            model = new ReversiGameModel(1));
+        model = new ReversiGameModel(1));
     // Can check side length, -size < q & r & s < size
     model.getHexSideLength(); // 3
 

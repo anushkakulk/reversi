@@ -37,8 +37,9 @@ public interface ReversiModel extends ReadOnlyReversiModel, IModel {
 
   /**
    * Adds a listener for model status changes.
+   *
    * @param listener a modelStatusFeatures listener, that is waiting for
-   *                notifications from the model.
+   *                 notifications from the model.
    */
   void addModelStatusListener(ModelStatusFeatures listener);
 

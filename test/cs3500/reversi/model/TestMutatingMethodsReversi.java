@@ -24,11 +24,11 @@ public class TestMutatingMethodsReversi {
   @Test
   public void throwExceptionIfConstructorGivenSizeLessThan2() {
     Assert.assertThrows(IllegalArgumentException.class, () ->
-            new ReversiGameModel(-21));
+        new ReversiGameModel(-21));
     Assert.assertThrows(IllegalArgumentException.class, () ->
-            new ReversiGameModel(-2));
+        new ReversiGameModel(-2));
     Assert.assertThrows(IllegalArgumentException.class, () ->
-            new ReversiGameModel(1));
+        new ReversiGameModel(1));
   }
 
   @Test
@@ -43,13 +43,12 @@ public class TestMutatingMethodsReversi {
   @Test
   public void testCreatingInvalidTile() {
     Assert.assertThrows(IllegalArgumentException.class, () ->
-            new Tile(0, -1, 2));
+        new Tile(0, -1, 2));
     Assert.assertThrows(IllegalArgumentException.class, () ->
-            new Tile(-100, 100, 1));
+        new Tile(-100, 100, 1));
 
     Tile t = new Tile(1, -2, 1); // a valid tile, coords = 0;
   }
-
 
 
   @Test
@@ -144,7 +143,7 @@ public class TestMutatingMethodsReversi {
     model.move(2, -1, -1); // white's move - valid move
 
     Assert.assertThrows(IllegalStateException.class, () ->
-            model.move(-1, -1, 2));
+        model.move(-1, -1, 2));
 
   }
 
@@ -182,8 +181,6 @@ public class TestMutatingMethodsReversi {
     Assert.assertTrue(model.isGameOver()); // game is NOW over
     assertSame(model.getGameStatus(), GameStatus.WON);
   }
-
-
 
 
   @Test

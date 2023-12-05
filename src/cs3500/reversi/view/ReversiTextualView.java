@@ -44,8 +44,8 @@ public class ReversiTextualView implements SimpleReversiView {
         Tile t = new Tile(q, r, -q - r);
         ReversiPiece piece = model.getPieceAt(t); // get the piece at the specified tile
         if (piece == ReversiPiece.WHITE
-                || piece == ReversiPiece.EMPTY
-                || piece == ReversiPiece.BLACK) {
+            || piece == ReversiPiece.EMPTY
+            || piece == ReversiPiece.BLACK) {
           sb.append(piece).append(" "); // this appends the string rep of the piece at that spot
         }
       }

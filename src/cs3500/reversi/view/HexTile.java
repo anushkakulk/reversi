@@ -26,9 +26,10 @@ public class HexTile {
 
   /**
    * Creates a Hextile for the given model Tile's q r s coords.
-   * @param q the Hextile's q coord
-   * @param r the Hextile's r coord
-   * @param s the Hextile's s coord
+   *
+   * @param q         the Hextile's q coord
+   * @param r         the Hextile's r coord
+   * @param s         the Hextile's s coord
    * @param hexRadius the radius of thi hextile, for when it is drawn on the canvas.
    */
   public HexTile(int q, int r, int s, int hexRadius) {
@@ -41,6 +42,7 @@ public class HexTile {
 
   /**
    * Gets this Hextile's q coord.
+   *
    * @return this Hextile's q coord.
    */
   public int getQ() {
@@ -49,6 +51,7 @@ public class HexTile {
 
   /**
    * Gets this Hextile's r coord.
+   *
    * @return this Hextile's r coord
    */
   public int getR() {
@@ -57,6 +60,7 @@ public class HexTile {
 
   /**
    * Gets this Hextile's s coord.
+   *
    * @return this Hextile's s coord.
    */
   public int getS() {
@@ -65,6 +69,7 @@ public class HexTile {
 
   /**
    * Determines if this hextile contains the given point.
+   *
    * @param point a Point2D, a point on the canvas.
    * @return true if this hextile contains the given point.
    */
@@ -77,7 +82,7 @@ public class HexTile {
    * creates the polygon shape using the pixel coordinates.
    */
   private void calculateHexagonCoordinates() {
-    int x = hexToPixelX(this.q, this.r) ;
+    int x = hexToPixelX(this.q, this.r);
     int y = hexToPixelY(this.r);
     this.x = x;
     this.y = y;
@@ -86,6 +91,7 @@ public class HexTile {
 
   /**
    * Renders this HexTile.
+   *
    * @param g the graphic object to draw on top of.
    */
   public void draw(Graphics g) {
@@ -106,6 +112,7 @@ public class HexTile {
 
   /**
    * Sets this hexTile's color (for when it is rendered).
+   *
    * @param color the color the hexTile should be filled with when it's drawn.
    */
   public void setColor(Color color) {
@@ -114,6 +121,7 @@ public class HexTile {
 
   /**
    * Sets this hexTile's piece, which sits on top of the hexTile (for when it is rendered).
+   *
    * @param piece the piece that sits on top of the hexTile that will be drawn.
    */
   public void setPiece(ReversiPiece piece) {
@@ -130,7 +138,7 @@ public class HexTile {
   // helper method that translates our game's coordinates of this hextile
   // into the screen's y coordinate equivalent.
   private int hexToPixelY(int r) {
-    return (int) - (1.5 * hexRadius * r);
+    return (int) -(1.5 * hexRadius * r);
   }
 
   // creates a hexagon polygon shape dependent on the x y coordinates and of a certain size.
@@ -153,9 +161,9 @@ public class HexTile {
     }
     HexTile hexTile = (HexTile) obj;
     return q == hexTile.q && r == hexTile.r && s == hexTile.s &&
-            hexRadius == hexTile.hexRadius && x == hexTile.x && y == hexTile.y &&
-            tileColor.equals(hexTile.tileColor) && piece == hexTile.piece &&
-            hexagon.equals(hexTile.hexagon);
+        hexRadius == hexTile.hexRadius && x == hexTile.x && y == hexTile.y &&
+        tileColor.equals(hexTile.tileColor) && piece == hexTile.piece &&
+        hexagon.equals(hexTile.hexagon);
   }
 
   @Override

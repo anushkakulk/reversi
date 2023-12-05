@@ -8,13 +8,14 @@ import cs3500.reversi.model.ReversiPiece;
 import cs3500.reversi.model.Tile;
 import cs3500.reversi.player.ReversiPlayer;
 import cs3500.reversi.provider.controller.Event;
+import cs3500.reversi.provider.controller.EventType;
 import cs3500.reversi.view.ReversiView;
 
 /**
  * Represents a controller for a Reversi game.
  */
 public class ReversiController implements IReversiController, PlayerActionFeatures,
-        ModelStatusFeatures {
+    ModelStatusFeatures {
   private final ReversiPlayer player;
   private final ReversiModel model;
   private final ReversiView view;
@@ -35,6 +36,9 @@ public class ReversiController implements IReversiController, PlayerActionFeatur
     this.addListeners(model, player, view);
   }
 
+  /**
+   * Adds the listeners for this controller to the given model, player, and view.
+   */
   public void addListeners(ReversiModel model, ReversiPlayer player, ReversiView view) {
     model.addModelStatusListener(this);
     view.addPlayerActionListener(this);
@@ -92,21 +96,22 @@ public class ReversiController implements IReversiController, PlayerActionFeatur
   private void updateViewTitle() {
     ReversiPiece me = this.player.getPiece();
     this.view.displayTitle(me + "'s Board. Score = " + model.getScore(me) + ". Turn: "
-            + model.getCurrentPlayer());
+        + model.getCurrentPlayer());
   }
 
   @Override
   public void update(Event e) {
-    switch (e.getEventType()) {
-      case MOVE:
-        String strArray[] = e.getMessage().split(" ");
-        Tile moveChosen =
-                AdapterUtils.changeProviderCoordToTileCoord(Integer.parseInt(strArray[0]),
-                        Integer.parseInt(strArray[1]), this.model.getHexSideLength());
-        this.handleMoveChosen(moveChosen.getQ(), moveChosen.getR(), moveChosen.getS());
-        break;
-      case PASS:
-        this.handlePassChosen();
+    if (e.getEventType() == EventType.MOVE) {
+      String[] strArray = e.getMessage().split(" ");
+      Tile moveChosen = AdapterUtils.changeProviderCoordToTileCoord(
+          Integer.parseInt(strArray[0]),
+          Integer.parseInt(strArray[1]),
+          this.model.getHexSideLength()
+      );
+      this.handleMoveChosen(moveChosen.getQ(), moveChosen.getR(), moveChosen.getS());
+    } else if (e.getEventType() == EventType.PASS) {
+      this.handlePassChosen();
     }
+
   }
 }

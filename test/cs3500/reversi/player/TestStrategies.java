@@ -56,26 +56,26 @@ public class TestStrategies {
     ReversiPlayer autoPlayer = new Player(capStrat, ReversiPiece.BLACK);
 
     Assert.assertEquals(autoPlayer.getPlayerDecision(mock),
-            new Move(new ReversiPosn(-1, -1, 2)));
+        new Move(new ReversiPosn(-1, -1, 2)));
     // 6 possible moves that all capture 1 tile. so, the strategy tie breaks and chooses the upper
     // left most. Since there is are two possible "upper-left most tiles," the strat prioritizes the
     // left most over upper most and chooses tile (-1, -1, 2)
     Assert.assertTrue(out.toString().contains("isValidMove: -2, 1, 1, X.\n" +
-            "numTilesGained: 2."));
+        "numTilesGained: 2."));
     Assert.assertTrue(out.toString().contains("isValidMove: -1, -1, 2, X.\n" +
-            "numTilesGained: 2."));
+        "numTilesGained: 2."));
     Assert.assertTrue(out.toString().contains("isValidMove: -1, 2, -1, X.\n" +
-            "numTilesGained: 2."));
+        "numTilesGained: 2."));
     m.move(-1, -1, 2);
     m.move(2, -1, -1);
 
     autoPlayer.getPlayerDecision(mock);
     Assert.assertEquals(autoPlayer.getPlayerDecision(mock),
-            new Move(new ReversiPosn(1, 1, -2)));
+        new Move(new ReversiPosn(1, 1, -2)));
     Assert.assertTrue(out.toString().contains("isValidMove: 1, 1, -2, X.\n" +
-            "numTilesGained: 5."));
+        "numTilesGained: 5."));
     Assert.assertTrue(out.toString().contains("isValidMove: 3, -1, -2, X.\n" +
-            "numTilesGained: 3."));
+        "numTilesGained: 3."));
   }
 
   @Test
@@ -89,7 +89,7 @@ public class TestStrategies {
     autoPlayer.getPlayerDecision(mock);
 
     Assert.assertEquals(autoPlayer.getPlayerDecision(mock),
-            new Move(new ReversiPosn(-1, -1, 2)));
+        new Move(new ReversiPosn(-1, -1, 2)));
     // there are valid moves that aren't in corners and they all capture 1 tile.
     // so, the strategy tie breaks and chooses the upper
     // left most. Since there is are two possible "upper-left most tiles,"
@@ -110,14 +110,14 @@ public class TestStrategies {
     ReversiModel mock = new MockLogReversiGameModel(m, out);
 
     List<IPlayerMoveStrategy> strategyList = Arrays.asList(new CaptureMostStrategy(),
-            new AvoidNextToCornersStrategy());
+        new AvoidNextToCornersStrategy());
     Strategy combo = new Strategy(new ManyStrategy(strategyList));
     ReversiPlayer autoPlayer = new Player(combo, ReversiPiece.BLACK);
 
     Assert.assertEquals(autoPlayer.getPlayerDecision(mock), new Move(new ReversiPosn(-1, -1, 2)));
 
     Assert.assertTrue(out.toString().contains("isValidMove: -1, -1, 2, X.\n" +
-            "numTilesGained: 2.\n"));
+        "numTilesGained: 2.\n"));
     Assert.assertTrue(out.toString().contains("isValidMove: -4, 4, 0, X."));
     Assert.assertTrue(out.toString().contains("isValidMove: 1, -5, 4, X."));
     Assert.assertTrue(out.toString().contains("isValidMove: 5, -4, -1, X."));
@@ -128,9 +128,9 @@ public class TestStrategies {
 
 
     Assert.assertTrue(out.toString().contains("isValidMove: 3, -1, -2, X.\n" +
-            "numTilesGained: 3.\n"));
+        "numTilesGained: 3.\n"));
     Assert.assertTrue(out.toString().contains("isValidMove: 1, 1, -2, X.\n" +
-            "numTilesGained: 5.")); // this has the most tiles gained so it chooses this
+        "numTilesGained: 5.")); // this has the most tiles gained so it chooses this
     Assert.assertTrue(out.toString().contains("isValidMove: -4, 4, 0, X."));
     Assert.assertTrue(out.toString().contains("isValidMove: 1, -5, 4, X."));
     Assert.assertTrue(out.toString().contains("isValidMove: 5, -4, -1, X."));
@@ -142,18 +142,18 @@ public class TestStrategies {
     ReversiModel mock = new MockLogReversiGameModel(m, out);
 
     List<IPlayerMoveStrategy> strategyList = Arrays.asList(
-            new PlayCornersStrategy(), new CaptureMostStrategy());
+        new PlayCornersStrategy(), new CaptureMostStrategy());
     Strategy combo = new Strategy(new ManyStrategy(strategyList));
     ReversiPlayer autoPlayer = new Player(combo, ReversiPiece.BLACK);
 
     Assert.assertEquals(autoPlayer.getPlayerDecision(mock), new Move(new ReversiPosn(-1, -1, 2)));
 
     Assert.assertTrue(out.toString().contains("isValidMove: -1, -1, 2, X.\n" +
-            "numTilesGained: 2."));
+        "numTilesGained: 2."));
     Assert.assertTrue(out.toString().contains("isValidMove: -1, 2, -1, X.\n" +
-            "numTilesGained: 2."));
+        "numTilesGained: 2."));
     Assert.assertTrue(out.toString().contains("isValidMove: 1, -2, 1, X.\n" +
-            "numTilesGained: 2."));
+        "numTilesGained: 2."));
     Assert.assertTrue(out.toString().contains("isValidMove: -5, 0, 5, X."));
     Assert.assertTrue(out.toString().contains("isValidMove: -5, 5, 0, X."));
     Assert.assertTrue(out.toString().contains("isValidMove: 0, -5, 5, X."));
@@ -164,13 +164,13 @@ public class TestStrategies {
     // the first strategy tries to check if the corners are a valid move. none of them are,
     // the the second strategy tries to pick the next move
     Assert.assertTrue(out.toString().contains("isValidMove: -2, 1, 1, X.\n" +
-            "numTilesGained: 2."));
+        "numTilesGained: 2."));
     Assert.assertTrue(out.toString().contains("isValidMove: -1, -1, 2, X.\n" +
-            "numTilesGained: 2."));
+        "numTilesGained: 2."));
     Assert.assertTrue(out.toString().contains("isValidMove: -1, 2, -1, X.\n" +
-            "numTilesGained: 2."));
+        "numTilesGained: 2."));
     Assert.assertTrue(out.toString().contains("isValidMove: 1, -2, 1, X.\n" +
-            "numTilesGained: 2."));
+        "numTilesGained: 2."));
     Assert.assertTrue(out.toString().contains("isValidMove: -5, 0, 5, X."));
     Assert.assertTrue(out.toString().contains("isValidMove: -5, 5, 0, X."));
     Assert.assertTrue(out.toString().contains("isValidMove: 0, -5, 5, X."));
@@ -199,6 +199,6 @@ public class TestStrategies {
     // and will return a flip of 100 tiles. But, since it is bordering a corner tile, this strat
     // should ignore that fact entirely and just pick the top-left most valid move it can.
     Assert.assertEquals(autoPlayer.getPlayerDecision(fake),
-            new Move(new ReversiPosn(-1, -1, 2)));
+        new Move(new ReversiPosn(-1, -1, 2)));
   }
 }

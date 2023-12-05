@@ -3,7 +3,6 @@ package cs3500.reversi;
 import java.util.ArrayList;
 import java.util.List;
 
-import cs3500.reversi.adapter.AdapterUtils;
 import cs3500.reversi.controller.IReversiController;
 import cs3500.reversi.controller.ReversiController;
 import cs3500.reversi.adapter.MergedReversiModel;
@@ -24,7 +23,6 @@ import cs3500.reversi.provider.strategy.CornersStrategy;
 import cs3500.reversi.provider.strategy.IStrategy;
 import cs3500.reversi.provider.strategy.MaximizeCaptureStrategy;
 import cs3500.reversi.provider.strategy.MiniMaxStrategy;
-import cs3500.reversi.provider.strategy.StrategyType;
 import cs3500.reversi.provider.view.ReversiGUI;
 import cs3500.reversi.view.ReversiView;
 import cs3500.reversi.adapter.AdaptedView;
@@ -50,14 +48,14 @@ public final class Reversi {
     ReversiView adaptedView = new AdaptedView(new ReversiGUI(adaptedModel), adaptedModel);
     ReversiView view2 = new ReversiGUIView(adaptedModel);
     // here is where it parses command-line args
-    ReversiArgParser parser = ReversiArgParser.parsePlayers(args,adaptedModel);
+    ReversiArgParser parser = ReversiArgParser.parsePlayers(args, adaptedModel);
     ReversiPlayer p1 = parser.getPlayer1();
-            // new Player(new Strategy(new CaptureMostStrategy()), ReversiPiece.BLACK);
+    // new Player(new Strategy(new CaptureMostStrategy()), ReversiPiece.BLACK);
     // ReversiArgParser.parsePlayers(args).getPlayer1();
     // Player p2 = ReversiArgParser.parsePlayers(args).getPlayer2();
     ReversiPlayer p2 = parser.getPlayer2();
-//            new AdaptedPlayer(PlayerTurn.PLAYER2,
-//            new CornersStrategy(adaptedModel, PlayerTurn.PLAYER2, true));
+    //  new AdaptedPlayer(PlayerTurn.PLAYER2,
+    //  new CornersStrategy(adaptedModel, PlayerTurn.PLAYER2, true));
 
     IReversiController controller = new ReversiController(adaptedModel, p1, view2);
     IReversiController controller2 = new ReversiController(adaptedModel, p2, adaptedView);
@@ -84,6 +82,15 @@ public final class Reversi {
       this.model = model;
     }
 
+    /**
+     * Static method for parsing players from command line arguments.
+     *
+     * @param args input to main.
+     * @return ReversiArgParser instance containing parsed players.
+     */
+    public static ReversiArgParser parsePlayers(String[] args, ReadOnlyReversiModel m) {
+      return new ReversiArgParser(args, m);
+    }
 
     private IStrategy getProviderStrategy(String[] args, PlayerTurn p) {
       if (this.argIndex >= args.length) {
@@ -104,7 +111,6 @@ public final class Reversi {
           throw new IllegalArgumentException("Invalid Player Type");
       }
     }
-
 
     private IPlayerMoveStrategy getNormalStrategy(String[] args) {
       if (this.argIndex >= args.length) {
@@ -134,28 +140,13 @@ public final class Reversi {
       }
     }
 
-//    /**
-//     * Gets the constructed player object for player1 from the parser.
-//     * @return a player.
-//     */
-//    public ReversiPlayer getPlayer1() {
-//      return this.player1;
-//    }
-//
-//    /**
-//     * Gets the constructed player object for player2 from the parser.
-//     * @return a player.
-//     */
-//    public ReversiPlayer getPlayer2() {
-//      return this.player2;
-//    }
-
     private ReversiPlayer createNormalPlayer(IPlayerMoveStrategy strategy, ReversiPiece piece) {
       return new Player(new Strategy(strategy), piece);
     }
 
     private ReversiPlayer createAdaptedPlayer(IStrategy strategy, ReversiPiece piece) {
-      PlayerTurn playerTurn = (piece == ReversiPiece.BLACK) ? PlayerTurn.PLAYER1 : PlayerTurn.PLAYER2;
+      PlayerTurn playerTurn = (piece == ReversiPiece.BLACK)
+          ? PlayerTurn.PLAYER1 : PlayerTurn.PLAYER2;
       return new AdaptedPlayer(playerTurn, strategy);
     }
 
@@ -163,10 +154,10 @@ public final class Reversi {
       ReversiPlayer p;
       String input = this.args[argIndex].toUpperCase();
       if ("PROVIDER1".equals(input) || "PROVIDER2".equals(input) || "PROVIDER3".equals(input)
-      || "PROVIDER4".equals(input)) {
+          || "PROVIDER4".equals(input)) {
         p = createAdaptedPlayer(getProviderStrategy(args,
-                        PlayerTurn.PLAYER1),
-                ReversiPiece.BLACK);
+                PlayerTurn.PLAYER1),
+            ReversiPiece.BLACK);
       } else {
         p = createNormalPlayer(getNormalStrategy(args), ReversiPiece.BLACK);
       }
@@ -178,24 +169,14 @@ public final class Reversi {
       ReversiPlayer p;
       String input = this.args[argIndex].toUpperCase();
       if ("PROVIDER1".equals(input) || "PROVIDER2".equals(input) || "PROVIDER3".equals(input)
-              || "PROVIDER4".equals(input)) {
+          || "PROVIDER4".equals(input)) {
         p = createAdaptedPlayer(getProviderStrategy(args,
-                        PlayerTurn.PLAYER2),
-                ReversiPiece.WHITE);
+                PlayerTurn.PLAYER2),
+            ReversiPiece.WHITE);
       } else {
         p = createNormalPlayer(getNormalStrategy(args), ReversiPiece.WHITE);
       }
       return p;
-    }
-
-    /**
-     * Static method for parsing players from command line arguments.
-     *
-     * @param args input to main.
-     * @return ReversiArgParser instance containing parsed players.
-     */
-    public static ReversiArgParser parsePlayers(String[] args, ReadOnlyReversiModel m) {
-      return new ReversiArgParser(args, m);
     }
   }
 }

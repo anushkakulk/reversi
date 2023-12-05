@@ -5,9 +5,10 @@ import cs3500.reversi.provider.controller.Listener;
 /**
  * Represents any event that occurs on the canvas.
  */
-public interface PlayerActionFeatures extends Listener  {
+public interface PlayerActionFeatures extends Listener {
   /**
    * does something when the event is that the tile at given coordinates was clicked.
+   *
    * @param xCoord - the clicked tile's xCoord.
    * @param rCoord - the clicked tile's rCoord.
    * @param sCoord - the clicked tile's sCoord.
@@ -16,6 +17,7 @@ public interface PlayerActionFeatures extends Listener  {
 
   /**
    * handles the event that the next move is a move to the tile with that coord was chosen.
+   *
    * @param xCoord - the chosen tile's xCoord.
    * @param rCoord - the chosen tile's rCoord.
    * @param sCoord - the chosen tile's sCoord.

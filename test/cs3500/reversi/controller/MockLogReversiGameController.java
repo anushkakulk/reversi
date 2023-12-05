@@ -14,7 +14,7 @@ import cs3500.reversi.view.ReversiView;
  * methods to test that the controller will work as intended.
  */
 public class MockLogReversiGameController implements IReversiController, PlayerActionFeatures,
-        ModelStatusFeatures {
+    ModelStatusFeatures {
   private final ReversiController actualController;
   private final StringBuilder log;
   private final ReversiPiece myPlayer;
@@ -55,8 +55,8 @@ public class MockLogReversiGameController implements IReversiController, PlayerA
     boolean isMyTurn = myPlayer == currPlayer;
     log.append("handlePlayerChange: ").append(currPlayer).append("\n");
     log.append("MyPlayer: ").append(myPlayer).append(", ").append("times" +
-            "TurnChanged: ").append(timesTurnChanged).append(". isMy" +
-            "Turn: ").append(isMyTurn).append("\n");
+        "TurnChanged: ").append(timesTurnChanged).append(". isMy" +
+        "Turn: ").append(isMyTurn).append("\n");
     actualController.handlePlayerChange(currPlayer);
   }
 
@@ -69,27 +69,28 @@ public class MockLogReversiGameController implements IReversiController, PlayerA
   @Override
   public void handleTileClicked(int xCoord, int rCoord, int sCoord) {
     log.append("handleTileClicked: ").append(xCoord).append(", ").append(rCoord).append(", ").
-            append(sCoord).append("\n");
+        append(sCoord).append("\n");
     actualController.handleTileClicked(xCoord, rCoord, sCoord);
   }
 
   @Override
   public void handleMoveChosen(int xCoord, int rCoord, int sCoord) {
     log.append("MyPlayer: ").append(myPlayer).append(", ").append("Move Chosen: ")
-            .append(xCoord).append(", ").append(rCoord).append(", ").append(sCoord)
-            .append("\n");
+        .append(xCoord).append(", ").append(rCoord).append(", ").append(sCoord)
+        .append("\n");
     actualController.handleMoveChosen(xCoord, rCoord, sCoord);
   }
 
   @Override
   public void handlePassChosen() {
     log.append("MyPlayer: ").append(myPlayer).append(", ").append("Pass Chosen")
-            .append("\n");
+        .append("\n");
     actualController.handlePassChosen();
   }
 
   @Override
   public void update(Event e) {
-
+    log.append("update: ").append(e).append("\n");
+    actualController.update(e);
   }
 }

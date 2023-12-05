@@ -16,6 +16,7 @@ public class ManyStrategy implements IPlayerMoveStrategy {
 
   /**
    * Creates an instance of ManyStrategy.
+   *
    * @param s the list of strategies we want our manyStrategies to have in its repertoire.
    */
   public ManyStrategy(List<IPlayerMoveStrategy> s) {

@@ -28,12 +28,12 @@ public class TestObservationMethodsReversi {
   public void testTileGetNeighbors() {
     Tile t = new Tile(0, 0, 0);
     List<Tile> expectedNeighbors = new ArrayList<>(Arrays.asList(
-            new Tile(1, 0, -1),
-            new Tile(1, -1, 0),
-            new Tile(0, -1, 1),
-            new Tile(-1, 0, 1),
-            new Tile(-1, 1, 0),
-            new Tile(0, 1, -1)
+        new Tile(1, 0, -1),
+        new Tile(1, -1, 0),
+        new Tile(0, -1, 1),
+        new Tile(-1, 0, 1),
+        new Tile(-1, 1, 0),
+        new Tile(0, 1, -1)
     ));
     Assert.assertEquals(expectedNeighbors, t.getNeighbors());
   }
@@ -41,11 +41,11 @@ public class TestObservationMethodsReversi {
   @Test
   public void testGetPieceAtTileInvalid() {
     Assert.assertThrows(IllegalArgumentException.class, () ->
-            model.getPieceAt(new Tile(-2, -4, -12)));
+        model.getPieceAt(new Tile(-2, -4, -12)));
     Assert.assertThrows(IllegalArgumentException.class, () ->
-            model.getPieceAt(new Tile(102, 0, -2)));
+        model.getPieceAt(new Tile(102, 0, -2)));
     Assert.assertThrows(IllegalArgumentException.class, () ->
-            model.getPieceAt(new Tile(-5, 5, 3)));
+        model.getPieceAt(new Tile(-5, 5, 3)));
   }
 
   @Test
@@ -140,11 +140,11 @@ public class TestObservationMethodsReversi {
   @Test
   public void testGetPieceAtCoordInvalid() {
     Assert.assertThrows(IllegalArgumentException.class, () ->
-            model.getPieceAt(-2, -4, -12));
+        model.getPieceAt(-2, -4, -12));
     Assert.assertThrows(IllegalArgumentException.class, () ->
-            model.getPieceAt(102, 0, -2));
+        model.getPieceAt(102, 0, -2));
     Assert.assertThrows(IllegalArgumentException.class, () ->
-            model.getPieceAt(-5, 5, 3));
+        model.getPieceAt(-5, 5, 3));
   }
 
   @Test
@@ -217,8 +217,8 @@ public class TestObservationMethodsReversi {
   @Test
   public void ensureNumFlippedIsEqualToActualFlippingWhenMoving() {
     Assert.assertEquals(model.getScore(ReversiPiece.BLACK), 3);
-    Assert.assertEquals(model.numTilesGained(1,-2, 1, ReversiPiece.BLACK), 2);
-    model.move(1,-2, 1);
+    Assert.assertEquals(model.numTilesGained(1, -2, 1, ReversiPiece.BLACK), 2);
+    model.move(1, -2, 1);
     Assert.assertEquals(model.getScore(ReversiPiece.BLACK), 5);
   }
 }

@@ -22,6 +22,24 @@ public class MiniMaxStrategy extends AbstractStrategy {
     this.strategyType = StrategyType.MINIMAX;
   }
 
+  private static List<Integer> executeGoForCorner(ReadOnlyReversiModel reversiModel) {
+    CornersStrategy goForCorner = new CornersStrategy(reversiModel, reversiModel.currentTurn(),
+        false);
+    return goForCorner.executeStrategy();
+  }
+
+  private static List<Integer> executeAvoidCorners(ReadOnlyReversiModel reversiModel) {
+    CornersStrategy avoidCorner = new CornersStrategy(reversiModel, reversiModel.currentTurn(),
+        true);
+    return avoidCorner.executeStrategy();
+  }
+
+  private static List<Integer> executeMaximize(ReadOnlyReversiModel reversiModel) {
+    MaximizeCaptureStrategy maximizeCaptureStrategy = new MaximizeCaptureStrategy(reversiModel,
+        reversiModel.currentTurn());
+    return maximizeCaptureStrategy.executeStrategy();
+  }
+
   @Override
   public List<Integer> executeStrategy() {
     List<ReadOnlyReversiModel> gameStates = super.reversiModel.getGameStates();
@@ -41,24 +59,6 @@ public class MiniMaxStrategy extends AbstractStrategy {
       System.out.println("AI Chose Default: Maximize");
       return executeMaximize(this.reversiModel);
     }
-  }
-
-  private static List<Integer> executeGoForCorner(ReadOnlyReversiModel reversiModel) {
-    CornersStrategy goForCorner = new CornersStrategy(reversiModel, reversiModel.currentTurn(),
-            false);
-    return goForCorner.executeStrategy();
-  }
-
-  private static List<Integer> executeAvoidCorners(ReadOnlyReversiModel reversiModel) {
-    CornersStrategy avoidCorner = new CornersStrategy(reversiModel, reversiModel.currentTurn(),
-            true);
-    return avoidCorner.executeStrategy();
-  }
-
-  private static List<Integer> executeMaximize(ReadOnlyReversiModel reversiModel) {
-    MaximizeCaptureStrategy maximizeCaptureStrategy = new MaximizeCaptureStrategy(reversiModel,
-            reversiModel.currentTurn());
-    return maximizeCaptureStrategy.executeStrategy();
   }
 
   @Override

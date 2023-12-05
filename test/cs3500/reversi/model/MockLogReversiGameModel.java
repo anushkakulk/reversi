@@ -8,14 +8,15 @@ import cs3500.reversi.controller.ModelStatusFeatures;
  * Represents a Mock for a ReversiGameModel that will log input to any method calls
  * for some of the ReversiModel methods to test that strategies will work as intended.
  */
-public class MockLogReversiGameModel implements  ReversiModel {
-  private ReversiModel actualModel;
+public class MockLogReversiGameModel implements ReversiModel {
   private final StringBuilder log;
+  private ReversiModel actualModel;
 
 
   /**
    * Creates an instance of this mock type.
-   * @param m an actual ReversiModel that can be played
+   *
+   * @param m   an actual ReversiModel that can be played
    * @param log the log that will contain a transcript of any inputs to any methods
    */
   public MockLogReversiGameModel(ReversiModel m, StringBuilder log) {

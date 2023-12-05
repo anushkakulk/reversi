@@ -45,7 +45,7 @@ public class ReversiPosn {
 
     for (ReversiPosn posn : positions) {
       if ((posn.q <= uppermostLeftmost.q
-              && posn.r < uppermostLeftmost.r)) {
+          && posn.r < uppermostLeftmost.r)) {
         uppermostLeftmost = posn;
       }
     }
@@ -53,13 +53,17 @@ public class ReversiPosn {
   }
 
   /**
-   * Given a map of possible moves and the amt of tiles that move flips, returns the best option
+   * Given a map of possible moves and the amount of tiles that move flips, returns the best option
    * (if it exists).
    *
    * @param possibleMoves a map of valid moves to the number of tiles that move flips over.
+   *         This parameter provides information about the available moves and the
+   *         corresponding number of flipped tiles for each move.
    * @return a ReversiPosn that is the best destination to move to out of the given possible moves,
-   *                    ONLY IF the strategy found at least one valid move.
+   *         ONLY IF the strategy found at least one valid move.
    */
+
+
   public static Optional<IPlayerMove> findBestMove(Map<ReversiPosn, Integer> possibleMoves) {
     if (!possibleMoves.isEmpty()) {
       int maxTilesCaptured = Collections.max(possibleMoves.values());
@@ -91,7 +95,7 @@ public class ReversiPosn {
     }
     ReversiPosn posn = (ReversiPosn) obj;
     return this.q == posn.q
-            && this.r == posn.r
-            && this.s == posn.s;
+        && this.r == posn.r
+        && this.s == posn.s;
   }
 }

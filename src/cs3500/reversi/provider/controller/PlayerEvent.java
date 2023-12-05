@@ -12,8 +12,9 @@ public class PlayerEvent implements Event {
 
   /**
    * A constructor for a PlayerEvent.
+   *
    * @param playerEventType a playerEventType
-   * @param description a description
+   * @param description     a description
    * @param executingPlayer the executing player
    */
   public PlayerEvent(EventType playerEventType, String description,
@@ -22,10 +23,6 @@ public class PlayerEvent implements Event {
     this.description = description;
     this.executingPlayer = executingPlayer;
   }
-
-  /**
-   * A getter that gets the Player Event Type of player event.
-   */
 
   /**
    * A getter that gets the description information of a player event.

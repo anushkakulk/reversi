@@ -46,9 +46,9 @@ public class TestReversiController {
   public void testReceivingTurnChangeNotifsFromModel() {
     m = new ReversiGameModel(3);
     Player p1 = new Player(new Strategy(new CaptureMostStrategy()),
-            ReversiPiece.BLACK);
+        ReversiPiece.BLACK);
     Player p2 = new Player(new Strategy(new CaptureMostStrategy()),
-            ReversiPiece.WHITE);
+        ReversiPiece.WHITE);
 
     c = new ReversiController(m, p1, v);
     c2 = new ReversiController(m, p2, v);
@@ -59,17 +59,17 @@ public class TestReversiController {
     m.startGame();
 
     Assert.assertTrue(out.toString().contains("MyPlayer: X, timesTurnChanged: 1. " +
-            "isMyTurn: true\n"));
+        "isMyTurn: true\n"));
     Assert.assertTrue(out.toString().contains("MyPlayer: O, timesTurnChanged: 1." +
-            " isMyTurn: false\n"));
+        " isMyTurn: false\n"));
     Assert.assertTrue(out.toString().contains("MyPlayer: X, timesTurnChanged: 2. " +
-            "isMyTurn: true\n"));
+        "isMyTurn: true\n"));
     Assert.assertTrue(out.toString().contains("MyPlayer: O, timesTurnChanged: 2. " +
-            "isMyTurn: false\n"));
+        "isMyTurn: false\n"));
     Assert.assertTrue(out.toString().contains("MyPlayer: X, timesTurnChanged: 3. " +
-            "isMyTurn: true\n"));
+        "isMyTurn: true\n"));
     Assert.assertTrue(out.toString().contains("MyPlayer: O, timesTurnChanged: 3. " +
-            "isMyTurn: false\n"));
+        "isMyTurn: false\n"));
 
   }
 
@@ -78,9 +78,9 @@ public class TestReversiController {
   public void testWholeGameWithCaptureManyToCompletion() {
     m = new ReversiGameModel(3);
     Player p1 = new Player(new Strategy(new CaptureMostStrategy()),
-            ReversiPiece.BLACK);
+        ReversiPiece.BLACK);
     Player p2 = new Player(new Strategy(new CaptureMostStrategy()),
-            ReversiPiece.WHITE);
+        ReversiPiece.WHITE);
 
     StringBuilder out2 = new StringBuilder();
     c = new ReversiController(m, p1, v);
@@ -109,9 +109,9 @@ public class TestReversiController {
   public void testReceivingGameOverNotifsFromModel() {
     m = new ReversiGameModel(6);
     Player p1 = new Player(new Strategy(new CaptureMostStrategy()),
-            ReversiPiece.BLACK);
+        ReversiPiece.BLACK);
     Player p2 = new Player(new Strategy(new CaptureMostStrategy()),
-            ReversiPiece.WHITE);
+        ReversiPiece.WHITE);
 
     c = new ReversiController(m, p1, v);
     c2 = new ReversiController(m, p2, v);
@@ -150,7 +150,7 @@ public class TestReversiController {
     Assert.assertTrue(out.toString().contains("MyPlayer: X, Move Chosen: 2, 1, -3"));
     Assert.assertTrue(out.toString().contains("MyPlayer: O, Move Chosen: 1, -4, 3"));
     Assert.assertTrue(out.toString().contains("MyPlayer: X, Pass Chosen\n" +
-            "MyPlayer: O, Pass Chosen"));
+        "MyPlayer: O, Pass Chosen"));
     // both passed, so the game is over!
     Assert.assertTrue(out.toString().contains("Notification from Model: Game Over."));
 
@@ -182,7 +182,7 @@ public class TestReversiController {
     Assert.assertTrue(out.toString().contains("MyPlayer: X, Move Chosen: -3, -1, 4"));
     Assert.assertTrue(out.toString().contains("MyPlayer: O, Move Chosen: -3, 0, 3"));
     Assert.assertTrue(out.toString().contains("MyPlayer: O, Pass Chosen\n" +
-            "MyPlayer: X, Pass Chosen"));
+        "MyPlayer: X, Pass Chosen"));
 
   }
 
@@ -224,7 +224,7 @@ public class TestReversiController {
     Player autoPlayer = new Player(avoidStrat, ReversiPiece.BLACK);
 
     List<IPlayerMoveStrategy> strategyList = Arrays.asList(
-            new PlayCornersStrategy(), new CaptureMostStrategy());
+        new PlayCornersStrategy(), new CaptureMostStrategy());
     Strategy combo = new Strategy(new ManyStrategy(strategyList));
     Player autoPlayer2 = new Player(combo, ReversiPiece.WHITE);
 
@@ -241,7 +241,7 @@ public class TestReversiController {
     Assert.assertTrue(out.toString().contains("MyPlayer: X, Move Chosen: -1, 2, -1"));
     Assert.assertTrue(out.toString().contains("MyPlayer: O, Move Chosen: 3, -3, 0"));
     Assert.assertTrue(out.toString().contains("MyPlayer: O, Pass Chosen\n" +
-            "MyPlayer: X, Pass Chosen"));
+        "MyPlayer: X, Pass Chosen"));
 
   }
 
@@ -253,7 +253,7 @@ public class TestReversiController {
     Player autoPlayer = new Player(avoidStrat, ReversiPiece.BLACK);
 
     List<IPlayerMoveStrategy> strategyList = Arrays.asList(
-            new PlayCornersStrategy(), new AvoidNextToCornersStrategy());
+        new PlayCornersStrategy(), new AvoidNextToCornersStrategy());
     Strategy combo = new Strategy(new ManyStrategy(strategyList));
     Player autoPlayer2 = new Player(combo, ReversiPiece.WHITE);
 
@@ -276,12 +276,12 @@ public class TestReversiController {
   public void testControllerAvoidCornersAndCaptureMostVSPlayCornersAndCaptureMost() {
 
     List<IPlayerMoveStrategy> strategyList1 = Arrays.asList(
-            new AvoidNextToCornersStrategy(), new CaptureMostStrategy());
+        new AvoidNextToCornersStrategy(), new CaptureMostStrategy());
     Strategy combo1 = new Strategy(new ManyStrategy(strategyList1));
     Player autoPlayer = new Player(combo1, ReversiPiece.BLACK);
 
     List<IPlayerMoveStrategy> strategyList2 = Arrays.asList(
-            new PlayCornersStrategy(), new CaptureMostStrategy());
+        new PlayCornersStrategy(), new CaptureMostStrategy());
     Strategy combo2 = new Strategy(new ManyStrategy(strategyList2));
     Player autoPlayer2 = new Player(combo2, ReversiPiece.WHITE);
 
@@ -299,7 +299,7 @@ public class TestReversiController {
     Assert.assertTrue(out.toString().contains("MyPlayer: O, Move Chosen: 3, -3, 0"));
     // here the strategy avoids the move
     Assert.assertTrue(out.toString().contains("MyPlayer: X, Pass Chosen\n" +
-            "MyPlayer: O, Pass Chosen"));
+        "MyPlayer: O, Pass Chosen"));
   }
 
 

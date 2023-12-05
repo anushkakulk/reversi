@@ -72,7 +72,8 @@ public interface ReadOnlyReversiModel {
 
   /**
    * Gets the current score of the given player, which is the number of tiles that player has pieces
-   *              on the board.
+   * on the board.
+   *
    * @param player the piece associated with the player whose score we want to check
    * @return the score of the given player.
    */
@@ -80,9 +81,10 @@ public interface ReadOnlyReversiModel {
 
   /**
    * Determines if a move to the given coordinates is a valid move for the given piece.
-   * @param q the q coord of the tile.
-   * @param r the r coord of the tile.
-   * @param s the s coord of the tile.
+   *
+   * @param q     the q coord of the tile.
+   * @param r     the r coord of the tile.
+   * @param s     the s coord of the tile.
    * @param piece the piece of the player that is checking whether they can validly move or not.
    * @return true if it is a valid move.
    */
@@ -91,9 +93,10 @@ public interface ReadOnlyReversiModel {
   /**
    * Returns the number of tiles that would get flipped if the given piece moves to the given
    * coordinates.
-   * @param q the q coord of the tile.
-   * @param r the r coord of the tile.
-   * @param s the s coord of the tile.
+   *
+   * @param q     the q coord of the tile.
+   * @param r     the r coord of the tile.
+   * @param s     the s coord of the tile.
    * @param piece the piece of the player that is checking how many tiles they would flip if they
    *              moved there.
    * @return the number of tiles that would flip.
@@ -102,6 +105,7 @@ public interface ReadOnlyReversiModel {
 
   /**
    * Returns a copy of this model's board.
+   *
    * @return the current game board of this model.
    */
   Map<Tile, ReversiPiece> getBoard();

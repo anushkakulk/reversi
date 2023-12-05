@@ -109,7 +109,7 @@ public abstract class AbstractStrategy implements IStrategy {
   }
 
   protected List<Integer> getLongestAndMostUpLeftFromMap(HashMap<List<Integer>,
-          List<List<List<Integer>>>> positionMoveMap) {
+      List<List<List<Integer>>>> positionMoveMap) {
     List<List<Integer>> res = new ArrayList<>();
     int largestMoveLength = Integer.MIN_VALUE;
     for (Map.Entry<List<Integer>, List<List<List<Integer>>>> entry : positionMoveMap.entrySet()) {
@@ -157,7 +157,7 @@ public abstract class AbstractStrategy implements IStrategy {
   }
 
   protected List<Integer> getMoveWithClosestCoordinateFromMap(HashMap<List<Integer>,
-          List<List<List<Integer>>>> positionMoveMap, HashMap<Integer, List<Integer>> cornerMap) {
+      List<List<List<Integer>>>> positionMoveMap, HashMap<Integer, List<Integer>> cornerMap) {
     List<Integer> closestMoveToCorner = new ArrayList<>();
     int closestDistanceToACorner = Integer.MAX_VALUE;
     for (Map.Entry<List<Integer>, List<List<List<Integer>>>> entry : positionMoveMap.entrySet()) {
@@ -219,7 +219,7 @@ public abstract class AbstractStrategy implements IStrategy {
 
 
   protected boolean adjacentPositionInMap(List<Integer> position, HashMap<Integer,
-          List<Integer>> cornerMap) {
+      List<Integer>> cornerMap) {
     int x = position.get(0);
     int y = position.get(1);
     for (MoveDirection md : MoveDirection.values()) {

@@ -18,6 +18,9 @@ import cs3500.reversi.provider.player.Player;
 import cs3500.reversi.provider.player.PlayerTurn;
 import cs3500.reversi.provider.strategy.IStrategy;
 
+/**
+ * Represents an adapter for a Player from the provider's code to our code.
+ */
 public class AdaptedPlayer extends Player implements ReversiPlayer {
 
   private final List<PlayerActionFeatures> listeners = new ArrayList<>();
@@ -29,7 +32,8 @@ public class AdaptedPlayer extends Player implements ReversiPlayer {
   @Override
   public IPlayerMove getPlayerDecision(ReadOnlyReversiModel model) {
     List<Integer> move = super.getIStrategy().executeStrategy();
-    Tile t = AdapterUtils.changeProviderCoordToTileCoord(move.get(0), move.get(1), model.getHexSideLength());
+    Tile t = AdapterUtils.changeProviderCoordToTileCoord(move.get(0),
+        move.get(1), model.getHexSideLength());
     IPlayerMove nextMove;
     boolean valid = false;
     try {

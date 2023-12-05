@@ -12,8 +12,8 @@ import cs3500.reversi.provider.strategy.IStrategy;
  */
 public class Player {
   private final PlayerTurn playerTurn;
-  private IStrategy iStrategy;
   private final Map<PlayerTurn, DiscColor> playerColorMap;
+  private IStrategy iStrategy;
 
   /**
    * A 'Player' represents a player instantiation without a strategy (non-ai).

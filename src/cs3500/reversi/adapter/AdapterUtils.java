@@ -6,13 +6,18 @@ import cs3500.reversi.model.ReversiPiece;
 import cs3500.reversi.model.Tile;
 import cs3500.reversi.provider.player.PlayerTurn;
 
+/**
+ * Represents a utility class for the adapter.
+ */
 public class AdapterUtils {
 
-
+  /**
+   * Changes the coordinates of a tile to the coordinates of the provider.
+   */
   public static Tile changeProviderCoordToTileCoord(int x, int y, int sideLength) {
 
-    x  = x - sideLength+ 1;
-    y = y - sideLength+ 1;
+    x = x - sideLength + 1;
+    y = y - sideLength + 1;
     int q;
     if (sideLength % 2 == 1) {
       q = (x - (y - (y & 1)) / 2);
@@ -25,10 +30,12 @@ public class AdapterUtils {
   }
 
   public static PlayerTurn changeReversiPieceToPlayerTurn(ReversiPiece p) {
-   return p == ReversiPiece.BLACK ? PlayerTurn.PLAYER1 : PlayerTurn.PLAYER2;
+    return p == ReversiPiece.BLACK ? PlayerTurn.PLAYER1 : PlayerTurn.PLAYER2;
   }
 
-
+  /**
+   * Changes the coordinates of a tile to the coordinates of the provider.
+   */
   public static Point2D changeTileCoordToProviderCoord(int q, int r, int s, int sideLength) {
     int x;
     if (sideLength % 2 == 1) {

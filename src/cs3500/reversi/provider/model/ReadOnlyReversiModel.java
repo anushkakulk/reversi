@@ -53,14 +53,14 @@ public interface ReadOnlyReversiModel extends Serializable {
    * disc is flipped when rendering.
    *
    * @param x the x coordinate of the desired disc on the game board.
-   *        Must be a non-negative integer within the valid range.
+   *          Must be a non-negative integer within the valid range.
    * @param y the y coordinate of the desired disc on the game board.
-   *        Must be a non-negative integer within the valid range.
+   *          Must be a non-negative integer within the valid range.
    * @return true if the disc at the given position is flipped, false if not.
-   *        A faced down disc is not flipped.
+   *          A faced down disc is not flipped.
    * @throws IllegalStateException    if the game hasn't been started yet.
    * @throws IllegalArgumentException if the coordinates are invalid.
-   *        Invalid coordinates are outside the bounds of the game board.
+   *                                  Invalid coordinates are outside the bounds of the game board.
    */
   boolean isDiscFlipped(int x, int y);
 

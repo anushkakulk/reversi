@@ -10,7 +10,6 @@ public interface ModelStatusFeatures extends Listener {
 
   /**
    * Handles the model's indication that the next player to play is given.
-   *
    */
   void handlePlayerChange(ReversiPiece currPlayer);
 

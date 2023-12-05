@@ -5,7 +5,11 @@ import cs3500.reversi.model.ReadOnlyReversiModel;
 import cs3500.reversi.provider.controller.Listener;
 import cs3500.reversi.view.ReversiGUIView;
 
-public class AdaptedView extends ReversiGUIView implements cs3500.reversi.provider.view.ReversiView {
+/**
+ * Represents an adapter for a ReversiGUIView from the provider's code to our code.
+ */
+public class AdaptedView extends ReversiGUIView implements
+    cs3500.reversi.provider.view.ReversiView {
   private final cs3500.reversi.provider.view.ReversiView delegate;
 
   public AdaptedView(cs3500.reversi.provider.view.ReversiView delegate, ReadOnlyReversiModel m) {
@@ -13,7 +17,7 @@ public class AdaptedView extends ReversiGUIView implements cs3500.reversi.provid
     this.delegate = delegate;
   }
 
-  public void addListener( Listener listener) {
+  public void addListener(Listener listener) {
     delegate.addListener(listener);
   }
 

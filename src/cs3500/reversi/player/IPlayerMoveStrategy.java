@@ -15,12 +15,13 @@ public interface IPlayerMoveStrategy {
 
   /**
    * Gets the ReversiPosn for a move in the model, if deemed valid by model.
+   *
    * @param model the model from which the strategy is determining what the next move is.
    * @param piece the piece the strategy is playing for.
    * @return a ReversiPosn, the best destination the given player's piece should move to,
-   *                ONLY IF the strategy finds at least one valid move for. (Human Strategies return
-   *                the HumanChoice IPlayerMove, since their strategy doesn't choose a move,
-   *                the view does ).
+   *         ONLY IF the strategy finds at least one valid move for. (Human Strategies return
+   *         the HumanChoice IPlayerMove, since their strategy doesn't choose a move,
+   *         the view does).
    */
   Optional<IPlayerMove> playStrategy(ReadOnlyReversiModel model, ReversiPiece piece);
 

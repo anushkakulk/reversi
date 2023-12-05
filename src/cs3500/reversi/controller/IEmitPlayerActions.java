@@ -14,6 +14,7 @@ public interface IEmitPlayerActions {
 
   /**
    * Notifies listeners that a move was chosen by a player to the tile at the given coords.
+   *
    * @param q the chosen tile's q coord.
    * @param r the chosen tile's r coord.
    * @param s the chosen tile's s coord.

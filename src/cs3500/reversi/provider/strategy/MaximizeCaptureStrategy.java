@@ -31,7 +31,7 @@ public class MaximizeCaptureStrategy extends AbstractStrategy {
     List<List<Integer>> validPositions = getPositionsForBFS();
     for (List<Integer> position : validPositions) {
       List<List<List<Integer>>> moveFromPosition = BoardUtils.bfs(this.reversiModel,
-              position.get(0), position.get(1));
+          position.get(0), position.get(1));
       if (positionMoveMap.get(position) == null) {
         positionMoveMap.put(position, moveFromPosition);
       } else {
