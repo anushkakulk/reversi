@@ -1,0 +1,8 @@
+Our code was already loosely coupled and we did not send our customers many concrete classes. We
+did however forget to send one interface (the IPlayerMove interface) and so we remedied that fix. This
+was necessary because our Strategy interface returns an IPlayerMove, which is what the ReversiPlayer
+interface returns when the player's decision is queried. Hence we had to send that forgotten interface
+as well. We properly sent all our interfaces and views with no changes, since all our classes were
+all designed to work with interfaces and not implementations. We also received no notes from our customers
+requesting any design changes for looser coupling or implementation detail questions, leading us to believe
+our code was well designed and documented.

@@ -1,31 +1,66 @@
 Review of Provider's Code
+(design and code limitations with their suggestions are present within each paragraph)
 
 
-The main critique I have is that there was not clear documentation about the coordinate system
-used/board representation. All that was mentioned was that they used "odd-r" horizontal coordinates, yet they did not
-explain what "odd-r" coordinates are, what was actually contained in the board [][] which is  used in their model
-implementation, making it extremely difficult to translate between our coordinate system and theirs (we had to continuously
-ask them for clarifications about their coordinate system/board representation and such). Similarly,
-the readme was severely lacking in details about how everything works together (model view controller
-communication), and they were missing lots javadoc/comments for public methds in their model interfaces
-, making it difficult to understand what these methods were doing/their purpose in the view's rendering. Furthermore,
-they never specify what board dimensions are, and we had to figure out a lot of it through trying various
-possibilities of what they could be. For reference, we refer to a board's size by the
-side length of the hexagonic board and documented our code/units used thoroughly.
+DESIGN CRITIQUE
 
-Another thing was the decision to use a 2d array as they did, meaning they had a lot of deliberate use
+They also had a small issue with tightly coupling, which we had to repair. For example, they had no player
+interface and so we had to make a class adapter that would extend their player class and implement
+our ReversiPlayer interface. Yet, this was the only instance of tight coupling that we noticed, and the model
+and view all take in and work with interfaces, rather than classes, which is great design.
+
+One critique was the design decision to use a 2d array to represent the gameboard as they did,
+meaning they had a lot of deliberate use
 of null. We have always learned that it is good practice to avoid the use of null as much as possible,
 but they use null to account for the column indent that comes with an odd-r coordinate system. For
-example, to represent a board with a sidelength of 2, their board would look as such:
+example, to represent a board with a side length of 2, their board would look as such:
 [null Tile Tile]
 [Tile Tile Tile]
 [null Tile Tile]
 Overall, I was not too big of a fan of this use of null and null-checking, and believe
-a map of tile positions could be much better design decision.
+a map of tiles to positions could have been much better design decision. (one example continuing to use
+the 2D array would be to use a 2D array of disc, but they had some implementation of disc to represent
+a "disc" that doesn't exist.) Or they could use a Map<Point2D, Disc>, where only discs that exist in
+the board would be held in the gameboard (and therefore there would be no use for null). This is a
+ critique made simply because rendering in the view does null checking to determine whether to render
+ a tile or not, and changing this design could streamline the gameboard representation and null-related challenges.
 
-However, the rendering itself was done very nicely, and once I figured out how to translate from our
+
+IMPLEMENTATION CRITIQUE
+
+The view itself was very capable and we both implemented the same functions with different names in our
+views (the shared functionalities: the ability to add a listener, render itself, and show a popup message).
+This made it quite easy to make an adapter for their view to implement our view interface to work
+with our controller, meaning it was pretty convenient to use their code.
+
+In addition, the rendering itself was done very nicely, and once I figured out how to translate from our
 coordinate system to theirs, the view worked just as intended, and we were able to successfully listen
 to player actions via an adapter of their view.
 
-They also had a few issues with tightly coupling, which we had to repair. For example, they had no player
-interface and so we had to modify their.
+The effectiveness of their strategies and the straightforward adaptation of their player class
+via a class adapter further exemplify well-designed and clear code. Because their
+view and player classes were designed cleanly and clearly (with each method's being explained
+via comments/intuition from simple naming of variables and methods), our adapters were not too hard
+to design as we simply translated their methods to work with the signatures of our methods that accomplished the same purposes.
+
+
+DOCUMENTATION CRITIQUE
+
+The main critique I have is that there was not clear documentation about the coordinate system
+used/board representation. All that was mentioned was that they used "odd-r" horizontal coordinates, yet they did not
+explain what "odd-r" coordinates are, what was actually contained in the board [][] which is used in their model
+implementation, making it extremely difficult to translate between our coordinate system and theirs
+(we had to continuously ask them for clarifications about their coordinate system/board representation and such). Similarly,
+the readme was severely lacking in details about how everything works together (model view controller
+communication), and they were missing lots javadoc/comments for public methods in their model interfaces,
+making it difficult to understand what these methods were doing/their purpose in the view's rendering and
+strategy usage. Furthermore, they never specify what board "dimensions" are, and we had to figure out
+a lot of it through trying various possibilities of what they could be. For reference, we refer to a
+board's size by the side length of the hexagonic board and documented our code/units used thoroughly.
+I would highly recommend that they add more comments/javadoc to their public methods and classes, so that people
+who are not familiar with their codebase are able to easily understand the purpose of everything. Similarly,
+I would encourage more detail in their readme to navigating through the codebase/understanding how
+the board is set up/coordinate system works.
+
+
+

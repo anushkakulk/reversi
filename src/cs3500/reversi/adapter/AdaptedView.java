@@ -6,10 +6,10 @@ import cs3500.reversi.provider.controller.Listener;
 import cs3500.reversi.view.ReversiGUIView;
 
 /**
- * Represents an adapter for a ReversiGUIView from the provider's code to our code.
+ * Represents an object adapter for a ReversiGUIView from the provider's code to our code.
  */
 public class AdaptedView extends ReversiGUIView implements
-    cs3500.reversi.provider.view.ReversiView {
+        cs3500.reversi.provider.view.ReversiView {
   private final cs3500.reversi.provider.view.ReversiView delegate;
 
   public AdaptedView(cs3500.reversi.provider.view.ReversiView delegate, ReadOnlyReversiModel m) {

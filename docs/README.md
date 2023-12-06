@@ -4,15 +4,27 @@ This codebase is an implementation of the Reversi game,
 complete with a game board, rules keeping, and player management.
 
 
+### NOTE FOR PT 4 GRADERS: FEATURES WORKING SUCCESSFULLY
+We successfully implemented the provider view and all 4 strategies they developed to
+work in a game. We made an adapted model, view, and player to mitigate differences in representation
+(like different coordinate systems, different representation of pieces, etc) and made it such that
+our controller needed little to no changes. In addition to adding support for the provider code, our prior full mvs implementation works as intended. Our implementations were lightly coupled, meaning having our 
+adapters implement our model and view interfaces respectively made everything work as intended. 
+Player 2 uses the provider view (NOTE : we were told that the lag that sometimes happens on their view is how 
+theirs always works!). For command line args to use the provider strategies, look below! 
+
+
+
 # Reversi Game Initialization & Playing Guide
 
 To initiate and start a game of Reversi, you need to provide information about the two players you want to engage in the match.
+
 
 ### Guide to Command Line Parsing
 
 Follow this guide for each of the two players:
 
-#### Choosing a Player Type for One Player:
+#### Choosing a Strategy for One Player:
 - For a human player, enter: `human`
 - For an AI player focused on capturing the most pieces, enter: `strategy1`
 - For an AI player avoiding corner spots, enter: `strategy2`
@@ -20,10 +32,30 @@ Follow this guide for each of the two players:
 - For a custom combination strategy, enter: `manystrategy` followed by the number of strategies 
 (`n`) and the strategy names from `strategy1`, `strategy2`, and `strategy3`.
 
+#### NEW FEATURE: USING PROVIDER STRATEGIES
+- For the Provider's implementation of AI player focused on capturing the most pieces, enter: `provider1`
+- For the Provider's implementation of an AI player avoiding corner spots, enter: `provider2`
+- For the Provider's implementation of an AI player targeting corner spots, enter: `provider3`
+- For the Provider's implementation of an AI player using the "minimax" strategy, enter: `provider4`
+
 ## Examples of Valid Command Line Inputs:
+
 
 ```
 // NOTE: player1 will always use piece X and player2 will always use piece O
+
+// NEW!! : USING BOTH OUR STRATEGIES AND THE PROVIDERS 
+
+// player1 is our human, player2 is the provider's maximize capture
+command line input: human provider1
+
+// player1 is an AI playing our maximize capture strategy, player2 is an AI playing the provider's maximize capture
+command line input: strategy1 provider1
+
+// player1 plays a combination of all strategies in the order 3->2->1, player2 is an AI playing the provider's avoid corners strategy
+command line input: manystrategy 3 strategy3 strategy2 strategy1  provider2
+
+------------------------------------------------
 
 // two human players
 command line input: human human
@@ -65,6 +97,12 @@ If you wish to pass your turn, press `spacebar`.
 
 The codebase is organized into the following packages:
 
+- adapter: this package contains classes that work to get the provider's code to work with our code.
+  - AdaptedPlayer : a class adapter that extends the provider's player and implements our ReversiPlayer interface
+  - AdaptedView: an object adapter that has the provider's view as a delegate and implements our ReversiView interface
+  - MergedReversiModel: a class adapter that extends our model implementation and implements the provider's model interface.
+  - AdapterUtils: a static utils class with helper methods for translating between simple value classes and coordinates
+    between our two implementations.
 - model: contains the core Reversi game model components, including the main game model interfaces
   (ReversiModel and ReadOnlyReversiModel) and their implementation (ReversiGameModel).
   - model Package:
@@ -119,8 +157,18 @@ strategy.
       it tries the next in its repertoire.
     - IPlayerMove: Interface representing a player move. (either pass or move)
     - Pass: Class representing a pass move, a type of move that a player can make.
-    - Move: Class representing moving a piece, a type of move that a player can make.
-    
+    - Move: Class representing moving a piece, a type of move that a player can make. 
+- provider: this package contains interfaces and simple components responsible for a working reversi implementation
+from a provider.
+  - provider Package:
+    - controller package contains controller interface, Listener Interface, and Event Interfaces and implementations.
+    - discs package contains interface and value classes to represent a piece on the gameboard 
+    - model package contains interfaces for reversi model and helper utils classes for strategies and moves.
+    - player package contains a concrete player class and enum for player turns
+    - strategy package contains an interface for a strategy and concrete implementations of the maximize capture,
+    avoid corners, play corners, and minimax strategies.
+    - view package contains a view interface and working implementation
+
     
 
 # Model 

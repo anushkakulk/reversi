@@ -13,30 +13,30 @@ import cs3500.reversi.provider.player.PlayerTurn;
 public class MiniMaxStrategy extends AbstractStrategy {
   private final StrategyType strategyType;
 
+
   /**
    * A 'MiniMaxStrategy' constructor.
    */
   public MiniMaxStrategy(ReadOnlyReversiModel reversiModel, PlayerTurn player) {
     super(reversiModel, player);
-
     this.strategyType = StrategyType.MINIMAX;
   }
 
   private static List<Integer> executeGoForCorner(ReadOnlyReversiModel reversiModel) {
     CornersStrategy goForCorner = new CornersStrategy(reversiModel, reversiModel.currentTurn(),
-        false);
+            false);
     return goForCorner.executeStrategy();
   }
 
   private static List<Integer> executeAvoidCorners(ReadOnlyReversiModel reversiModel) {
     CornersStrategy avoidCorner = new CornersStrategy(reversiModel, reversiModel.currentTurn(),
-        true);
+            true);
     return avoidCorner.executeStrategy();
   }
 
   private static List<Integer> executeMaximize(ReadOnlyReversiModel reversiModel) {
     MaximizeCaptureStrategy maximizeCaptureStrategy = new MaximizeCaptureStrategy(reversiModel,
-        reversiModel.currentTurn());
+            reversiModel.currentTurn());
     return maximizeCaptureStrategy.executeStrategy();
   }
 
@@ -44,6 +44,7 @@ public class MiniMaxStrategy extends AbstractStrategy {
   public List<Integer> executeStrategy() {
     List<ReadOnlyReversiModel> gameStates = super.reversiModel.getGameStates();
     ReadOnlyReversiModel getLastState = gameStates.get(gameStates.size() - 2);
+
     List<List<Integer>> moves = getLastState.getMoves();
     List<Integer> lastMove = moves.get(moves.size() - 1);
     if (lastMove.equals(executeMaximize(getLastState))) {

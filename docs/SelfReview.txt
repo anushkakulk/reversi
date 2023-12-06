@@ -1,0 +1,25 @@
+Self Review of Adapting Provider Code
+
+One thing I realized could have done differently to reduce all tight coupling would be to modify the use of the
+Tile class as a necessary element for the model. The Tile class represent one tile in the gameboard,
+and methods work under the assumption that the code has the Tile class (which holds 3 ints to represent the
+q, r, s coordinates). Looking at the provider's code, I saw that they had a Disc Interface, which outlined
+all methods that implementation of Disc (also representing a piece on the game board, just as my tile class does)
+and thought that was a good design decision, as all their model/view methods worked with that interface instead
+of a concrete class. To improve my code, I would make an ITile interface that worked similarly to how the
+provider's Disc interface worked, and I would replace all finite instances of Tile usage in the model and view code
+to now use the interface ITile. Similarly, I wish I had my controller initially work by taking in a ReversiPlayer
+(an interface) rather than Player (the concrete class). I think I meant for the controller to take in a
+ReversiPlayer instead of a Player, but for some reason forgot. This meant I had to change the controller
+to take the interface not the class, which was a minute change but an important one regardless.
+
+Our experience with the providers was okay! they sent us the code quickly, and followed up with changes
+to their code with less tight coupling after we noticed methods in their view used methods in their
+model that were not in the model interface. The only small gripe would be that they did not provide much
+detail in their code (either readme or via comments/javadoc), and when we asked them for details on
+their model implementation (which were necessary to understanding how their minimax strategy worked),
+they did not give much detail/help to understanding these key implementation specifics! They had
+methods in their model interface that were used for the minimax strategy, and they did not provide any
+comments or javadoc about what those methods do, making it difficult
+for our adapted model to work with their minimax strategy (took lots of trial and error on what those
+methods were doing). Other than that, they were great!

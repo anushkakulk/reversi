@@ -20,7 +20,7 @@ import cs3500.reversi.provider.model.ReadOnlyReversiModel;
 import cs3500.reversi.provider.player.PlayerTurn;
 
 /**
- * Represents an adapter for a ReversiModel from the provider's code to our code.
+ * Represents a class adapter for a ReversiModel from the provider's code to our code.
  */
 public class MergedReversiModel extends ReversiGameModel implements ReversiModel {
 
@@ -40,7 +40,6 @@ public class MergedReversiModel extends ReversiGameModel implements ReversiModel
 
   @Override
   public void startGame() {
-    System.out.println("hey start game");
     super.startGame();
     this.gameStates.add(this);
     this.moves.add(new ArrayList<>());
@@ -100,8 +99,15 @@ public class MergedReversiModel extends ReversiGameModel implements ReversiModel
 
   @Override
   public boolean isDiscFlipped(int x, int y) {
-    return super.getPieceAt(AdapterUtils.changeProviderCoordToTileCoord(
-        x, y, super.getHexSideLength())) == ReversiPiece.EMPTY;
+    Tile t = AdapterUtils.changeProviderCoordToTileCoord(
+            x, y, super.getHexSideLength());
+    boolean flip = false;
+    try {
+      flip = super.validateCoordinatesInBoard(t.getQ(), t.getR(), t.getS());
+    } catch (IllegalArgumentException | IllegalStateException e) {
+      // do nothing
+    }
+    return !flip;
   }
 
   @Override
@@ -203,7 +209,7 @@ public class MergedReversiModel extends ReversiGameModel implements ReversiModel
   }
 
   /**
-   * Represents a disc.
+   * Represents a disc, our provider's way of representing ReversiPiece.
    */
   public static class DiscImpl implements Disc {
     private final DiscColor color;

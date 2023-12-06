@@ -127,7 +127,7 @@ public class ReversiGameModel implements ReversiModel {
     }
     flipTiles(neighborsOccupiedByOtherPlayer, dest);
     this.consecutivePasses = 0;
-    switchPlayer();
+    this.switchPlayer();
   }
 
   // checks and throws errors for before a move is made.
@@ -165,7 +165,7 @@ public class ReversiGameModel implements ReversiModel {
 
     // INVARIANT: The current player must switch between ReversiPiece.BLACK and ReversiPiece.WHITE
     // after each valid move or pass.
-    switchPlayer();
+    this.switchPlayer();
   }
 
   @Override

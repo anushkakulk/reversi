@@ -15,7 +15,7 @@ import cs3500.reversi.view.ReversiView;
  * Represents a controller for a Reversi game.
  */
 public class ReversiController implements IReversiController, PlayerActionFeatures,
-    ModelStatusFeatures {
+        ModelStatusFeatures {
   private final ReversiPlayer player;
   private final ReversiModel model;
   private final ReversiView view;
@@ -51,7 +51,7 @@ public class ReversiController implements IReversiController, PlayerActionFeatur
     this.view.update();
     updateViewTitle();
     if (isMyTurn) {
-      this.player.getPlayerDecision(model);
+      this.player.getPlayerDecision(this.model);
     }
   }
 
@@ -64,7 +64,6 @@ public class ReversiController implements IReversiController, PlayerActionFeatur
       message += ". Better luck next time!";
     }
     this.view.displayMessage(message);
-    System.exit(100);
   }
 
   @Override
@@ -96,7 +95,7 @@ public class ReversiController implements IReversiController, PlayerActionFeatur
   private void updateViewTitle() {
     ReversiPiece me = this.player.getPiece();
     this.view.displayTitle(me + "'s Board. Score = " + model.getScore(me) + ". Turn: "
-        + model.getCurrentPlayer());
+            + model.getCurrentPlayer());
   }
 
   @Override
@@ -104,9 +103,9 @@ public class ReversiController implements IReversiController, PlayerActionFeatur
     if (e.getEventType() == EventType.MOVE) {
       String[] strArray = e.getMessage().split(" ");
       Tile moveChosen = AdapterUtils.changeProviderCoordToTileCoord(
-          Integer.parseInt(strArray[0]),
-          Integer.parseInt(strArray[1]),
-          this.model.getHexSideLength()
+              Integer.parseInt(strArray[0]),
+              Integer.parseInt(strArray[1]),
+              this.model.getHexSideLength()
       );
       this.handleMoveChosen(moveChosen.getQ(), moveChosen.getR(), moveChosen.getS());
     } else if (e.getEventType() == EventType.PASS) {

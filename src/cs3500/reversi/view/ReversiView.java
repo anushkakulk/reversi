@@ -31,4 +31,6 @@ public interface ReversiView extends SimpleReversiView {
    * @param titleMessage some message about the title
    */
   void displayTitle(String titleMessage);
+
+  void requestFocus();
 }

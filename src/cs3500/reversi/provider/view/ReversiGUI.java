@@ -1,10 +1,15 @@
 package cs3500.reversi.provider.view;
 
+import javax.swing.JFrame;
+import javax.swing.JButton;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+import javax.swing.Icon;
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.AlphaComposite;
-import java.awt.RenderingHints;
 import java.awt.Image;
+import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -12,18 +17,12 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
 
-import cs3500.reversi.adapter.MergedReversiModel;
 import cs3500.reversi.provider.controller.Event;
-import cs3500.reversi.provider.controller.EventType;
 import cs3500.reversi.provider.controller.Listener;
+import cs3500.reversi.provider.controller.EventType;
 import cs3500.reversi.provider.controller.PlayerEvent;
-import cs3500.reversi.provider.discs.Disc;
+import cs3500.reversi.provider. discs.Disc;
 import cs3500.reversi.provider.discs.DiscColor;
 import cs3500.reversi.provider.model.ReadOnlyReversiModel;
 
@@ -42,7 +41,7 @@ public class ReversiGUI extends JFrame implements ReversiView {
   /**
    * A ReversiGUI constructor.
    */
-  public ReversiGUI(MergedReversiModel model) {
+  public ReversiGUI(ReadOnlyReversiModel model) {
     this.model = model;
 
     getContentPane().setBackground(Color.DARK_GRAY);
@@ -98,15 +97,23 @@ public class ReversiGUI extends JFrame implements ReversiView {
               int rgb = image.getRGB(x, y);
               Color color = new Color(rgb, true);
 
-              if (prevX == -1 && prevY == -1) {
-                prevX = actualJ;
-                prevY = actualI;
-                button.setIcon(newHexagonIcon(Color.CYAN));
+              if (!model.isDiscFlipped(actualJ, actualI)) {
+                if (prevX == -1 && prevY == -1) {
+                  prevX = actualJ;
+                  prevY = actualI;
+                  button.setIcon(newHexagonIcon(Color.CYAN));
+                } else {
+                  discSelectorHelper(boardButtons[prevY][prevX], prevX, prevY);
+                  button.setIcon(newHexagonIcon(Color.CYAN));
+                  prevX = actualJ;
+                  prevY = actualI;
+                }
               } else {
-                discSelectorHelper(boardButtons[prevY][prevX], prevX, prevY);
-                button.setIcon(newHexagonIcon(Color.CYAN));
-                prevX = actualJ;
-                prevY = actualI;
+                if (!(prevX == -1 && prevY == -1)) {
+                  discSelectorHelper(boardButtons[prevY][prevX], prevX, prevY);
+                  prevX = -1;
+                  prevY = -1;
+                }
               }
 
               if (color.equals(Color.CYAN)) {
@@ -161,11 +168,11 @@ public class ReversiGUI extends JFrame implements ReversiView {
             if (e.getKeyCode() == KeyEvent.VK_ENTER) {
               if (!(prevX == -1 && prevY == -1)) {
                 System.out.println("Enter key pressed, player wishes to make a move to the disc at"
-                    + " (" + prevX + ", " + prevY + ")");
+                        + " (" + prevX + ", " + prevY + ")");
 
                 discSelectorHelper(boardButtons[prevY][prevX], prevX, prevY);
                 notifyListeners(new PlayerEvent(EventType.MOVE, prevX + " " +
-                    prevY, model.currentTurn()));
+                        prevY, model.currentTurn()));
                 prevX = -1;
                 prevY = -1;
               } else {
@@ -185,8 +192,8 @@ public class ReversiGUI extends JFrame implements ReversiView {
 
     int windowWidth = dimensions * hexWidth - (dimensions / 2 - 1) * (hexWidth / 2);
     int windowHeight = (dimensions - 1)
-        * (hexHeight - verticalOverlap)
-        + hexHeight + (hexHeight / 2);
+            * (hexHeight - verticalOverlap)
+            + hexHeight + (hexHeight / 2);
     setSize(windowWidth, windowHeight);
     setVisible(true);
     render();
@@ -261,7 +268,7 @@ public class ReversiGUI extends JFrame implements ReversiView {
   private BufferedImage convertIconToBufferedImage(ImageIcon icon) {
     Image image = icon.getImage();
     BufferedImage buffImage = new BufferedImage(image.getWidth(null),
-        image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+            image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
     Graphics2D buffGraphics = buffImage.createGraphics();
     buffGraphics.drawImage(image, 0, 0, null);
     buffGraphics.dispose();
