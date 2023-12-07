@@ -1,7 +1,6 @@
 package cs3500.reversi.view;
 
-import java.awt.Dimension;
-import java.awt.BorderLayout;
+import java.awt.*;
 import java.util.Objects;
 
 import javax.swing.JFrame;
@@ -18,27 +17,43 @@ import cs3500.reversi.provider.controller.Event;
 public class ReversiGUIView extends JFrame implements ReversiView, PlayerActionFeatures {
   private static final int cellWidth = 100;
   private static final int cellHeight = 100;
-  private final ReversiPanel panel;
+  private final IPanel panel;
 
 
   /**
-   * Creates the gui view with a given read only reversi model.
+   * Creates the gui view with a given ReversiPanel.
+   *
+   * @param panel a ReversiPanel for rendering the game.
+   */
+  public ReversiGUIView(IPanel panel) {
+    Objects.requireNonNull(panel);
+    this.panel = panel;
+    initialize();
+  }
+
+  /**
+   * Creates the gui view with a given read-only reversi model and a ReversiPanel.
    *
    * @param model a model for a game of Reversi, with only observation methods.
    */
   public ReversiGUIView(ReadOnlyReversiModel model) {
-    Objects.requireNonNull(model);
     int boardWidth = model.getHexSideLength() * 3 / 2 * cellWidth;
     int boardHeight = model.getHexSideLength() * 3 / 2 * cellHeight;
+    setPreferredSize(new Dimension(boardWidth, boardHeight));
+    Objects.requireNonNull(model);
+    panel = new ReversiPanel(model, boardWidth, boardHeight);
+    initialize();
+  }
+
+  private void initialize() {
+    int boardWidth = panel.getHexSideLength() * 3 / 2 * cellWidth;
+    int boardHeight = panel.getHexSideLength() * 3 / 2 * cellHeight;
     setPreferredSize(new Dimension(boardWidth, boardHeight));
     setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     setResizable(true);
     setLocationRelativeTo(null);
-    panel = new ReversiPanel(model, boardWidth, boardHeight);
     panel.addPlayerActionListener(this);
-    getContentPane().add(panel, BorderLayout.CENTER);
-
-    add(panel);
+    add(panel.getJComponent());
     pack();
     setVisible(true);
   }
@@ -86,5 +101,11 @@ public class ReversiGUIView extends JFrame implements ReversiView, PlayerActionF
   public void displayTitle(String titleMessage) {
     this.setTitle("Reversi Game: " + titleMessage);
   }
+
+  @Override
+  public void handleHintOn(int num) {
+    this.panel.handleHintOn(num);
+  }
+
 
 }

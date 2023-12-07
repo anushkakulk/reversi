@@ -32,5 +32,6 @@ public interface ReversiView extends SimpleReversiView {
    */
   void displayTitle(String titleMessage);
 
-  void requestFocus();
+  void handleHintOn(int num);
+
 }

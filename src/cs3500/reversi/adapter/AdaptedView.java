@@ -37,6 +37,11 @@ public class AdaptedView extends ReversiGUIView implements
   }
 
   @Override
+  public void handleHintOn(int num) {
+
+  }
+
+  @Override
   public void render() {
     delegate.render();
   }

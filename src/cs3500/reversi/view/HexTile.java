@@ -1,11 +1,12 @@
 package cs3500.reversi.view;
 
 
-import java.awt.Color;
-import java.awt.Polygon;
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.geom.Point2D;
+import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
 import java.util.Objects;
+import java.util.Optional;
 
 import cs3500.reversi.model.ReversiPiece;
 
@@ -13,16 +14,17 @@ import cs3500.reversi.model.ReversiPiece;
  * Represents a Tile for the view: this tile observes facets of a Tile for the model, and contains
  * information for rendering that information as a hexagon game tile in the view.
  */
-public class HexTile {
+public class HexTile implements IHexTile {
   private final int q; // our game coordinates q
   private final int r; // our game coordinates r
   private final int s; // our game coordinates s
-  private final int hexRadius; // the radius of the drawn hexagon (in pixels)
-  private int x; // the x-coordinate for a hexagon's center (in pixels)
-  private int y; // the y-coordinate for a hexagon's center (in pixels)
-  private Color tileColor; // the color of the tile to be drawn
-  private ReversiPiece piece; // the piece that's on top of every hexTile in our game
-  private Polygon hexagon;
+  private Optional<Integer> worth = Optional.empty();
+  protected final int hexRadius; // the radius of the drawn hexagon (in pixels)
+  protected int x; // the x-coordinate for a hexagon's center (in pixels)
+  protected int y; // the y-coordinate for a hexagon's center (in pixels)
+  protected Color tileColor; // the color of the tile to be drawn
+  protected ReversiPiece piece; // the piece that's on top of every hexTile in our game
+  protected Polygon hexagon;
 
   /**
    * Creates a Hextile for the given model Tile's q r s coords.
@@ -89,6 +91,32 @@ public class HexTile {
     this.hexagon = calculateHexagonVertices(this.x, this.y, this.hexRadius);
   }
 
+
+  /**
+   * Sets this hexTile's color (for when it is rendered).
+   *
+   * @param color the color the hexTile should be filled with when it's drawn.
+   */
+  public void setColor(Color color) {
+    this.tileColor = Objects.requireNonNull(color);
+  }
+
+  /**
+   * Sets this hexTile's piece, which sits on top of the hexTile (for when it is rendered).
+   *
+   * @param piece the piece that sits on top of the hexTile that will be drawn.
+   */
+  public void setPiece(ReversiPiece piece) {
+    this.piece = Objects.requireNonNull(piece);
+  }
+
+  @Override
+  public void setWorth(int num) {
+    this.worth = Optional.of(num);
+  }
+
+
+
   /**
    * Renders this HexTile.
    *
@@ -108,25 +136,15 @@ public class HexTile {
 
     g.setColor(Color.BLACK);
     g.drawPolygon(this.hexagon);
+    if (this.tileColor == Color.CYAN && piece == ReversiPiece.EMPTY && worth.isPresent()) {
+      g.setColor(Color.BLACK);
+      Font font = new Font("Arial", Font.PLAIN, 12);
+      g.setFont(font);
+      g.drawString(String.valueOf(worth.get()), x - 1, y - 1); // draws the points on top
+    }
+    this.worth = Optional.empty();
   }
 
-  /**
-   * Sets this hexTile's color (for when it is rendered).
-   *
-   * @param color the color the hexTile should be filled with when it's drawn.
-   */
-  public void setColor(Color color) {
-    this.tileColor = Objects.requireNonNull(color);
-  }
-
-  /**
-   * Sets this hexTile's piece, which sits on top of the hexTile (for when it is rendered).
-   *
-   * @param piece the piece that sits on top of the hexTile that will be drawn.
-   */
-  public void setPiece(ReversiPiece piece) {
-    this.piece = Objects.requireNonNull(piece);
-  }
 
 
   // helper method that translates our game's coordinates of this hextile

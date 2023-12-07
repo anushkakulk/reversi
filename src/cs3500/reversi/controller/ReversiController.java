@@ -68,7 +68,8 @@ public class ReversiController implements IReversiController, PlayerActionFeatur
 
   @Override
   public void handleTileClicked(int xCoord, int rCoord, int sCoord) {
-    // do nothing we don't really care if a tile was clicked
+    int numFlipped = model.numTilesGained(xCoord, rCoord, sCoord, this.player.getPiece());
+    this.view.handleHintOn(numFlipped);
   }
 
   @Override

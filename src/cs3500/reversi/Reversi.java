@@ -24,6 +24,8 @@ import cs3500.reversi.provider.strategy.IStrategy;
 import cs3500.reversi.provider.strategy.MaximizeCaptureStrategy;
 import cs3500.reversi.provider.strategy.MiniMaxStrategy;
 import cs3500.reversi.provider.view.ReversiGUI;
+import cs3500.reversi.view.HintReversiPanel;
+import cs3500.reversi.view.ReversiPanel;
 import cs3500.reversi.view.ReversiView;
 import cs3500.reversi.adapter.AdaptedView;
 import cs3500.reversi.view.ReversiGUIView;
@@ -44,21 +46,20 @@ public final class Reversi {
     }
 
 
+
     MergedReversiModel adaptedModel = new MergedReversiModel(6);
-    ReversiView adaptedView = new AdaptedView(new ReversiGUI(adaptedModel), adaptedModel);
+    int boardWidth = adaptedModel.getHexSideLength() * 3 / 2 * 100;
+    int boardHeight = adaptedModel.getHexSideLength() * 3 / 2 * 100;
+    ReversiView view1 = new ReversiGUIView(
+            new HintReversiPanel(new ReversiPanel(adaptedModel, boardWidth, boardHeight)));
     ReversiView view2 = new ReversiGUIView(adaptedModel);
     // here is where it parses command-line args
     ReversiArgParser parser = ReversiArgParser.parsePlayers(args, adaptedModel);
     ReversiPlayer p1 = parser.getPlayer1();
-    // new Player(new Strategy(new CaptureMostStrategy()), ReversiPiece.BLACK);
-    // ReversiArgParser.parsePlayers(args).getPlayer1();
-    // Player p2 = ReversiArgParser.parsePlayers(args).getPlayer2();
     ReversiPlayer p2 = parser.getPlayer2();
-    //  new AdaptedPlayer(PlayerTurn.PLAYER2,
-    //  new CornersStrategy(adaptedModel, PlayerTurn.PLAYER2, true));
 
-    IReversiController controller = new ReversiController(adaptedModel, p1, view2);
-    IReversiController controller2 = new ReversiController(adaptedModel, p2, adaptedView);
+    IReversiController controller = new ReversiController(adaptedModel, p1, view1);
+    IReversiController controller2 = new ReversiController(adaptedModel, p2, view2);
     adaptedModel.startGame();
   }
 

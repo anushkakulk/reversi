@@ -5,18 +5,15 @@ import java.awt.Graphics2D;
 import java.awt.Dimension;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import javax.swing.JPanel;
+import javax.swing.*;
 
-import cs3500.reversi.controller.IEmitPlayerActions;
 import cs3500.reversi.controller.PlayerActionFeatures;
 import cs3500.reversi.model.ReadOnlyReversiModel;
 import cs3500.reversi.model.ReversiPiece;
@@ -25,12 +22,12 @@ import cs3500.reversi.model.ReversiPiece;
  * Represents the canvas of our game, and handles any user input (either key or mouse) to the game
  * board and updates it accordingly.
  */
-public class ReversiPanel extends JPanel implements MouseListener, KeyListener, IEmitPlayerActions {
+public class ReversiPanel extends JPanel implements IPanel {
   private final ReadOnlyReversiModel gameModel;
   private final List<PlayerActionFeatures> listeners;
   private final int hexRadius;
-  private List<HexTile> hexTiles;
-  private HexTile selectedHexTile;
+  private List<IHexTile> hexTiles;
+  private IHexTile selectedHexTile;
   private boolean cellSelected = false;
 
   /**
@@ -45,7 +42,7 @@ public class ReversiPanel extends JPanel implements MouseListener, KeyListener, 
     setPreferredSize(new Dimension(panelWidth * 100, panelHeight * 100));
     this.gameModel = model;
     this.hexRadius = 20;
-    updateHextiles(model);
+    this.update();
     addMouseListener(this);
     addKeyListener(this);
     selectedHexTile = new HexTile(-1, -1, -1, model.getHexSideLength());
@@ -67,6 +64,7 @@ public class ReversiPanel extends JPanel implements MouseListener, KeyListener, 
    * @param r the chosen tile's r coord.
    * @param s the chosen tile's s coord.
    */
+  @Override
   public void notifyTileClicked(int q, int r, int s) {
     for (PlayerActionFeatures e : listeners) {
       e.handleTileClicked(q, r, s);
@@ -89,8 +87,9 @@ public class ReversiPanel extends JPanel implements MouseListener, KeyListener, 
 
   // creates a list of hextiles (the view's tiles), with one hextile corresponsing to every tile
   // in the model.
-  private void updateHextiles(ReadOnlyReversiModel model) {
-    List<HexTile> tiles = new ArrayList<>();
+  @Override
+  public void updateHextiles(ReadOnlyReversiModel model) {
+    List<IHexTile> tiles = new ArrayList<>();
     //int hexRadius = 20;
 
     for (int q = -model.getHexSideLength() + 1; q < model.getHexSideLength(); q++) {
@@ -112,12 +111,13 @@ public class ReversiPanel extends JPanel implements MouseListener, KeyListener, 
 
 
   @Override
-  protected void paintComponent(Graphics g) {
+  public void paintComponent(Graphics g) {
     super.paintComponent(g);
     Graphics2D g2d = (Graphics2D) g;
     g2d.transform(transformLogicalToPhysical());
 
-    for (HexTile hexTile : hexTiles) {
+    System.out.println("hellooo!");
+    for (IHexTile hexTile : hexTiles) {
       hexTile.draw(g2d); // draw all the tiles
     }
   }
@@ -126,8 +126,18 @@ public class ReversiPanel extends JPanel implements MouseListener, KeyListener, 
    * Updates the view based on the status of the game model.
    */
   public void update() {
-    this.updateHextiles(gameModel);
+    updateHextiles(gameModel);
     this.repaint();
+  }
+
+  @Override
+  public List<IHexTile> getHexTiles() {
+   return List.copyOf(this.hexTiles);
+  }
+
+  @Override
+  public void handleHintOn(int num) {
+
   }
 
 
@@ -181,7 +191,7 @@ public class ReversiPanel extends JPanel implements MouseListener, KeyListener, 
     Point2D pointClicked = transformPhysicalToLogical().transform(e.getPoint(), null);
     boolean cellClicked = false; // has a cell been clicked
 
-    for (HexTile hexTile : hexTiles) {
+    for (IHexTile hexTile : hexTiles) {
       if (hexTile.containsPoint(pointClicked)) {
         cellClicked = true;
         notifyTileClicked(hexTile.getQ(), hexTile.getR(), hexTile.getS());
@@ -191,6 +201,7 @@ public class ReversiPanel extends JPanel implements MouseListener, KeyListener, 
             // then deselect it
             cellSelected = false;
             selectedHexTile.setColor(Color.GRAY);
+
           } else {
             // deselect the old cell and set the new selected one to blue!
             hexTile.setColor(Color.CYAN);
@@ -265,4 +276,18 @@ public class ReversiPanel extends JPanel implements MouseListener, KeyListener, 
     // nothing to handle here
   }
 
+  @Override
+  public int getHexSideLength() {
+    return this.gameModel.getHexSideLength();
+  }
+
+  @Override
+  public JComponent getJComponent() {
+    return this;
+  }
+
+  @Override
+  public ReadOnlyReversiModel getModelState() {
+    return this.gameModel;
+  }
 }
