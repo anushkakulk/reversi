@@ -5,9 +5,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
-
 import java.util.List;
-
 import java.util.Optional;
 
 import javax.swing.*;
@@ -48,12 +46,18 @@ public class HintReversiPanel extends JPanel implements IPanel {
 
   @Override
   public void notifyMoveChosen(int q, int r, int s) {
-    this.panel.notifyMoveChosen(q,  r,  s);
+    this.panel.notifyMoveChosen(q, r, s);
   }
 
   @Override
   public void notifyPassChosen() {
     this.panel.notifyPassChosen();
+  }
+
+  @Override
+  public void mouseHelper(Point2D p) {
+    this.panel.mouseHelper(p);
+
   }
 
   @Override
@@ -65,20 +69,20 @@ public class HintReversiPanel extends JPanel implements IPanel {
   public void update() {
     this.panel.update();
     this.repaint();
-
   }
 
   @Override
   public void paintComponent(Graphics g) {
     super.paintComponent(g);
+
     Graphics2D g2d = (Graphics2D) g;
     g2d.transform(transformLogicalToPhysical());
 
-    System.out.println("hellooo!");
     for (IHexTile hexTile : this.panel.getHexTiles()) {
       hexTile.draw(g2d); // draw all the tiles
     }
   }
+
 
   @Override
   public ReadOnlyReversiModel getModelState() {
@@ -103,18 +107,9 @@ public class HintReversiPanel extends JPanel implements IPanel {
 
   @Override
   public void keyPressed(KeyEvent e) {
+    this.panel.keyPressed(e);
     int keyCode = e.getKeyCode();
-    if (cellSelected && keyCode == KeyEvent.VK_ENTER) {
-      this.panel.notifyMoveChosen(selectedHexTile.getQ(), selectedHexTile.getR(), selectedHexTile.getS());
-      cellSelected = false;
-      selectedHexTile.setColor(Color.GRAY);
-      repaint();
-    } else if (keyCode == KeyEvent.VK_SPACE) {
-      this.panel.notifyPassChosen();
-      cellSelected = false;
-      selectedHexTile.setColor(Color.GRAY);
-      repaint();
-    } else if (keyCode == KeyEvent.VK_H) {
+    if (keyCode == KeyEvent.VK_H) {
       this.hintsOn = !this.hintsOn;
     }
   }
@@ -169,11 +164,15 @@ public class HintReversiPanel extends JPanel implements IPanel {
   }
 
 
+
+
   @Override
   public void mouseClicked(MouseEvent e) {
     Point2D pointClicked = transformPhysicalToLogical().transform(e.getPoint(), null);
-    boolean cellClicked = false; // has a cell been clicked
+    this.panel.mouseHelper(pointClicked);
+    System.out.println("Hint Panel: " + pointClicked);
 
+    boolean cellClicked = false; // has a cell been clicked
     for (IHexTile hexTile : this.panel.getHexTiles()) {
       if (hexTile.containsPoint(pointClicked)) {
         cellClicked = true;
@@ -243,7 +242,7 @@ public class HintReversiPanel extends JPanel implements IPanel {
 
   @Override
   public void notifyTileClicked(int q, int r, int s) {
-    this.panel.notifyTileClicked(q,r,s);
+    this.panel.notifyTileClicked(q, r, s);
   }
 
   @Override

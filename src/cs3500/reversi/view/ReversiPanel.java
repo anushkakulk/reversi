@@ -116,7 +116,6 @@ public class ReversiPanel extends JPanel implements IPanel {
     Graphics2D g2d = (Graphics2D) g;
     g2d.transform(transformLogicalToPhysical());
 
-    System.out.println("hellooo!");
     for (IHexTile hexTile : hexTiles) {
       hexTile.draw(g2d); // draw all the tiles
     }
@@ -187,12 +186,12 @@ public class ReversiPanel extends JPanel implements IPanel {
 
 
   @Override
-  public void mouseClicked(MouseEvent e) {
-    Point2D pointClicked = transformPhysicalToLogical().transform(e.getPoint(), null);
+  public void mouseHelper(Point2D p) {
     boolean cellClicked = false; // has a cell been clicked
 
     for (IHexTile hexTile : hexTiles) {
-      if (hexTile.containsPoint(pointClicked)) {
+      if (hexTile.containsPoint(p)) {
+        System.out.println("omgg");
         cellClicked = true;
         notifyTileClicked(hexTile.getQ(), hexTile.getR(), hexTile.getS());
         if (cellSelected) {
@@ -215,6 +214,7 @@ public class ReversiPanel extends JPanel implements IPanel {
           selectedHexTile = hexTile;
         }
 
+
         repaint();
         break;
       }
@@ -226,6 +226,12 @@ public class ReversiPanel extends JPanel implements IPanel {
       selectedHexTile.setColor(Color.GRAY);
       repaint();
     }
+  }
+
+  @Override
+  public void mouseClicked(MouseEvent e) {
+    Point2D pointClicked = transformPhysicalToLogical().transform(e.getPoint(), null);
+    this.mouseHelper(pointClicked);
   }
 
   @Override
@@ -256,7 +262,6 @@ public class ReversiPanel extends JPanel implements IPanel {
   @Override
   public void keyPressed(KeyEvent e) {
     int keyCode = e.getKeyCode();
-
     if (cellSelected && keyCode == KeyEvent.VK_ENTER) {
       notifyMoveChosen(selectedHexTile.getQ(), selectedHexTile.getR(), selectedHexTile.getS());
       cellSelected = false;

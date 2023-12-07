@@ -68,7 +68,6 @@ public final class Reversi {
    */
   private static class ReversiArgParser {
     private int argIndex;
-
     private String[] args;
     private ReadOnlyReversiModel model;
 

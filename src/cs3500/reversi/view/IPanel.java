@@ -3,6 +3,7 @@ package cs3500.reversi.view;
 import java.awt.*;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
+import java.awt.geom.Point2D;
 import java.util.List;
 
 import javax.swing.*;
@@ -14,6 +15,8 @@ import cs3500.reversi.model.ReadOnlyReversiModel;
  * Represents an event that occurs in a Reversi game.
  */
 public interface IPanel extends MouseListener, KeyListener, IEmitPlayerActions {
+
+  void mouseHelper(Point2D p);
 
   int getHexSideLength();
 
@@ -33,4 +36,6 @@ public interface IPanel extends MouseListener, KeyListener, IEmitPlayerActions {
 
 
   ReadOnlyReversiModel getModelState();
+
+  void paintComponent(Graphics g);
 }
