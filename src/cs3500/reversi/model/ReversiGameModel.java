@@ -241,33 +241,47 @@ public class ReversiGameModel implements ReversiModel {
 
   @Override
   public int numTilesGained(int q, int r, int s, ReversiPiece piece) {
-    int numFlipped = 0;
+    int numFlipped = 0; // number of tiles flipped by the move
     if (isValidMove(q, r, s, piece)) {
       Tile dest = new Tile(q, r, s);
       List<Tile> neighborsOccupiedByOtherPlayer =
           findNeighborsOccupiedByOpponent(getValidNeighbors(dest),
               this.getCurrentPlayer());
 
+      int oppFlip = 0; // "opp" Tile(s) that needs to be flipped
       for (Tile opp : neighborsOccupiedByOtherPlayer) {
         int[] direction = {opp.getQ() - dest.getQ(), opp.getR() - dest.getR(),
             opp.getS() - dest.getS()};
-        numFlipped += 1;
         // add the direction vector to find the next tile. the next tile is in the same direction as
         // the neighboring tile with the opponent is as the neighboring tile with the opponent is
         // to the destination tile.
         Tile nextTile = opp.addDirection(direction);
+        boolean directionCounted = false; // used to count the direction only once
+        ReversiPiece nextPiece = getPieceAt(nextTile);
+        int numFlipInDirec = 0; // number of tiles flipped in a direction
 
         while (handleCoordinate(nextTile)) {
-          ReversiPiece nextPiece = getPieceAt(nextTile);
+          nextPiece = getPieceAt(nextTile);
           if (nextPiece == ReversiPiece.EMPTY) {
-            numFlipped += 1;
             break;
-          } else if (nextPiece != currentPlayer) { // we found the end of the sequence
-            numFlipped += 1;
+          } else if (nextPiece == currentPlayer) {
+            if (!directionCounted) {
+              oppFlip += 1; // adds the "opp" Tile to the count if successfully found a sequence
+              directionCounted = true;
+            }
+            break;
+          } else {
+            numFlipInDirec += 1; // increment the number of tiles flipped in a direction
           }
-          nextTile = nextTile.addDirection(direction);
+          nextTile = nextTile.addDirection(direction); // move to the next tile in the direction
+        }
+        if (nextPiece != currentPlayer) {
+          numFlipInDirec = 0; // if the sequence is not valid, reset the number of tiles flipped
+        } else {
+          numFlipped += numFlipInDirec; // add the number of tiles flipped in a direction to the total
         }
       }
+      numFlipped += oppFlip; // add the number of tiles flipped "opp" Tiles to the total
     }
     return numFlipped;
   }
