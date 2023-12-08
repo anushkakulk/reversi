@@ -1,6 +1,7 @@
 package cs3500.reversi.view;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 
 import cs3500.reversi.model.ReversiPiece;

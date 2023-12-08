@@ -126,7 +126,7 @@ public class HexTile implements IHexTile {
     g.setColor(this.tileColor);
     g.fillPolygon(this.hexagon);
 
-    if (piece != ReversiPiece.EMPTY) { // draw the piece on top
+    if (piece != ReversiPiece.EMPTY) {
       g.setColor(piece == ReversiPiece.BLACK ? Color.BLACK : Color.WHITE);
       int pieceSize = hexRadius / 2;
       int pieceX = x - pieceSize / 2;
@@ -136,14 +136,28 @@ public class HexTile implements IHexTile {
 
     g.setColor(Color.BLACK);
     g.drawPolygon(this.hexagon);
+
     if (this.tileColor == Color.CYAN && piece == ReversiPiece.EMPTY && worth.isPresent()) {
-      g.setColor(Color.BLACK);
-      Font font = new Font("Arial", Font.PLAIN, 12);
-      g.setFont(font);
-      g.drawString(String.valueOf(worth.get()), x - 1, y - 1); // draws the points on top
+      Graphics2D g2d = (Graphics2D) g.create(); // copy the graphic objgect
+      g2d.setColor(Color.BLACK);
+      Font font = new Font("Arial", Font.PLAIN, 20);
+      g2d.setFont(font);
+
+      int textX = x - hexRadius / 2;
+      int textY = y - hexRadius / 2;
+
+      // flip it overrrrr
+      g2d.scale(1, -1);
+
+
+      g2d.drawString(String.valueOf(worth.get()), textX, -textY);
+
+      g2d.dispose();
     }
     this.worth = Optional.empty();
   }
+
+
 
 
 

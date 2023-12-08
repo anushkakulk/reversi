@@ -69,6 +69,7 @@ public class ReversiController implements IReversiController, PlayerActionFeatur
   @Override
   public void handleTileClicked(int xCoord, int rCoord, int sCoord) {
     int numFlipped = model.numTilesGained(xCoord, rCoord, sCoord, this.player.getPiece());
+    System.out.println(numFlipped);
     this.view.handleHintOn(numFlipped);
   }
 
